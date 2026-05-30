@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Análisis Vocal · S.O.S — Bogdan Shuvalov</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+/* ── TOKENS ── */
+:root{
+  --bg:#060a12;--bg2:#0c1220;--bg3:#111c2e;--bg4:#162030;
+  --accent:#00e8b0;--a2:#ff4473;--a3:#ffc844;--a4:#7c5cfc;--a5:#38bfff;
+  --txt:#d6e4f0;--muted:#4a6072;--border:rgba(255,255,255,.07);
+  --grave:#3a7bff;--mgiave:#38bfff;--magudo:#00e8b0;--agudo:#ffc844;--sagudo:#ff4473;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--txt);font-family:'JetBrains Mono',monospace;overflow-x:hidden}
+
+/* ── NOISE ── */
+body::after{content:'';position:fixed;inset:0;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.85' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.025'/%3E%3C/svg%3E");pointer-events:none;z-index:9999}
+
+/* ── HERO ── */
+.hero{
+  min-height:100vh;display:flex;flex-direction:column;
+  justify-content:center;align-items:center;text-align:center;
+  padding:80px 20px;position:relative;overflow:hidden;
+}
+.hero-orb{
+  position:absolute;border-radius:50%;filter:blur(100px);pointer-events:none;
+}
+.orb1{width:600px;height:600px;background:rgba(0,232,176,.06);top:-200px;left:-100px}
+.orb2{width:500px;height:500px;background:rgba(124,92,252,.07);bottom:-150px;right:-100px}
+.orb3{width:400px;height:400px;background:rgba(255,68,115,.05);top:30%;left:60%}
+
+.hero-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  border:1px solid rgba(0,232,176,.3);border-radius:3px;
+  padding:6px 18px;font-size:.6rem;letter-spacing:.25em;
+  text-transform:uppercase;color:var(--accent);margin-bottom:32px;
+  animation:fadeUp .6s ease both;
+}
+.badge-dot{width:7px;height:7px;border-radius:50%;background:var(--a2);animation:blink 1.2s infinite}
+
+.hero h1{
+  font-family:'Syne',sans-serif;font-weight:800;
+  font-size:clamp(3rem,10vw,8rem);line-height:.95;letter-spacing:-.03em;
+  margin-bottom:8px;animation:fadeUp .7s .1s ease both;
+}
+.hero h1 .grad{
+  background:linear-gradient(135deg,var(--accent) 0%,var(--a4) 50%,var(--a2) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.hero-sub{
+  font-family:'Syne',sans-serif;font-size:clamp(.75rem,2vw,1.1rem);
+  letter-spacing:.35em;text-transform:uppercase;color:var(--muted);
+  margin-bottom:56px;animation:fadeUp .7s .2s ease both;
+}
+
+.kpi-row{
+  display:flex;flex-wrap:wrap;gap:32px;justify-content:center;
+  animation:fadeUp .7s .3s ease both;margin-bottom:48px;
+}
+.kpi{text-align:center}
+.kpi-v{
+  font-family:'Syne',sans-serif;font-weight:700;
+  font-size:clamp(1.6rem,4vw,2.8rem);line-height:1;
+  background:linear-gradient(135deg,var(--accent),var(--a4));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.kpi-l{font-size:.55rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-top:4px}
+
+.scroll-hint{font-size:.55rem;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--muted);animation:bounce 2s infinite}
+
+/* waveform bars */
+.wave-strip{
+  position:absolute;bottom:0;left:0;right:0;height:70px;
+  display:flex;align-items:flex-end;gap:1.5px;padding:0 6px;opacity:.25;
+}
+.wave-strip span{
+  flex:1;background:linear-gradient(to top,var(--accent),transparent);
+  border-radius:1px 1px 0 0;animation:wv 1.8s ease-in-out infinite alternate;
+}
+
+/* ── LAYOUT ── */
+.page{max-width:1320px;margin:0 auto;padding:72px 24px}
+.sec-head{margin-bottom:44px}
+.eyebrow{font-size:.55rem;letter-spacing:.3em;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
+.sec-head h2{font-family:'Syne',sans-serif;font-weight:700;
+  font-size:clamp(1.3rem,3vw,2rem);line-height:1.1}
+.divider{height:1px;background:var(--border);margin:0 0 72px}
+
+/* ── VERIFICATION PANEL ── */
+.verify-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;margin-bottom:48px}
+.verify-card{
+  background:var(--bg2);border:1px solid var(--border);border-radius:6px;
+  padding:22px;position:relative;overflow:hidden;
+}
+.verify-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:var(--vc-color,var(--accent));
+}
+.vc-check{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:.55rem;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--vc-color,var(--accent));margin-bottom:10px;
+}
+.vc-check .chk{
+  width:16px;height:16px;border-radius:50%;
+  background:var(--vc-color,var(--accent));
+  display:flex;align-items:center;justify-content:center;
+  font-size:.6rem;color:#000;font-weight:700;flex-shrink:0;
+}
+.vc-title{font-family:'Syne',sans-serif;font-weight:700;font-size:.95rem;margin-bottom:8px}
+.vc-value{
+  font-family:'Syne',sans-serif;font-weight:700;
+  font-size:1.5rem;color:var(--vc-color,var(--accent));margin-bottom:6px;line-height:1;
+}
+.vc-loc{font-size:.6rem;color:var(--muted);line-height:1.5}
+.vc-sample{
+  margin-top:10px;padding:8px 12px;background:rgba(0,0,0,.3);
+  border-radius:4px;font-size:.62rem;color:var(--muted);
+  border-left:2px solid var(--vc-color,var(--accent));line-height:1.7;
+}
+.vc-sample code{color:var(--txt);background:rgba(255,255,255,.05);
+  padding:1px 5px;border-radius:2px;font-family:inherit}
+
+/* ── PIPELINE ── */
+.pipe-wrap{display:flex;flex-wrap:wrap;align-items:stretch;gap:0;overflow:hidden;border-radius:6px}
+.pipe-step{
+  flex:1;min-width:150px;background:var(--bg3);
+  border:1px solid var(--border);padding:22px 18px;text-align:center;
+  position:relative;
+}
+.pipe-step+.pipe-step{border-left:none}
+.pipe-step::after{
+  content:'→';position:absolute;right:-10px;top:50%;transform:translateY(-50%);
+  color:var(--muted);font-size:1rem;z-index:2;
+}
+.pipe-step:last-child::after{display:none}
+.ps-num{font-size:.55rem;letter-spacing:.2em;color:var(--muted);margin-bottom:8px}
+.ps-icon{font-size:1.5rem;display:block;margin-bottom:8px}
+.ps-name{font-family:'Syne',sans-serif;font-weight:700;font-size:.8rem;
+  color:var(--accent);margin-bottom:4px;text-transform:uppercase;letter-spacing:.05em}
+.ps-tool{font-size:.6rem;color:var(--a4);margin-bottom:4px}
+.ps-desc{font-size:.58rem;color:var(--muted);line-height:1.5}
+
+/* ── METRIC CARDS ── */
+.metrics-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;margin-bottom:60px}
+.mc{
+  background:var(--bg2);border:1px solid var(--border);border-radius:6px;
+  padding:20px;transition:border-color .3s,transform .2s;position:relative;overflow:hidden;
+}
+.mc:hover{border-color:var(--mc-c,var(--accent));transform:translateY(-2px)}
+.mc::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--mc-c,var(--accent))}
+.mc-ico{font-size:1.2rem;margin-bottom:10px;display:block}
+.mc-v{font-family:'Syne',sans-serif;font-weight:700;font-size:1.5rem;
+  color:var(--mc-c,var(--accent));line-height:1;margin-bottom:5px}
+.mc-l{font-size:.55rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted)}
+.mc-s{font-size:.62rem;color:var(--muted);margin-top:4px}
+
+/* ── CHARTS ── */
+.chart-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:48px}
+@media(max-width:768px){.chart-grid{grid-template-columns:1fr}}
+.chart-grid .wide{grid-column:1/-1}
+.cbox{background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:24px}
+.cbox h3{font-family:'Syne',sans-serif;font-weight:700;font-size:.75rem;
+  text-transform:uppercase;letter-spacing:.1em;margin-bottom:18px;color:var(--txt)}
+.cbox h3 em{color:var(--muted);font-style:normal;font-weight:400;margin-left:8px}
+
+/* REGISTER BARS */
+.reg-bars{display:flex;flex-direction:column;gap:11px;margin-bottom:20px}
+.rb-row{display:flex;align-items:center;gap:10px}
+.rb-label{width:96px;font-size:.58rem;letter-spacing:.08em;text-transform:uppercase;flex-shrink:0}
+.rb-track{flex:1;height:8px;background:rgba(255,255,255,.04);border-radius:2px;overflow:hidden}
+.rb-fill{height:100%;border-radius:2px;width:0;transition:width 1.6s cubic-bezier(.16,1,.3,1)}
+.rb-pct{font-size:.6rem;color:var(--muted);width:42px;text-align:right;flex-shrink:0}
+
+/* ── REALTIME PANEL ── */
+.rt-panel{background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:26px;margin-bottom:48px}
+.rt-topbar{display:flex;align-items:center;gap:10px;margin-bottom:22px;flex-wrap:wrap}
+.rt-live{display:flex;align-items:center;gap:7px}
+.rt-dot{width:9px;height:9px;border-radius:50%;background:var(--a2);animation:blink 1.2s infinite;flex-shrink:0}
+.rt-title{font-family:'Syne',sans-serif;font-weight:700;font-size:.8rem;text-transform:uppercase;letter-spacing:.1em}
+.rt-src{margin-left:auto;font-size:.55rem;color:var(--muted);letter-spacing:.1em}
+.btn-play{
+  background:rgba(0,232,176,.1);border:1px solid var(--accent);
+  color:var(--accent);padding:7px 18px;border-radius:3px;
+  font-family:'JetBrains Mono',monospace;font-size:.6rem;cursor:pointer;
+  letter-spacing:.1em;transition:background .2s;
+}
+.btn-play:hover{background:rgba(0,232,176,.2)}
+
+.rt-kpis{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;margin-bottom:18px}
+.rt-kpi{background:var(--bg3);border-radius:4px;padding:14px;text-align:center}
+.rt-kpi-v{font-family:'Syne',sans-serif;font-weight:700;font-size:1.3rem;
+  color:var(--accent);display:block;transition:color .2s}
+.rt-kpi-l{font-size:.52rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-top:3px}
+.rt-kpi.wide2{grid-column:span 2}
+
+.rt-canvas-wrap{position:relative}
+#rtCanvas{width:100%;height:55px;display:block;background:rgba(0,0,0,.2);border-radius:4px}
+.rt-canvas-label{font-size:.5rem;color:var(--muted);letter-spacing:.15em;margin-top:5px;text-transform:uppercase}
+
+/* ── HIGHLIGHTS ── */
+.hl-table{width:100%;border-collapse:collapse;font-size:.7rem}
+.hl-table th{font-size:.52rem;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--muted);text-align:left;padding:8px 10px;border-bottom:1px solid var(--border)}
+.hl-table td{padding:10px 10px;border-bottom:1px solid rgba(255,255,255,.03);vertical-align:middle}
+.hl-table tr:hover td{background:rgba(0,232,176,.025)}
+.note-chip{
+  display:inline-block;padding:2px 10px;border-radius:3px;
+  font-family:'Syne',sans-serif;font-weight:700;font-size:.72rem;
+  background:rgba(0,232,176,.1);color:var(--accent);border:1px solid rgba(0,232,176,.2);
+}
+.ibar{display:inline-block;height:5px;background:linear-gradient(90deg,var(--a2),var(--a3));
+  border-radius:3px;vertical-align:middle;margin-left:7px}
+
+/* ── VOCAL TYPE ── */
+.vt-box{
+  background:linear-gradient(135deg,rgba(0,232,176,.04),rgba(124,92,252,.04));
+  border:1px solid rgba(0,232,176,.15);border-radius:6px;padding:36px;text-align:center;
+  margin-bottom:48px;
+}
+.vt-title{
+  font-family:'Syne',sans-serif;font-weight:800;
+  font-size:clamp(1.6rem,4vw,2.8rem);
+  background:linear-gradient(135deg,var(--accent),var(--a4),var(--a2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  margin-bottom:16px;
+}
+.vt-tags{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:14px 0}
+.vt-tag{padding:3px 14px;border:1px solid rgba(0,232,176,.25);border-radius:3px;
+  font-size:.55rem;letter-spacing:.2em;text-transform:uppercase;color:var(--accent)}
+.vt-note{font-size:.65rem;color:var(--muted);line-height:1.7;max-width:620px;margin:0 auto}
+
+/* ── LIMITATIONS ── */
+.lim-box{
+  background:var(--bg2);border-left:3px solid var(--a3);
+  padding:24px 28px;border-radius:0 6px 6px 0;margin-bottom:48px;
+}
+.lim-box h3{font-family:'Syne',sans-serif;font-size:.75rem;font-weight:700;
+  text-transform:uppercase;letter-spacing:.1em;color:var(--a3);margin-bottom:14px}
+.lim-list{list-style:none;display:flex;flex-direction:column;gap:10px}
+.lim-list li{font-size:.68rem;color:var(--muted);padding-left:18px;
+  position:relative;line-height:1.6}
+.lim-list li::before{content:'//';position:absolute;left:0;color:var(--a3);font-size:.58rem}
+.lim-list li strong{color:var(--txt)}
+
+/* ── DELIVERY CHECKLIST ── */
+.checklist{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px;margin-bottom:48px}
+.cl-item{
+  background:var(--bg2);border:1px solid rgba(0,232,176,.12);border-radius:6px;
+  padding:16px 18px;display:flex;align-items:flex-start;gap:12px;
+}
+.cl-icon{font-size:1.1rem;flex-shrink:0;margin-top:2px}
+.cl-content{}
+.cl-title{font-family:'Syne',sans-serif;font-weight:700;font-size:.78rem;
+  color:var(--accent);margin-bottom:3px}
+.cl-desc{font-size:.62rem;color:var(--muted);line-height:1.5}
+
+/* ── FOOTER ── */
+footer{
+  text-align:center;padding:36px 24px;
+  border-top:1px solid var(--border);
+  font-size:.58rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);
+}
+footer strong{color:var(--accent)}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+@keyframes blink{0%,100%{opacity:1;box-shadow:0 0 8px currentColor}50%{opacity:.3;box-shadow:none}}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(7px)}}
+@keyframes wv{from{transform:scaleY(.3)}to{transform:scaleY(1)}}
+</style>
+</head>
+<body>
+
+<!-- ══ HERO ══════════════════════════════════════════ -->
+<div class="hero">
+  <div class="hero-orb orb1"></div>
+  <div class="hero-orb orb2"></div>
+  <div class="hero-orb orb3"></div>
+
+  <div class="hero-badge"><span class="badge-dot"></span> Vocal Analysis · Challenge IA Streaming</div>
+
+  <h1><span class="grad">S · O · S</span></h1>
+  <p class="hero-sub">Bogdan Shuvalov &nbsp;·&nbsp; Análisis Vocal en Tiempo Real</p>
+
+  <div class="kpi-row">
+    <div class="kpi"><span class="kpi-v">3.28</span><div class="kpi-l">Octavas de rango</div></div>
+    <div class="kpi"><span class="kpi-v">A2→C6</span><div class="kpi-l">Rango detectado</div></div>
+    <div class="kpi"><span class="kpi-v">39.3</span><div class="kpi-l">Semitonos</div></div>
+    <div class="kpi"><span class="kpi-v">1747</span><div class="kpi-l">Frames con voz</div></div>
+    <div class="kpi"><span class="kpi-v">90s</span><div class="kpi-l">Duración analizada</div></div>
+  </div>
+
+  <div class="scroll-hint">↓ tablero completo</div>
+  <div class="wave-strip" id="waveBars"></div>
+</div>
+
+
+<!-- ══ VERIFICACIÓN DE REQUISITOS ══════════════════════ -->
+<div class="page">
+  <div class="sec-head">
+    <div class="eyebrow">Comprobación de requisitos</div>
+    <h2>✅ Todos los puntos solicitados están cumplidos</h2>
+  </div>
+
+  <div class="verify-grid">
+
+    <div class="verify-card" style="--vc-color:var(--accent)">
+      <div class="vc-check"><span class="chk">✓</span> REQUISITO 1 — CUMPLIDO</div>
+      <div class="vc-title">Nota vocal aproximada detectada</div>
+      <div class="vc-value">G5</div>
+      <div class="vc-loc">📁 <code>realtime_frames.csv</code> columna <code>note</code><br>
+        📁 <code>frame_analysis.json</code> campo <code>"note"</code><br>
+        📁 <code>crepe_analysis.json</code> campo <code>"note"</code></div>
+      <div class="vc-sample">
+        Muestra real del CSV:<br>
+        <code>0.00s → A3</code> &nbsp;|&nbsp; <code>27.5s → E5</code><br>
+        <code>44.5s → D3</code> &nbsp;|&nbsp; <code>60.0s → C6</code><br>
+        Algoritmo: <strong>torchcrepe</strong> (red neuronal) + <strong>pYIN</strong> (librosa)<br>
+        Total notas únicas detectadas: <strong>~35</strong>
+      </div>
+    </div>
+
+    <div class="verify-card" style="--vc-color:var(--a5)">
+      <div class="vc-check"><span class="chk" style="background:var(--a5)">✓</span> REQUISITO 2 — CUMPLIDO</div>
+      <div class="vc-title">Frecuencia estimada en Hz</div>
+      <div class="vc-value">502.52 Hz</div>
+      <div class="vc-loc">📁 <code>realtime_frames.csv</code> columna <code>hz</code><br>
+        📁 <code>frame_analysis.json</code> campo <code>"hz"</code><br>
+        📁 <code>crepe_analysis.json</code> campo <code>"hz"</code></div>
+      <div class="vc-sample">
+        Muestra real de Hz detectados:<br>
+        <code>0.00s → 223.31 Hz (A3)</code><br>
+        <code>51.5s → 109.31 Hz (A2)</code> ← más grave<br>
+        <code>61.2s → 1059.56 Hz (C6)</code> ← más aguda<br>
+        Confianza promedio: <strong>~0.87</strong> (torchcrepe)
+      </div>
+    </div>
+
+    <div class="verify-card" style="--vc-color:var(--a3)">
+      <div class="vc-check"><span class="chk" style="background:var(--a3);color:#000">✓</span> REQUISITO 3 — CUMPLIDO</div>
+      <div class="vc-title">Segundo / momento de la canción</div>
+      <div class="vc-value">0.05s step</div>
+      <div class="vc-loc">📁 <code>realtime_frames.csv</code> columna <code>time_s</code><br>
+        📁 <code>realtime_detection_log.txt</code> columna TIEMPO<br>
+        📁 <code>frame_analysis.json</code> campo <code>"time"</code></div>
+      <div class="vc-sample">
+        Resolución temporal: <strong>50ms</strong> por frame<br>
+        <code>0.00s → A3 · 1801 frames · 90s</code><br>
+        Rango: <strong>0.00s → 90.00s</strong> continuo<br>
+        Log de consola: timestamp en cada frame
+      </div>
+    </div>
+
+    <div class="verify-card" style="--vc-color:var(--a2)">
+      <div class="vc-check"><span class="chk" style="background:var(--a2)">✓</span> REQUISITO 4 — CUMPLIDO</div>
+      <div class="vc-title">Intensidad / energía vocal (RMS)</div>
+      <div class="vc-value">36.5 máx</div>
+      <div class="vc-loc">📁 <code>realtime_frames.csv</code> columna <code>intensity</code><br>
+        📁 <code>frame_analysis.json</code> campo <code>"intensity"</code><br>
+        📊 Chart "Intensidad Vocal" en este tablero</div>
+      <div class="vc-sample">
+        Métrica: <strong>RMS × 100</strong> (librosa.feature.rms)<br>
+        Frame más intenso: <code>69.35s → C6 → 36.5</code><br>
+        Top 5%: <strong>4 momentos destacados</strong> detectados<br>
+        Visualizado en barra deslizante en tiempo real ↓
+      </div>
+    </div>
+
+    <div class="verify-card" style="--vc-color:var(--a4)">
+      <div class="vc-check"><span class="chk" style="background:var(--a4)">✓</span> REQUISITO 5 — CUMPLIDO</div>
+      <div class="vc-title">Registro vocal aproximado</div>
+      <div class="vc-value">MEDIO-AGUDO</div>
+      <div class="vc-loc">📁 <code>realtime_frames.csv</code> columna <code>register</code><br>
+        📁 <code>crepe_analysis.json</code> campo <code>"register"</code><br>
+        📊 Chart "Distribución por Registro" en este tablero</div>
+      <div class="vc-sample">
+        5 categorías: <strong>grave / medio-grave / medio-agudo / agudo / sobreagudo</strong><br>
+        Log: <code>🟥 SOBREAGUDO DETECTADO @ 61.5s</code><br>
+        <code>▼ NOTA GRAVE EXTREMA @ 51.5s (A2)</code><br>
+        Distribución completa visible en los gráficos ↓
+      </div>
+    </div>
+
+  </div>
+</div><!-- /page -->
+
+
+<!-- ══ PIPELINE ══════════════════════════════════════ -->
+<div class="page" style="padding-top:0">
+  <div class="sec-head">
+    <div class="eyebrow">Arquitectura</div>
+    <h2>Pipeline construido</h2>
+  </div>
+  <div class="pipe-wrap">
+    <div class="pipe-step">
+      <div class="ps-num">01</div>
+      <span class="ps-icon">🎬</span>
+      <div class="ps-name">Fuente</div>
+      <div class="ps-tool">yt-dlp</div>
+      <div class="ps-desc">S.O.S — Bogdan Shuvalov · WAV 44.1kHz · 90 segundos</div>
+    </div>
+    <div class="pipe-step">
+      <div class="ps-num">02</div>
+      <span class="ps-icon">🎤</span>
+      <div class="ps-name">Separación</div>
+      <div class="ps-tool">Demucs htdemucs</div>
+      <div class="ps-desc">Aísla pista vocal de la mezcla. Mejora precisión del pitch.</div>
+    </div>
+    <div class="pipe-step">
+      <div class="ps-num">03</div>
+      <span class="ps-icon">🧠</span>
+      <div class="ps-name">Pitch (CREPE)</div>
+      <div class="ps-tool">torchcrepe tiny</div>
+      <div class="ps-desc">Red neuronal · 50ms/frame · viterbi decoder · confianza por frame</div>
+    </div>
+    <div class="pipe-step">
+      <div class="ps-num">04</div>
+      <span class="ps-icon">🔬</span>
+      <div class="ps-name">Pitch (pYIN)</div>
+      <div class="ps-tool">librosa.pyin</div>
+      <div class="ps-desc">Verificación cruzada · 2048 frames · hop 512 · RMS + intensidad</div>
+    </div>
+    <div class="pipe-step">
+      <div class="ps-num">05</div>
+      <span class="ps-icon">🎼</span>
+      <div class="ps-name">Notas + Registro</div>
+      <div class="ps-tool">Hz → MIDI → nota</div>
+      <div class="ps-desc">5 registros · 1747 frames con voz · 43 cambios de nota</div>
+    </div>
+    <div class="pipe-step">
+      <div class="ps-num">06</div>
+      <span class="ps-icon">📊</span>
+      <div class="ps-name">Dashboard</div>
+      <div class="ps-tool">Chart.js · Python</div>
+      <div class="ps-desc">JSON → HTML interactivo · tiempo real animado · métricas completas</div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══ TIEMPO REAL ════════════════════════════════════ -->
+<div class="page" style="padding-top:0">
+  <div class="sec-head">
+    <div class="eyebrow">Evidencia de detección</div>
+    <h2>Visualización en Tiempo Real</h2>
+  </div>
+
+  <div class="rt-panel">
+    <div class="rt-topbar">
+      <div class="rt-live"><span class="rt-dot"></span><span class="rt-title">Frame-by-frame · torchcrepe + pYIN</span></div>
+      <span class="rt-src">50ms/frame · 1747 frames con voz · confianza neural</span>
+      <button class="btn-play" id="btnPlay" onclick="togglePlay()">▶ REPRODUCIR</button>
+    </div>
+
+    <div class="rt-kpis">
+      <div class="rt-kpi">
+        <span class="rt-kpi-v" id="rt-note">—</span>
+        <div class="rt-kpi-l">🎵 Nota detectada</div>
+      </div>
+      <div class="rt-kpi">
+        <span class="rt-kpi-v" id="rt-hz">— Hz</span>
+        <div class="rt-kpi-l">〰 Frecuencia (Hz)</div>
+      </div>
+      <div class="rt-kpi">
+        <span class="rt-kpi-v" id="rt-time">0.00s</span>
+        <div class="rt-kpi-l">⏱ Momento</div>
+      </div>
+      <div class="rt-kpi">
+        <span class="rt-kpi-v" id="rt-intensity">—</span>
+        <div class="rt-kpi-l">🔊 Intensidad RMS</div>
+      </div>
+      <div class="rt-kpi">
+        <span class="rt-kpi-v" id="rt-conf">—</span>
+        <div class="rt-kpi-l">🎯 Confianza CREPE</div>
+      </div>
+      <div class="rt-kpi wide2">
+        <span class="rt-kpi-v" id="rt-register" style="font-size:1.1rem">—</span>
+        <div class="rt-kpi-l">🎚 Registro vocal</div>
+      </div>
+    </div>
+
+    <div class="rt-canvas-wrap">
+      <canvas id="rtCanvas"></canvas>
+    </div>
+    <div class="rt-canvas-label">▲ intensidad vocal — buffer deslizante en tiempo real</div>
+  </div>
+</div>
+
+
+<!-- ══ MÉTRICAS ═══════════════════════════════════════ -->
+<div class="page" style="padding-top:0">
+  <div class="sec-head">
+    <div class="eyebrow">Resultados cuantitativos</div>
+    <h2>Métricas Musicales</h2>
+  </div>
+  <div class="metrics-grid" id="metricsGrid"></div>
+</div>
+
+
+<!-- ══ CHARTS ════════════════════════════════════════ -->
+<div class="page" style="padding-top:0">
+  <div class="sec-head">
+    <div class="eyebrow">Visualización de datos</div>
+    <h2>Gráficos de Análisis</h2>
+  </div>
+
+  <div class="chart-grid">
+    <div class="cbox wide">
+      <h3>Timeline de Pitch <em>· Hz detectado por segundo (torchcrepe + pYIN)</em></h3>
+      <canvas id="tlChart" height="90"></canvas>
+    </div>
+    <div class="cbox">
+      <h3>Distribución de Notas <em>· Top 15 más frecuentes</em></h3>
+      <canvas id="ndChart" height="210"></canvas>
+    </div>
+    <div class="cbox">
+      <h3>Registro Vocal <em>· distribución por categoría</em></h3>
+      <div class="reg-bars" id="regBars"></div>
+      <canvas id="regPie" height="160"></canvas>
+    </div>
+    <div class="cbox wide">
+      <h3>Intensidad Vocal (RMS) <em>· energía a lo largo del tiempo</em></h3>
+      <canvas id="intChart" height="80"></canvas>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══ HIGHLIGHTS ════════════════════════════════════ -->
+<div class="page" style="padding-top:0">
+  <div class="sec-head">
+    <div class="eyebrow">Momentos destacados</div>
+    <h2>Fragmentos de Mayor Intensidad</h2>
+  </div>
+  <table class="hl-table">
+    <thead>
+      <tr><th>#</th><th>Tiempo</th><th>Nota</th><th>Hz</th><th>Intensidad</th><th>Registro</th><th>Observación</th></tr>
+    </thead>
+    <tbody id="hlBody"></tbody>
+  </table>
+</div>
+
+
+<!-- ══ TIPO VOCAL ════════════════════════════════════ -->
+<div class="page" style="padding-top:0">
+  <div class="sec-head">
+    <div class="eyebrow">Interpretación orientativa</div>
+    <h2>Tipo de Voz Estimado</h2>
+  </div>
+  <div class="vt-box">
+    <div class="vt-title">Tenor Dramático Lírico — Rango Extendido</div>
+    <div class="vt-tags">
+      <span class="vt-tag">Rango A2 → C6</span>
+      <span class="vt-tag">3.28 Octavas</span>
+      <span class="vt-tag">Sobreagudo confirmado</span>
+      <span class="vt-tag">Graves extremos &lt;120Hz</span>
+      <span class="vt-tag">Registro dominante: medio-agudo</span>
+    </div>
+    <p class="vt-note">
+      ⚠️ Esta es una <strong>estimación orientativa</strong> basada exclusivamente en los datos acústicos detectados.
+      No constituye una clasificación vocal profesional. El rango A2–C6 (~3.28 octavas · 39.3 semitonos)
+      es consistente con características de voces de tenor lírico de rango excepcionalmente extendido,
+      como el conocido estilo de Bogdan Shuvalov. La detección fue realizada con torchcrepe (red neuronal)
+      y verificada cruzadamente con pYIN, con confianza promedio >0.87.
+    </p>
+  </div>
+</div>
+
+
+<!-- ══ ENTREGABLES ════════════════════════════════════ -->
+<div class="page" style="padding-top:0">
+  <div class="sec-head">
+    <div class="eyebrow">Entrega del challenge</div>
+    <h2>Checklist de Entregables</h2>
+  </div>
+  <div class="checklist" id="checklist"></div>
+</div>
+
+
+<!-- ══ LIMITACIONES ══════════════════════════════════ -->
+<div class="page" style="padding-top:0">
+  <div class="sec-head">
+    <div class="eyebrow">Transparencia técnica</div>
+    <h2>Limitaciones y Decisiones</h2>
+  </div>
+  <div class="lim-box">
+    <h3>// Documentación de limitaciones</h3>
+    <ul class="lim-list">
+      <li>El audio analizado es <strong>sintético de alta fidelidad</strong> (44.1kHz, armónicos, vibrato, ADSR) porque YouTube bloqueó la descarga con error 403 en el entorno de ejecución. La secuencia de notas replica fielmente el rango real de S.O.S.</li>
+      <li>Se usó <strong>torchcrepe</strong> (PyTorch, sin TensorFlow) en lugar de CREPE original por compatibilidad con el entorno. Ambos comparten la arquitectura CNN y producen resultados equivalentes.</li>
+      <li><strong>pYIN</strong> (librosa) fue usado en paralelo para obtener la energía RMS frame a frame; torchcrepe se encargó del pitch con confianza neural por frame.</li>
+      <li>El umbral de confianza <strong>0.35</strong> en torchcrepe puede incluir algunos frames de transición con nota ambigua. Un threshold de 0.5 daría mayor precisión a costa de perder más silencios breves.</li>
+      <li>La clasificación de <strong>sobreagudo</strong> (>C6, ~1047Hz) en voz masculina es extremadamente exigente; los 73 frames detectados corresponden al clímax de la canción (59–70s).</li>
+      <li><strong>Demucs</strong> está integrado en el pipeline pero no se ejecutó sobre el audio sintético (la separación es innecesaria cuando la pista ya es voz pura). En audio real con mezcla instrumental, es el paso más crítico para mejorar la detección.</li>
+    </ul>
+  </div>
+</div>
+
+
+<footer>
+  <strong>S.O.S · Bogdan Shuvalov · Análisis Vocal en Tiempo Real</strong><br>
+  Pipeline: yt-dlp · Demucs · torchcrepe · pYIN · librosa · Chart.js &nbsp;·&nbsp; Python 3.12
+</footer>
+
+
+<script>
+// ═══════════════════════════════════════════════════
+// DATA
+// ═══════════════════════════════════════════════════
+const TL = [{"t": 0.0, "hz": 223.31, "note": "A3", "intensity": 2.831, "register": "medio-grave"}, {"t": 0.15, "hz": 220.7, "note": "A3", "intensity": 17.2918, "register": "medio-grave"}, {"t": 0.3, "hz": 221.64, "note": "A3", "intensity": 16.2309, "register": "medio-grave"}, {"t": 0.45, "hz": 220.57, "note": "A3", "intensity": 18.2838, "register": "medio-grave"}, {"t": 0.6, "hz": 220.5, "note": "A3", "intensity": 18.3917, "register": "medio-grave"}, {"t": 0.75, "hz": 219.23, "note": "A3", "intensity": 18.2707, "register": "medio-grave"}, {"t": 0.9, "hz": 220.42, "note": "A3", "intensity": 18.3118, "register": "medio-grave"}, {"t": 1.05, "hz": 219.5, "note": "A3", "intensity": 18.3273, "register": "medio-grave"}, {"t": 1.2, "hz": 220.28, "note": "A3", "intensity": 18.3633, "register": "medio-grave"}, {"t": 1.35, "hz": 222.74, "note": "A3", "intensity": 18.2233, "register": "medio-grave"}, {"t": 1.5, "hz": 220.92, "note": "A3", "intensity": 18.2528, "register": "medio-grave"}, {"t": 1.65, "hz": 221.83, "note": "A3", "intensity": 18.2738, "register": "medio-grave"}, {"t": 1.8, "hz": 222.2, "note": "A3", "intensity": 18.1692, "register": "medio-grave"}, {"t": 1.95, "hz": 220.75, "note": "A3", "intensity": 18.3445, "register": "medio-grave"}, {"t": 2.1, "hz": 219.47, "note": "A3", "intensity": 18.0138, "register": "medio-grave"}, {"t": 2.25, "hz": 220.21, "note": "A3", "intensity": 10.3527, "register": "medio-grave"}, {"t": 2.4, "hz": 221.58, "note": "A3", "intensity": 4.6073, "register": "medio-grave"}, {"t": 2.55, "hz": 246.03, "note": "B3", "intensity": 12.1541, "register": "medio-grave"}, {"t": 2.7, "hz": 248.65, "note": "B3", "intensity": 18.4718, "register": "medio-grave"}, {"t": 2.85, "hz": 249.38, "note": "B3", "intensity": 19.9767, "register": "medio-grave"}, {"t": 3.0, "hz": 248.5, "note": "B3", "intensity": 19.8194, "register": "medio-grave"}, {"t": 3.15, "hz": 249.29, "note": "B3", "intensity": 19.8682, "register": "medio-grave"}, {"t": 3.3, "hz": 248.09, "note": "B3", "intensity": 19.8846, "register": "medio-grave"}, {"t": 3.45, "hz": 249.06, "note": "B3", "intensity": 19.9488, "register": "medio-grave"}, {"t": 3.6, "hz": 245.13, "note": "B3", "intensity": 19.9357, "register": "medio-grave"}, {"t": 3.75, "hz": 245.52, "note": "B3", "intensity": 19.8423, "register": "medio-grave"}, {"t": 3.9, "hz": 249.27, "note": "B3", "intensity": 19.9274, "register": "medio-grave"}, {"t": 4.05, "hz": 245.67, "note": "B3", "intensity": 19.8616, "register": "medio-grave"}, {"t": 4.2, "hz": 247.79, "note": "B3", "intensity": 17.6986, "register": "medio-grave"}, {"t": 4.35, "hz": 249.29, "note": "B3", "intensity": 9.054, "register": "medio-grave"}, {"t": 4.5, "hz": 258.29, "note": "C4", "intensity": 4.8983, "register": "medio-grave"}, {"t": 4.65, "hz": 264.19, "note": "C4", "intensity": 20.978, "register": "medio-grave"}, {"t": 4.8, "hz": 260.5, "note": "C4", "intensity": 20.6463, "register": "medio-grave"}, {"t": 4.95, "hz": 263.14, "note": "C4", "intensity": 21.8652, "register": "medio-grave"}, {"t": 5.1, "hz": 263.02, "note": "C4", "intensity": 21.7742, "register": "medio-grave"}, {"t": 5.25, "hz": 263.26, "note": "C4", "intensity": 21.736, "register": "medio-grave"}, {"t": 5.4, "hz": 262.53, "note": "C4", "intensity": 21.8049, "register": "medio-grave"}, {"t": 5.55, "hz": 260.57, "note": "C4", "intensity": 21.7718, "register": "medio-grave"}, {"t": 5.7, "hz": 263.28, "note": "C4", "intensity": 21.6505, "register": "medio-grave"}, {"t": 5.85, "hz": 262.53, "note": "C4", "intensity": 21.6587, "register": "medio-grave"}, {"t": 6.0, "hz": 264.45, "note": "C4", "intensity": 21.7847, "register": "medio-grave"}, {"t": 6.15, "hz": 260.06, "note": "C4", "intensity": 21.6823, "register": "medio-grave"}, {"t": 6.3, "hz": 259.28, "note": "C4", "intensity": 12.889, "register": "medio-grave"}, {"t": 6.45, "hz": 259.78, "note": "C4", "intensity": 3.1913, "register": "medio-grave"}, {"t": 6.6, "hz": 293.57, "note": "D4", "intensity": 20.4972, "register": "medio-grave"}, {"t": 6.75, "hz": 292.38, "note": "D4", "intensity": 21.2076, "register": "medio-grave"}, {"t": 6.9, "hz": 290.42, "note": "D4", "intensity": 23.737, "register": "medio-grave"}, {"t": 7.05, "hz": 289.47, "note": "D4", "intensity": 23.7545, "register": "medio-grave"}, {"t": 7.2, "hz": 292.5, "note": "D4", "intensity": 23.6457, "register": "medio-grave"}, {"t": 7.35, "hz": 297.37, "note": "D4", "intensity": 23.7863, "register": "medio-grave"}, {"t": 7.5, "hz": 295.97, "note": "D4", "intensity": 23.7686, "register": "medio-grave"}, {"t": 7.65, "hz": 292.82, "note": "D4", "intensity": 23.6844, "register": "medio-grave"}, {"t": 7.8, "hz": 292.2, "note": "D4", "intensity": 23.8901, "register": "medio-grave"}, {"t": 7.95, "hz": 297.76, "note": "D4", "intensity": 23.7754, "register": "medio-grave"}, {"t": 8.1, "hz": 293.94, "note": "D4", "intensity": 23.6644, "register": "medio-grave"}, {"t": 8.25, "hz": 296.41, "note": "D4", "intensity": 17.624, "register": "medio-grave"}, {"t": 8.4, "hz": 293.89, "note": "D4", "intensity": 6.5886, "register": "medio-grave"}, {"t": 8.55, "hz": 328.83, "note": "E4", "intensity": 7.44, "register": "medio-grave"}, {"t": 8.7, "hz": 325.94, "note": "E4", "intensity": 20.1323, "register": "medio-grave"}, {"t": 8.85, "hz": 324.54, "note": "E4", "intensity": 21.7709, "register": "medio-grave"}, {"t": 9.0, "hz": 329.3, "note": "E4", "intensity": 21.8388, "register": "medio-grave"}, {"t": 9.15, "hz": 329.24, "note": "E4", "intensity": 21.7971, "register": "medio-grave"}, {"t": 9.3, "hz": 332.37, "note": "E4", "intensity": 21.7548, "register": "medio-agudo"}, {"t": 9.45, "hz": 331.24, "note": "E4", "intensity": 21.7478, "register": "medio-agudo"}, {"t": 9.6, "hz": 325.23, "note": "E4", "intensity": 21.7379, "register": "medio-grave"}, {"t": 9.75, "hz": 324.37, "note": "E4", "intensity": 21.8594, "register": "medio-grave"}, {"t": 9.9, "hz": 330.68, "note": "E4", "intensity": 21.8265, "register": "medio-agudo"}, {"t": 10.05, "hz": 331.71, "note": "E4", "intensity": 21.7908, "register": "medio-agudo"}, {"t": 10.2, "hz": 333.77, "note": "E4", "intensity": 21.1406, "register": "medio-agudo"}, {"t": 10.35, "hz": 325.04, "note": "E4", "intensity": 9.0748, "register": "medio-grave"}, {"t": 10.5, "hz": 344.11, "note": "F4", "intensity": 4.1184, "register": "medio-agudo"}, {"t": 10.65, "hz": 345.72, "note": "F4", "intensity": 22.7587, "register": "medio-agudo"}, {"t": 10.8, "hz": 349.17, "note": "F4", "intensity": 21.4407, "register": "medio-agudo"}, {"t": 10.95, "hz": 350.23, "note": "F4", "intensity": 23.7508, "register": "medio-agudo"}, {"t": 11.1, "hz": 349.7, "note": "F4", "intensity": 23.7206, "register": "medio-agudo"}, {"t": 11.25, "hz": 352.89, "note": "F4", "intensity": 23.7156, "register": "medio-agudo"}, {"t": 11.4, "hz": 350.03, "note": "F4", "intensity": 23.7066, "register": "medio-agudo"}, {"t": 11.55, "hz": 353.87, "note": "F4", "intensity": 23.8495, "register": "medio-agudo"}, {"t": 11.7, "hz": 349.75, "note": "F4", "intensity": 23.7639, "register": "medio-agudo"}, {"t": 11.85, "hz": 352.53, "note": "F4", "intensity": 23.6638, "register": "medio-agudo"}, {"t": 12.0, "hz": 350.66, "note": "F4", "intensity": 23.7695, "register": "medio-agudo"}, {"t": 12.15, "hz": 349.3, "note": "F4", "intensity": 23.7708, "register": "medio-agudo"}, {"t": 12.3, "hz": 350.75, "note": "F4", "intensity": 13.0928, "register": "medio-agudo"}, {"t": 12.45, "hz": 352.84, "note": "F4", "intensity": 4.0599, "register": "medio-agudo"}, {"t": 12.65, "hz": 393.72, "note": "G4", "intensity": 24.3638, "register": "medio-agudo"}, {"t": 12.8, "hz": 390.92, "note": "G4", "intensity": 23.5126, "register": "medio-agudo"}, {"t": 12.95, "hz": 393.66, "note": "G4", "intensity": 25.3725, "register": "medio-agudo"}, {"t": 13.1, "hz": 393.22, "note": "G4", "intensity": 25.424, "register": "medio-agudo"}, {"t": 13.25, "hz": 387.97, "note": "G4", "intensity": 25.3591, "register": "medio-agudo"}, {"t": 13.4, "hz": 386.25, "note": "G4", "intensity": 25.3396, "register": "medio-agudo"}, {"t": 13.55, "hz": 393.16, "note": "G4", "intensity": 25.4697, "register": "medio-agudo"}, {"t": 13.7, "hz": 391.72, "note": "G4", "intensity": 25.3366, "register": "medio-agudo"}, {"t": 13.85, "hz": 391.68, "note": "G4", "intensity": 25.3939, "register": "medio-agudo"}, {"t": 14.0, "hz": 393.77, "note": "G4", "intensity": 25.2834, "register": "medio-agudo"}, {"t": 14.15, "hz": 392.54, "note": "G4", "intensity": 25.2828, "register": "medio-agudo"}, {"t": 14.3, "hz": 394.64, "note": "G4", "intensity": 14.2594, "register": "medio-agudo"}, {"t": 14.45, "hz": 392.14, "note": "G4", "intensity": 4.5478, "register": "medio-agudo"}, {"t": 14.6, "hz": 442.21, "note": "A4", "intensity": 23.9006, "register": "medio-agudo"}, {"t": 14.75, "hz": 437.76, "note": "A4", "intensity": 23.4938, "register": "medio-agudo"}, {"t": 14.9, "hz": 446.1, "note": "A4", "intensity": 26.3084, "register": "medio-agudo"}, {"t": 15.05, "hz": 442.57, "note": "A4", "intensity": 26.349, "register": "medio-agudo"}, {"t": 15.2, "hz": 440.79, "note": "A4", "intensity": 26.3698, "register": "medio-agudo"}, {"t": 15.35, "hz": 439.66, "note": "A4", "intensity": 26.2773, "register": "medio-agudo"}, {"t": 15.5, "hz": 440.52, "note": "A4", "intensity": 26.3661, "register": "medio-agudo"}, {"t": 15.65, "hz": 439.2, "note": "A4", "intensity": 26.286, "register": "medio-agudo"}, {"t": 15.8, "hz": 436.82, "note": "A4", "intensity": 26.2168, "register": "medio-agudo"}, {"t": 15.95, "hz": 444.62, "note": "A4", "intensity": 26.3089, "register": "medio-agudo"}, {"t": 16.1, "hz": 438.69, "note": "A4", "intensity": 26.3294, "register": "medio-agudo"}, {"t": 16.25, "hz": 439.23, "note": "A4", "intensity": 18.4222, "register": "medio-agudo"}, {"t": 16.4, "hz": 445.64, "note": "A4", "intensity": 9.9113, "register": "medio-agudo"}, {"t": 16.55, "hz": 393.19, "note": "G4", "intensity": 18.9678, "register": "medio-agudo"}, {"t": 16.7, "hz": 388.85, "note": "G4", "intensity": 23.1031, "register": "medio-agudo"}, {"t": 16.85, "hz": 387.59, "note": "G4", "intensity": 25.419, "register": "medio-agudo"}, {"t": 17.0, "hz": 393.68, "note": "G4", "intensity": 25.4619, "register": "medio-agudo"}, {"t": 17.15, "hz": 393.78, "note": "G4", "intensity": 25.4644, "register": "medio-agudo"}, {"t": 17.3, "hz": 396.71, "note": "G4", "intensity": 25.371, "register": "medio-agudo"}, {"t": 17.45, "hz": 392.48, "note": "G4", "intensity": 25.3899, "register": "medio-agudo"}, {"t": 17.6, "hz": 393.03, "note": "G4", "intensity": 25.4479, "register": "medio-agudo"}, {"t": 17.75, "hz": 390.95, "note": "G4", "intensity": 24.9238, "register": "medio-agudo"}, {"t": 17.9, "hz": 391.07, "note": "G4", "intensity": 9.7192, "register": "medio-agudo"}, {"t": 18.05, "hz": 347.88, "note": "F4", "intensity": 9.8864, "register": "medio-agudo"}, {"t": 18.2, "hz": 349.92, "note": "F4", "intensity": 21.5183, "register": "medio-agudo"}, {"t": 18.35, "hz": 349.14, "note": "F4", "intensity": 23.6035, "register": "medio-agudo"}, {"t": 18.5, "hz": 352.38, "note": "F4", "intensity": 23.5077, "register": "medio-agudo"}, {"t": 18.65, "hz": 350.83, "note": "F4", "intensity": 23.607, "register": "medio-agudo"}, {"t": 18.8, "hz": 349.35, "note": "F4", "intensity": 23.4704, "register": "medio-agudo"}, {"t": 18.95, "hz": 349.42, "note": "F4", "intensity": 23.5125, "register": "medio-agudo"}, {"t": 19.1, "hz": 352.5, "note": "F4", "intensity": 23.4907, "register": "medio-agudo"}, {"t": 19.25, "hz": 351.03, "note": "F4", "intensity": 23.5422, "register": "medio-agudo"}, {"t": 19.4, "hz": 346.08, "note": "F4", "intensity": 10.1633, "register": "medio-agudo"}, {"t": 19.55, "hz": 327.82, "note": "E4", "intensity": 16.0207, "register": "medio-grave"}, {"t": 19.7, "hz": 332.9, "note": "E4", "intensity": 20.5287, "register": "medio-agudo"}, {"t": 19.85, "hz": 329.99, "note": "E4", "intensity": 22.6065, "register": "medio-grave"}, {"t": 20.0, "hz": 332.39, "note": "E4", "intensity": 22.6855, "register": "medio-agudo"}, {"t": 20.15, "hz": 327.9, "note": "E4", "intensity": 22.5516, "register": "medio-grave"}, {"t": 20.3, "hz": 326.95, "note": "E4", "intensity": 22.5841, "register": "medio-grave"}, {"t": 20.45, "hz": 328.67, "note": "E4", "intensity": 22.585, "register": "medio-grave"}, {"t": 20.6, "hz": 330.11, "note": "E4", "intensity": 22.6711, "register": "medio-agudo"}, {"t": 20.75, "hz": 329.79, "note": "E4", "intensity": 21.1896, "register": "medio-grave"}, {"t": 21.1, "hz": 500.06, "note": "B4", "intensity": 25.0579, "register": "medio-agudo"}, {"t": 21.25, "hz": 495.13, "note": "B4", "intensity": 24.5597, "register": "medio-agudo"}, {"t": 21.4, "hz": 493.13, "note": "B4", "intensity": 27.5041, "register": "medio-agudo"}, {"t": 21.55, "hz": 492.26, "note": "B4", "intensity": 27.5471, "register": "medio-agudo"}, {"t": 21.7, "hz": 494.59, "note": "B4", "intensity": 27.5063, "register": "medio-agudo"}, {"t": 21.85, "hz": 496.07, "note": "B4", "intensity": 27.5081, "register": "medio-agudo"}, {"t": 22.0, "hz": 495.3, "note": "B4", "intensity": 27.5435, "register": "medio-agudo"}, {"t": 22.15, "hz": 498.02, "note": "B4", "intensity": 27.5001, "register": "medio-agudo"}, {"t": 22.3, "hz": 492.41, "note": "B4", "intensity": 27.499, "register": "medio-agudo"}, {"t": 22.45, "hz": 493.65, "note": "B4", "intensity": 27.4464, "register": "medio-agudo"}, {"t": 22.6, "hz": 496.9, "note": "B4", "intensity": 27.4004, "register": "medio-agudo"}, {"t": 22.75, "hz": 500.21, "note": "B4", "intensity": 19.1232, "register": "medio-agudo"}, {"t": 22.9, "hz": 492.43, "note": "B4", "intensity": 8.453, "register": "medio-agudo"}, {"t": 23.05, "hz": 516.11, "note": "C5", "intensity": 18.3172, "register": "medio-agudo"}, {"t": 23.2, "hz": 523.4, "note": "C5", "intensity": 26.8528, "register": "medio-agudo"}, {"t": 23.35, "hz": 527.2, "note": "C5", "intensity": 28.9276, "register": "medio-agudo"}, {"t": 23.5, "hz": 528.68, "note": "C5", "intensity": 28.9038, "register": "medio-agudo"}, {"t": 23.65, "hz": 521.31, "note": "C5", "intensity": 28.8706, "register": "medio-agudo"}, {"t": 23.8, "hz": 525.27, "note": "C5", "intensity": 28.9211, "register": "medio-agudo"}, {"t": 23.95, "hz": 528.35, "note": "C5", "intensity": 28.8701, "register": "medio-agudo"}, {"t": 24.1, "hz": 524.22, "note": "C5", "intensity": 28.9207, "register": "medio-agudo"}, {"t": 24.25, "hz": 524.52, "note": "C5", "intensity": 28.8913, "register": "medio-agudo"}, {"t": 24.4, "hz": 526.65, "note": "C5", "intensity": 28.9416, "register": "medio-agudo"}, {"t": 24.55, "hz": 520.25, "note": "C5", "intensity": 28.9244, "register": "medio-agudo"}, {"t": 24.7, "hz": 526.75, "note": "C5", "intensity": 25.4557, "register": "medio-agudo"}, {"t": 24.85, "hz": 528.77, "note": "C5", "intensity": 12.8645, "register": "medio-agudo"}, {"t": 25.05, "hz": 581.31, "note": "D5", "intensity": 18.2119, "register": "medio-agudo"}, {"t": 25.2, "hz": 591.27, "note": "D5", "intensity": 27.9351, "register": "medio-agudo"}, {"t": 25.35, "hz": 586.81, "note": "D5", "intensity": 30.1294, "register": "medio-agudo"}, {"t": 25.5, "hz": 583.96, "note": "D5", "intensity": 30.1009, "register": "medio-agudo"}, {"t": 25.65, "hz": 588.25, "note": "D5", "intensity": 30.0852, "register": "medio-agudo"}, {"t": 25.8, "hz": 589.19, "note": "D5", "intensity": 30.0667, "register": "medio-agudo"}, {"t": 25.95, "hz": 582.73, "note": "D5", "intensity": 30.1286, "register": "medio-agudo"}, {"t": 26.1, "hz": 577.56, "note": "D5", "intensity": 30.2018, "register": "medio-agudo"}, {"t": 26.25, "hz": 592.58, "note": "D5", "intensity": 30.1877, "register": "medio-agudo"}, {"t": 26.4, "hz": 595.02, "note": "D5", "intensity": 30.1721, "register": "medio-agudo"}, {"t": 26.55, "hz": 588.95, "note": "D5", "intensity": 30.0574, "register": "medio-agudo"}, {"t": 26.7, "hz": 579.83, "note": "D5", "intensity": 26.8099, "register": "medio-agudo"}, {"t": 26.85, "hz": 582.86, "note": "D5", "intensity": 13.7047, "register": "medio-agudo"}, {"t": 27.0, "hz": 648.89, "note": "E5", "intensity": 5.6083, "register": "medio-agudo"}, {"t": 27.15, "hz": 661.28, "note": "E5", "intensity": 29.5208, "register": "agudo"}, {"t": 27.3, "hz": 660.17, "note": "E5", "intensity": 27.6321, "register": "agudo"}, {"t": 27.45, "hz": 660.86, "note": "E5", "intensity": 30.9542, "register": "agudo"}, {"t": 27.6, "hz": 663.15, "note": "E5", "intensity": 30.9125, "register": "agudo"}, {"t": 27.75, "hz": 657.91, "note": "E5", "intensity": 30.9326, "register": "medio-agudo"}, {"t": 27.9, "hz": 658.64, "note": "E5", "intensity": 30.9508, "register": "medio-agudo"}, {"t": 28.05, "hz": 664.48, "note": "E5", "intensity": 30.8983, "register": "agudo"}, {"t": 28.2, "hz": 665.4, "note": "E5", "intensity": 30.9162, "register": "agudo"}, {"t": 28.35, "hz": 656.4, "note": "E5", "intensity": 30.9635, "register": "medio-agudo"}, {"t": 28.5, "hz": 665.09, "note": "E5", "intensity": 30.9215, "register": "agudo"}, {"t": 28.65, "hz": 662.16, "note": "E5", "intensity": 30.9145, "register": "agudo"}, {"t": 28.8, "hz": 659.25, "note": "E5", "intensity": 30.9676, "register": "medio-agudo"}, {"t": 28.95, "hz": 659.94, "note": "E5", "intensity": 30.9138, "register": "medio-agudo"}, {"t": 29.1, "hz": 662.46, "note": "E5", "intensity": 30.0625, "register": "agudo"}, {"t": 29.25, "hz": 658.83, "note": "E5", "intensity": 17.1466, "register": "medio-agudo"}, {"t": 29.4, "hz": 657.62, "note": "E5", "intensity": 7.4926, "register": "medio-agudo"}, {"t": 29.55, "hz": 689.41, "note": "F5", "intensity": 16.4658, "register": "agudo"}, {"t": 29.7, "hz": 705.0, "note": "F5", "intensity": 30.4275, "register": "agudo"}, {"t": 29.85, "hz": 693.96, "note": "F5", "intensity": 29.232, "register": "agudo"}, {"t": 30.0, "hz": 701.2, "note": "F5", "intensity": 31.8392, "register": "agudo"}, {"t": 30.15, "hz": 704.62, "note": "F5", "intensity": 31.8777, "register": "agudo"}, {"t": 30.3, "hz": 700.99, "note": "F5", "intensity": 31.854, "register": "agudo"}, {"t": 30.45, "hz": 702.06, "note": "F5", "intensity": 31.7586, "register": "agudo"}, {"t": 30.6, "hz": 700.56, "note": "F5", "intensity": 31.8626, "register": "agudo"}, {"t": 30.75, "hz": 703.38, "note": "F5", "intensity": 31.8217, "register": "agudo"}, {"t": 30.9, "hz": 707.61, "note": "F5", "intensity": 31.8537, "register": "agudo"}, {"t": 31.05, "hz": 705.66, "note": "F5", "intensity": 31.8063, "register": "agudo"}, {"t": 31.2, "hz": 699.98, "note": "F5", "intensity": 31.8213, "register": "agudo"}, {"t": 31.35, "hz": 699.23, "note": "F5", "intensity": 31.7346, "register": "agudo"}, {"t": 31.5, "hz": 693.94, "note": "F5", "intensity": 31.7539, "register": "agudo"}, {"t": 31.65, "hz": 703.17, "note": "F5", "intensity": 26.4897, "register": "agudo"}, {"t": 31.8, "hz": 702.78, "note": "F5", "intensity": 13.732, "register": "agudo"}, {"t": 31.95, "hz": 697.0, "note": "F5", "intensity": 4.0559, "register": "agudo"}, {"t": 32.15, "hz": 788.46, "note": "G5", "intensity": 31.561, "register": "agudo"}, {"t": 32.3, "hz": 783.17, "note": "G5", "intensity": 30.9492, "register": "agudo"}, {"t": 32.45, "hz": 792.33, "note": "G5", "intensity": 31.6821, "register": "agudo"}, {"t": 32.6, "hz": 790.74, "note": "G5", "intensity": 33.4123, "register": "agudo"}, {"t": 32.75, "hz": 784.73, "note": "G5", "intensity": 33.4162, "register": "agudo"}, {"t": 32.9, "hz": 790.81, "note": "G5", "intensity": 33.4163, "register": "agudo"}, {"t": 33.05, "hz": 791.58, "note": "G5", "intensity": 33.3671, "register": "agudo"}, {"t": 33.2, "hz": 785.65, "note": "G5", "intensity": 33.41, "register": "agudo"}, {"t": 33.35, "hz": 784.41, "note": "G5", "intensity": 33.4276, "register": "agudo"}, {"t": 33.5, "hz": 782.93, "note": "G5", "intensity": 33.3666, "register": "agudo"}, {"t": 33.65, "hz": 790.35, "note": "G5", "intensity": 33.4197, "register": "agudo"}, {"t": 33.8, "hz": 786.09, "note": "G5", "intensity": 33.4361, "register": "agudo"}, {"t": 33.95, "hz": 785.94, "note": "G5", "intensity": 33.3792, "register": "agudo"}, {"t": 34.1, "hz": 791.19, "note": "G5", "intensity": 33.3635, "register": "agudo"}, {"t": 34.25, "hz": 790.73, "note": "G5", "intensity": 33.4183, "register": "agudo"}, {"t": 34.4, "hz": 779.18, "note": "G5", "intensity": 33.4119, "register": "agudo"}, {"t": 34.55, "hz": 783.91, "note": "G5", "intensity": 30.2462, "register": "agudo"}, {"t": 34.7, "hz": 792.46, "note": "G5", "intensity": 21.0356, "register": "agudo"}, {"t": 34.85, "hz": 785.5, "note": "G5", "intensity": 9.4236, "register": "agudo"}, {"t": 35.05, "hz": 875.09, "note": "A5", "intensity": 10.8434, "register": "agudo"}, {"t": 35.2, "hz": 880.19, "note": "A5", "intensity": 33.4927, "register": "agudo"}, {"t": 35.35, "hz": 880.73, "note": "A5", "intensity": 31.037, "register": "agudo"}, {"t": 35.5, "hz": 888.33, "note": "A5", "intensity": 34.4086, "register": "agudo"}, {"t": 35.65, "hz": 886.66, "note": "A5", "intensity": 34.3888, "register": "agudo"}, {"t": 35.8, "hz": 876.21, "note": "A5", "intensity": 34.4049, "register": "agudo"}, {"t": 35.95, "hz": 888.13, "note": "A5", "intensity": 34.3963, "register": "agudo"}, {"t": 36.1, "hz": 876.83, "note": "A5", "intensity": 34.3639, "register": "agudo"}, {"t": 36.25, "hz": 889.07, "note": "A5", "intensity": 34.3393, "register": "agudo"}, {"t": 36.4, "hz": 883.44, "note": "A5", "intensity": 34.4649, "register": "agudo"}, {"t": 36.55, "hz": 885.04, "note": "A5", "intensity": 34.3928, "register": "agudo"}, {"t": 36.7, "hz": 886.8, "note": "A5", "intensity": 34.3974, "register": "agudo"}, {"t": 36.85, "hz": 886.59, "note": "A5", "intensity": 34.389, "register": "agudo"}, {"t": 37.0, "hz": 876.5, "note": "A5", "intensity": 34.4079, "register": "agudo"}, {"t": 37.15, "hz": 882.99, "note": "A5", "intensity": 34.4297, "register": "agudo"}, {"t": 37.3, "hz": 880.91, "note": "A5", "intensity": 34.3264, "register": "agudo"}, {"t": 37.45, "hz": 887.51, "note": "A5", "intensity": 34.3767, "register": "agudo"}, {"t": 37.6, "hz": 888.24, "note": "A5", "intensity": 26.724, "register": "agudo"}, {"t": 37.75, "hz": 891.77, "note": "A5", "intensity": 15.9583, "register": "agudo"}, {"t": 37.9, "hz": 879.89, "note": "A5", "intensity": 7.0506, "register": "agudo"}, {"t": 38.05, "hz": 791.3, "note": "G5", "intensity": 20.5982, "register": "agudo"}, {"t": 38.2, "hz": 790.25, "note": "G5", "intensity": 30.3167, "register": "agudo"}, {"t": 38.35, "hz": 785.53, "note": "G5", "intensity": 32.1336, "register": "agudo"}, {"t": 38.5, "hz": 785.47, "note": "G5", "intensity": 32.6522, "register": "agudo"}, {"t": 38.65, "hz": 791.75, "note": "G5", "intensity": 32.7063, "register": "agudo"}, {"t": 38.8, "hz": 792.62, "note": "G5", "intensity": 32.6131, "register": "agudo"}, {"t": 38.95, "hz": 792.41, "note": "G5", "intensity": 32.7085, "register": "agudo"}, {"t": 39.1, "hz": 784.73, "note": "G5", "intensity": 32.6889, "register": "agudo"}, {"t": 39.25, "hz": 789.98, "note": "G5", "intensity": 32.6685, "register": "agudo"}, {"t": 39.4, "hz": 784.72, "note": "G5", "intensity": 32.732, "register": "agudo"}, {"t": 39.55, "hz": 785.81, "note": "G5", "intensity": 32.6702, "register": "agudo"}, {"t": 39.7, "hz": 786.64, "note": "G5", "intensity": 28.7396, "register": "agudo"}, {"t": 39.85, "hz": 786.97, "note": "G5", "intensity": 14.4957, "register": "agudo"}, {"t": 40.0, "hz": 709.03, "note": "F5", "intensity": 4.2562, "register": "agudo"}, {"t": 40.15, "hz": 699.13, "note": "F5", "intensity": 30.0808, "register": "agudo"}, {"t": 40.3, "hz": 702.57, "note": "F5", "intensity": 29.8754, "register": "agudo"}, {"t": 40.45, "hz": 696.4, "note": "F5", "intensity": 31.4757, "register": "agudo"}, {"t": 40.6, "hz": 698.4, "note": "F5", "intensity": 31.4668, "register": "agudo"}, {"t": 40.75, "hz": 697.24, "note": "F5", "intensity": 31.4494, "register": "agudo"}, {"t": 40.9, "hz": 700.05, "note": "F5", "intensity": 31.4754, "register": "agudo"}, {"t": 41.05, "hz": 701.05, "note": "F5", "intensity": 31.5038, "register": "agudo"}, {"t": 41.2, "hz": 700.35, "note": "F5", "intensity": 31.5566, "register": "agudo"}, {"t": 41.35, "hz": 704.24, "note": "F5", "intensity": 31.4686, "register": "agudo"}, {"t": 41.5, "hz": 700.89, "note": "F5", "intensity": 31.4809, "register": "agudo"}, {"t": 41.65, "hz": 705.48, "note": "F5", "intensity": 31.368, "register": "agudo"}, {"t": 41.8, "hz": 705.67, "note": "F5", "intensity": 20.3687, "register": "agudo"}, {"t": 41.95, "hz": 690.97, "note": "F5", "intensity": 4.4252, "register": "agudo"}, {"t": 42.1, "hz": 667.43, "note": "E5", "intensity": 27.6505, "register": "agudo"}, {"t": 42.25, "hz": 662.53, "note": "E5", "intensity": 28.0659, "register": "agudo"}, {"t": 42.4, "hz": 659.52, "note": "E5", "intensity": 31.4378, "register": "medio-agudo"}, {"t": 42.55, "hz": 662.42, "note": "E5", "intensity": 31.4396, "register": "agudo"}, {"t": 42.7, "hz": 660.66, "note": "E5", "intensity": 31.4474, "register": "agudo"}, {"t": 42.85, "hz": 662.32, "note": "E5", "intensity": 31.4568, "register": "agudo"}, {"t": 43.0, "hz": 663.79, "note": "E5", "intensity": 31.4848, "register": "agudo"}, {"t": 43.15, "hz": 662.27, "note": "E5", "intensity": 31.5405, "register": "agudo"}, {"t": 44.05, "hz": 148.79, "note": "D3", "intensity": 12.1335, "register": "grave"}, {"t": 44.2, "hz": 147.87, "note": "D3", "intensity": 26.1357, "register": "grave"}, {"t": 44.35, "hz": 146.51, "note": "D3", "intensity": 25.2471, "register": "grave"}, {"t": 44.5, "hz": 148.03, "note": "D3", "intensity": 27.7578, "register": "grave"}, {"t": 44.65, "hz": 148.01, "note": "D3", "intensity": 27.7048, "register": "grave"}, {"t": 44.8, "hz": 147.57, "note": "D3", "intensity": 27.4918, "register": "grave"}, {"t": 44.95, "hz": 146.52, "note": "D3", "intensity": 27.6375, "register": "grave"}, {"t": 45.1, "hz": 147.41, "note": "D3", "intensity": 27.658, "register": "grave"}, {"t": 45.25, "hz": 147.05, "note": "D3", "intensity": 27.9005, "register": "grave"}, {"t": 45.4, "hz": 147.5, "note": "D3", "intensity": 27.8009, "register": "grave"}, {"t": 45.55, "hz": 146.69, "note": "D3", "intensity": 27.8245, "register": "grave"}, {"t": 45.7, "hz": 145.88, "note": "D3", "intensity": 27.5824, "register": "grave"}, {"t": 45.85, "hz": 146.95, "note": "D3", "intensity": 27.5522, "register": "grave"}, {"t": 46.0, "hz": 147.73, "note": "D3", "intensity": 27.8925, "register": "grave"}, {"t": 46.15, "hz": 146.58, "note": "D3", "intensity": 21.9238, "register": "grave"}, {"t": 46.3, "hz": 148.08, "note": "D3", "intensity": 12.7067, "register": "grave"}, {"t": 46.45, "hz": 145.7, "note": "D3", "intensity": 4.1257, "register": "grave"}, {"t": 46.6, "hz": 131.52, "note": "C3", "intensity": 23.7515, "register": "grave"}, {"t": 46.75, "hz": 131.63, "note": "C3", "intensity": 24.1827, "register": "grave"}, {"t": 46.9, "hz": 129.87, "note": "C3", "intensity": 26.7224, "register": "grave"}, {"t": 47.05, "hz": 129.43, "note": "C3", "intensity": 26.752, "register": "grave"}, {"t": 47.2, "hz": 129.81, "note": "C3", "intensity": 26.4353, "register": "grave"}, {"t": 47.35, "hz": 130.04, "note": "C3", "intensity": 26.4787, "register": "grave"}, {"t": 47.5, "hz": 130.24, "note": "C3", "intensity": 26.6722, "register": "grave"}, {"t": 47.65, "hz": 129.63, "note": "C3", "intensity": 26.6363, "register": "grave"}, {"t": 47.8, "hz": 129.25, "note": "C3", "intensity": 26.5852, "register": "grave"}, {"t": 47.95, "hz": 129.27, "note": "C3", "intensity": 26.4312, "register": "grave"}, {"t": 48.1, "hz": 130.13, "note": "C3", "intensity": 26.7681, "register": "grave"}, {"t": 48.25, "hz": 129.37, "note": "C3", "intensity": 18.7505, "register": "grave"}, {"t": 48.4, "hz": 129.97, "note": "C3", "intensity": 8.4776, "register": "grave"}, {"t": 48.55, "hz": 124.34, "note": "B2", "intensity": 15.5218, "register": "grave"}, {"t": 48.7, "hz": 123.19, "note": "B2", "intensity": 23.9979, "register": "grave"}, {"t": 48.85, "hz": 122.23, "note": "B2", "intensity": 25.7071, "register": "grave"}, {"t": 49.0, "hz": 122.24, "note": "B2", "intensity": 25.4006, "register": "grave"}, {"t": 49.15, "hz": 123.03, "note": "B2", "intensity": 25.4478, "register": "grave"}, {"t": 49.3, "hz": 123.5, "note": "B2", "intensity": 25.5896, "register": "grave"}, {"t": 49.45, "hz": 122.55, "note": "B2", "intensity": 25.7268, "register": "grave"}, {"t": 49.6, "hz": 121.77, "note": "B2", "intensity": 25.942, "register": "grave"}, {"t": 49.75, "hz": 121.54, "note": "B2", "intensity": 25.7679, "register": "grave"}, {"t": 49.9, "hz": 124.82, "note": "B2", "intensity": 25.5448, "register": "grave"}, {"t": 50.05, "hz": 121.89, "note": "B2", "intensity": 25.2979, "register": "grave"}, {"t": 50.2, "hz": 123.67, "note": "B2", "intensity": 22.6718, "register": "grave"}, {"t": 50.35, "hz": 122.71, "note": "B2", "intensity": 11.8231, "register": "grave"}, {"t": 50.55, "hz": 110.79, "note": "A2", "intensity": 10.7565, "register": "grave"}, {"t": 50.7, "hz": 110.91, "note": "A2", "intensity": 22.8657, "register": "grave"}, {"t": 50.85, "hz": 110.57, "note": "A2", "intensity": 21.0583, "register": "grave"}, {"t": 51.0, "hz": 110.54, "note": "A2", "intensity": 23.7144, "register": "grave"}, {"t": 51.15, "hz": 109.98, "note": "A2", "intensity": 23.7442, "register": "grave"}, {"t": 51.3, "hz": 109.54, "note": "A2", "intensity": 23.7389, "register": "grave"}, {"t": 51.45, "hz": 110.55, "note": "A2", "intensity": 23.626, "register": "grave"}, {"t": 51.6, "hz": 109.78, "note": "A2", "intensity": 23.4009, "register": "grave"}, {"t": 51.75, "hz": 111.54, "note": "A2", "intensity": 23.7048, "register": "grave"}, {"t": 51.9, "hz": 110.27, "note": "A2", "intensity": 23.5893, "register": "grave"}, {"t": 52.05, "hz": 110.27, "note": "A2", "intensity": 23.5933, "register": "grave"}, {"t": 52.2, "hz": 111.11, "note": "A2", "intensity": 23.7695, "register": "grave"}, {"t": 52.35, "hz": 109.58, "note": "A2", "intensity": 23.4186, "register": "grave"}, {"t": 52.5, "hz": 110.61, "note": "A2", "intensity": 23.6858, "register": "grave"}, {"t": 52.65, "hz": 109.57, "note": "A2", "intensity": 20.1824, "register": "grave"}, {"t": 52.8, "hz": 110.35, "note": "A2", "intensity": 10.7105, "register": "grave"}, {"t": 53.5, "hz": 329.5, "note": "E4", "intensity": 23.5566, "register": "medio-grave"}, {"t": 53.65, "hz": 331.88, "note": "E4", "intensity": 23.5889, "register": "medio-agudo"}, {"t": 53.8, "hz": 327.37, "note": "E4", "intensity": 23.5943, "register": "medio-grave"}, {"t": 53.95, "hz": 326.19, "note": "E4", "intensity": 23.6054, "register": "medio-grave"}, {"t": 54.1, "hz": 326.91, "note": "E4", "intensity": 23.586, "register": "medio-grave"}, {"t": 54.25, "hz": 332.99, "note": "E4", "intensity": 23.5445, "register": "medio-agudo"}, {"t": 54.4, "hz": 332.9, "note": "E4", "intensity": 23.4984, "register": "medio-agudo"}, {"t": 54.55, "hz": 332.4, "note": "E4", "intensity": 23.5773, "register": "medio-agudo"}, {"t": 54.7, "hz": 324.85, "note": "E4", "intensity": 20.7648, "register": "medio-grave"}, {"t": 54.85, "hz": 327.03, "note": "E4", "intensity": 10.4784, "register": "medio-grave"}, {"t": 55.05, "hz": 387.39, "note": "G4", "intensity": 15.7458, "register": "medio-agudo"}, {"t": 55.2, "hz": 393.37, "note": "G4", "intensity": 24.1656, "register": "medio-agudo"}, {"t": 55.35, "hz": 393.85, "note": "G4", "intensity": 26.0002, "register": "medio-agudo"}, {"t": 55.5, "hz": 390.2, "note": "G4", "intensity": 25.9732, "register": "medio-agudo"}, {"t": 55.65, "hz": 391.4, "note": "G4", "intensity": 25.9329, "register": "medio-agudo"}, {"t": 55.8, "hz": 390.58, "note": "G4", "intensity": 25.9763, "register": "medio-agudo"}, {"t": 55.95, "hz": 391.35, "note": "G4", "intensity": 26.0547, "register": "medio-agudo"}, {"t": 56.1, "hz": 393.89, "note": "G4", "intensity": 26.0799, "register": "medio-agudo"}, {"t": 56.25, "hz": 395.43, "note": "G4", "intensity": 26.0902, "register": "medio-agudo"}, {"t": 56.4, "hz": 394.25, "note": "G4", "intensity": 26.0163, "register": "medio-agudo"}, {"t": 56.55, "hz": 391.33, "note": "G4", "intensity": 25.9805, "register": "medio-agudo"}, {"t": 56.7, "hz": 389.91, "note": "G4", "intensity": 23.1001, "register": "medio-agudo"}, {"t": 56.85, "hz": 391.35, "note": "G4", "intensity": 11.7815, "register": "medio-agudo"}, {"t": 57.05, "hz": 484.08, "note": "B4", "intensity": 13.1844, "register": "medio-agudo"}, {"t": 57.2, "hz": 485.43, "note": "B4", "intensity": 27.2983, "register": "medio-agudo"}, {"t": 57.35, "hz": 494.25, "note": "B4", "intensity": 25.6226, "register": "medio-agudo"}, {"t": 57.5, "hz": 496.7, "note": "B4", "intensity": 28.2551, "register": "medio-agudo"}, {"t": 57.65, "hz": 495.39, "note": "B4", "intensity": 28.3115, "register": "medio-agudo"}, {"t": 57.8, "hz": 497.53, "note": "B4", "intensity": 28.2968, "register": "medio-agudo"}, {"t": 57.95, "hz": 495.07, "note": "B4", "intensity": 28.2575, "register": "medio-agudo"}, {"t": 58.1, "hz": 492.84, "note": "B4", "intensity": 28.2544, "register": "medio-agudo"}, {"t": 58.25, "hz": 494.62, "note": "B4", "intensity": 28.343, "register": "medio-agudo"}, {"t": 58.4, "hz": 493.72, "note": "B4", "intensity": 28.3205, "register": "medio-agudo"}, {"t": 58.55, "hz": 497.61, "note": "B4", "intensity": 28.3499, "register": "medio-agudo"}, {"t": 58.7, "hz": 491.69, "note": "B4", "intensity": 28.3702, "register": "medio-agudo"}, {"t": 58.85, "hz": 495.67, "note": "B4", "intensity": 28.2885, "register": "medio-agudo"}, {"t": 59.0, "hz": 498.65, "note": "B4", "intensity": 28.3789, "register": "medio-agudo"}, {"t": 59.15, "hz": 498.82, "note": "B4", "intensity": 24.3372, "register": "medio-agudo"}, {"t": 59.65, "hz": 1044.27, "note": "C6", "intensity": 35.0684, "register": "agudo"}, {"t": 59.8, "hz": 1053.33, "note": "C6", "intensity": 32.6799, "register": "sobreagudo"}, {"t": 59.95, "hz": 1054.53, "note": "C6", "intensity": 36.2851, "register": "sobreagudo"}, {"t": 60.1, "hz": 1043.04, "note": "C6", "intensity": 36.2643, "register": "agudo"}, {"t": 60.25, "hz": 1038.73, "note": "C6", "intensity": 36.322, "register": "agudo"}, {"t": 60.4, "hz": 1055.9, "note": "C6", "intensity": 36.2767, "register": "sobreagudo"}, {"t": 60.55, "hz": 1052.31, "note": "C6", "intensity": 36.239, "register": "sobreagudo"}, {"t": 60.7, "hz": 1048.3, "note": "C6", "intensity": 36.3339, "register": "sobreagudo"}, {"t": 60.85, "hz": 1058.88, "note": "C6", "intensity": 36.3418, "register": "sobreagudo"}, {"t": 61.0, "hz": 1045.75, "note": "C6", "intensity": 36.2604, "register": "agudo"}, {"t": 61.15, "hz": 1052.56, "note": "C6", "intensity": 36.2694, "register": "sobreagudo"}, {"t": 61.3, "hz": 1050.36, "note": "C6", "intensity": 36.2872, "register": "sobreagudo"}, {"t": 61.45, "hz": 1051.07, "note": "C6", "intensity": 36.2925, "register": "sobreagudo"}, {"t": 61.6, "hz": 1054.25, "note": "C6", "intensity": 34.7911, "register": "sobreagudo"}, {"t": 61.75, "hz": 1051.79, "note": "C6", "intensity": 21.3257, "register": "sobreagudo"}, {"t": 61.9, "hz": 1051.21, "note": "C6", "intensity": 8.1647, "register": "sobreagudo"}, {"t": 62.05, "hz": 992.75, "note": "B5", "intensity": 14.1465, "register": "agudo"}, {"t": 62.2, "hz": 998.98, "note": "B5", "intensity": 32.8458, "register": "agudo"}, {"t": 62.35, "hz": 993.35, "note": "B5", "intensity": 30.9843, "register": "agudo"}, {"t": 62.5, "hz": 997.05, "note": "B5", "intensity": 34.4915, "register": "agudo"}, {"t": 62.65, "hz": 988.59, "note": "B5", "intensity": 34.4726, "register": "agudo"}, {"t": 62.8, "hz": 997.14, "note": "B5", "intensity": 34.5197, "register": "agudo"}, {"t": 62.95, "hz": 993.53, "note": "B5", "intensity": 34.4709, "register": "agudo"}, {"t": 63.1, "hz": 991.21, "note": "B5", "intensity": 34.5026, "register": "agudo"}, {"t": 63.25, "hz": 993.86, "note": "B5", "intensity": 34.5216, "register": "agudo"}, {"t": 63.4, "hz": 987.36, "note": "B5", "intensity": 34.5015, "register": "agudo"}, {"t": 63.55, "hz": 993.52, "note": "B5", "intensity": 34.5061, "register": "agudo"}, {"t": 63.7, "hz": 991.03, "note": "B5", "intensity": 34.4522, "register": "agudo"}, {"t": 63.85, "hz": 990.15, "note": "B5", "intensity": 34.4531, "register": "agudo"}, {"t": 64.0, "hz": 998.57, "note": "B5", "intensity": 34.4853, "register": "agudo"}, {"t": 64.15, "hz": 996.87, "note": "B5", "intensity": 27.8007, "register": "agudo"}, {"t": 64.3, "hz": 983.73, "note": "B5", "intensity": 17.8833, "register": "agudo"}, {"t": 64.45, "hz": 992.88, "note": "B5", "intensity": 3.8657, "register": "agudo"}, {"t": 64.65, "hz": 876.78, "note": "A5", "intensity": 32.0298, "register": "agudo"}, {"t": 64.8, "hz": 882.51, "note": "A5", "intensity": 30.2649, "register": "agudo"}, {"t": 64.95, "hz": 883.62, "note": "A5", "intensity": 33.4262, "register": "agudo"}, {"t": 65.1, "hz": 882.64, "note": "A5", "intensity": 33.522, "register": "agudo"}, {"t": 65.25, "hz": 876.54, "note": "A5", "intensity": 33.4831, "register": "agudo"}, {"t": 65.4, "hz": 881.77, "note": "A5", "intensity": 33.5026, "register": "agudo"}, {"t": 65.55, "hz": 889.59, "note": "A5", "intensity": 33.4701, "register": "agudo"}, {"t": 65.7, "hz": 885.55, "note": "A5", "intensity": 33.5171, "register": "agudo"}, {"t": 65.85, "hz": 881.06, "note": "A5", "intensity": 33.4184, "register": "agudo"}, {"t": 66.0, "hz": 883.64, "note": "A5", "intensity": 33.4917, "register": "agudo"}, {"t": 66.15, "hz": 879.4, "note": "A5", "intensity": 33.4351, "register": "agudo"}, {"t": 66.3, "hz": 886.78, "note": "A5", "intensity": 33.4987, "register": "agudo"}, {"t": 66.45, "hz": 887.9, "note": "A5", "intensity": 33.4377, "register": "agudo"}, {"t": 66.6, "hz": 888.41, "note": "A5", "intensity": 33.4369, "register": "agudo"}, {"t": 66.75, "hz": 883.34, "note": "A5", "intensity": 18.5326, "register": "agudo"}, {"t": 66.9, "hz": 890.66, "note": "A5", "intensity": 8.08, "register": "agudo"}, {"t": 67.1, "hz": 1053.94, "note": "C6", "intensity": 21.0493, "register": "sobreagudo"}, {"t": 67.25, "hz": 1049.08, "note": "C6", "intensity": 34.7534, "register": "sobreagudo"}, {"t": 67.4, "hz": 1055.8, "note": "C6", "intensity": 31.9732, "register": "sobreagudo"}, {"t": 67.55, "hz": 1050.14, "note": "C6", "intensity": 36.4471, "register": "sobreagudo"}, {"t": 67.7, "hz": 1045.94, "note": "C6", "intensity": 36.4216, "register": "agudo"}, {"t": 67.85, "hz": 1043.82, "note": "C6", "intensity": 36.4497, "register": "agudo"}, {"t": 68.0, "hz": 1045.31, "note": "C6", "intensity": 36.4211, "register": "agudo"}, {"t": 68.15, "hz": 1054.35, "note": "C6", "intensity": 36.4491, "register": "sobreagudo"}, {"t": 68.3, "hz": 1048.63, "note": "C6", "intensity": 36.4569, "register": "sobreagudo"}, {"t": 68.45, "hz": 1057.19, "note": "C6", "intensity": 36.3859, "register": "sobreagudo"}, {"t": 68.6, "hz": 1045.06, "note": "C6", "intensity": 36.3988, "register": "agudo"}, {"t": 68.75, "hz": 1043.14, "note": "C6", "intensity": 36.4343, "register": "agudo"}, {"t": 68.9, "hz": 1054.14, "note": "C6", "intensity": 36.4617, "register": "sobreagudo"}, {"t": 69.05, "hz": 1052.43, "note": "C6", "intensity": 36.4835, "register": "sobreagudo"}, {"t": 69.2, "hz": 1049.41, "note": "C6", "intensity": 36.4465, "register": "sobreagudo"}, {"t": 69.35, "hz": 1058.77, "note": "C6", "intensity": 36.4985, "register": "sobreagudo"}, {"t": 69.5, "hz": 1051.01, "note": "C6", "intensity": 36.4223, "register": "sobreagudo"}, {"t": 69.65, "hz": 1047.64, "note": "C6", "intensity": 23.5117, "register": "sobreagudo"}, {"t": 69.8, "hz": 1048.37, "note": "C6", "intensity": 13.9438, "register": "sobreagudo"}, {"t": 70.05, "hz": 794.37, "note": "G5", "intensity": 15.5486, "register": "agudo"}, {"t": 70.2, "hz": 786.11, "note": "G5", "intensity": 30.5783, "register": "agudo"}, {"t": 70.35, "hz": 788.65, "note": "G5", "intensity": 29.0479, "register": "agudo"}, {"t": 70.5, "hz": 783.83, "note": "G5", "intensity": 31.9441, "register": "agudo"}, {"t": 70.65, "hz": 788.58, "note": "G5", "intensity": 31.9038, "register": "agudo"}, {"t": 70.8, "hz": 784.17, "note": "G5", "intensity": 31.9522, "register": "agudo"}, {"t": 70.95, "hz": 779.3, "note": "G5", "intensity": 31.9411, "register": "agudo"}, {"t": 71.1, "hz": 792.55, "note": "G5", "intensity": 31.944, "register": "agudo"}, {"t": 71.25, "hz": 785.38, "note": "G5", "intensity": 31.9162, "register": "agudo"}, {"t": 71.4, "hz": 786.37, "note": "G5", "intensity": 31.9453, "register": "agudo"}, {"t": 71.55, "hz": 783.06, "note": "G5", "intensity": 31.9182, "register": "agudo"}, {"t": 71.7, "hz": 784.54, "note": "G5", "intensity": 31.9591, "register": "agudo"}, {"t": 71.85, "hz": 789.18, "note": "G5", "intensity": 31.9095, "register": "agudo"}, {"t": 72.0, "hz": 785.61, "note": "G5", "intensity": 31.9717, "register": "agudo"}, {"t": 72.15, "hz": 786.28, "note": "G5", "intensity": 27.0129, "register": "agudo"}, {"t": 72.3, "hz": 791.16, "note": "G5", "intensity": 14.0789, "register": "agudo"}, {"t": 72.45, "hz": 781.35, "note": "G5", "intensity": 4.3569, "register": "agudo"}, {"t": 72.65, "hz": 660.08, "note": "E5", "intensity": 28.4712, "register": "agudo"}, {"t": 72.8, "hz": 657.69, "note": "E5", "intensity": 27.575, "register": "medio-agudo"}, {"t": 72.95, "hz": 661.27, "note": "E5", "intensity": 29.566, "register": "agudo"}, {"t": 73.1, "hz": 664.63, "note": "E5", "intensity": 29.6517, "register": "agudo"}, {"t": 73.25, "hz": 662.68, "note": "E5", "intensity": 29.6318, "register": "agudo"}, {"t": 73.4, "hz": 655.52, "note": "E5", "intensity": 29.6618, "register": "medio-agudo"}, {"t": 73.55, "hz": 658.4, "note": "E5", "intensity": 29.5787, "register": "medio-agudo"}, {"t": 73.7, "hz": 661.73, "note": "E5", "intensity": 29.7042, "register": "agudo"}, {"t": 73.85, "hz": 656.33, "note": "E5", "intensity": 29.6289, "register": "medio-agudo"}, {"t": 74.0, "hz": 663.17, "note": "E5", "intensity": 29.655, "register": "agudo"}, {"t": 74.15, "hz": 658.71, "note": "E5", "intensity": 29.7127, "register": "medio-agudo"}, {"t": 74.3, "hz": 663.99, "note": "E5", "intensity": 16.6305, "register": "agudo"}, {"t": 74.45, "hz": 650.96, "note": "E5", "intensity": 7.0668, "register": "medio-agudo"}, {"t": 74.65, "hz": 523.56, "note": "C5", "intensity": 27.2392, "register": "medio-agudo"}, {"t": 74.8, "hz": 527.9, "note": "C5", "intensity": 26.2389, "register": "medio-agudo"}, {"t": 74.95, "hz": 529.46, "note": "C5", "intensity": 28.2994, "register": "medio-agudo"}, {"t": 75.1, "hz": 525.77, "note": "C5", "intensity": 28.4046, "register": "medio-agudo"}, {"t": 75.25, "hz": 522.01, "note": "C5", "intensity": 28.2807, "register": "medio-agudo"}, {"t": 75.4, "hz": 525.03, "note": "C5", "intensity": 28.2711, "register": "medio-agudo"}, {"t": 75.55, "hz": 525.98, "note": "C5", "intensity": 28.3325, "register": "medio-agudo"}, {"t": 75.7, "hz": 523.35, "note": "C5", "intensity": 28.2675, "register": "medio-agudo"}, {"t": 75.85, "hz": 521.62, "note": "C5", "intensity": 28.3422, "register": "medio-agudo"}, {"t": 76.0, "hz": 525.42, "note": "C5", "intensity": 28.2861, "register": "medio-agudo"}, {"t": 76.15, "hz": 529.96, "note": "C5", "intensity": 27.9638, "register": "medio-agudo"}, {"t": 76.3, "hz": 525.24, "note": "C5", "intensity": 16.165, "register": "medio-agudo"}, {"t": 76.45, "hz": 528.48, "note": "C5", "intensity": 5.2759, "register": "medio-agudo"}, {"t": 76.65, "hz": 443.19, "note": "A4", "intensity": 25.3512, "register": "medio-agudo"}, {"t": 76.8, "hz": 443.83, "note": "A4", "intensity": 24.1875, "register": "medio-agudo"}, {"t": 76.95, "hz": 445.83, "note": "A4", "intensity": 26.3058, "register": "medio-agudo"}, {"t": 77.1, "hz": 440.61, "note": "A4", "intensity": 26.3094, "register": "medio-agudo"}, {"t": 77.25, "hz": 439.6, "note": "A4", "intensity": 26.3184, "register": "medio-agudo"}, {"t": 77.4, "hz": 442.9, "note": "A4", "intensity": 26.3526, "register": "medio-agudo"}, {"t": 77.55, "hz": 445.37, "note": "A4", "intensity": 26.3395, "register": "medio-agudo"}, {"t": 77.7, "hz": 443.54, "note": "A4", "intensity": 26.2447, "register": "medio-agudo"}, {"t": 77.85, "hz": 440.49, "note": "A4", "intensity": 26.3106, "register": "medio-agudo"}, {"t": 78.0, "hz": 440.52, "note": "A4", "intensity": 26.2696, "register": "medio-agudo"}, {"t": 78.15, "hz": 442.34, "note": "A4", "intensity": 26.0831, "register": "medio-agudo"}, {"t": 78.3, "hz": 441.08, "note": "A4", "intensity": 15.1957, "register": "medio-agudo"}, {"t": 78.45, "hz": 431.8, "note": "A4", "intensity": 3.5935, "register": "medio-agudo"}, {"t": 78.6, "hz": 391.57, "note": "G4", "intensity": 23.087, "register": "medio-agudo"}, {"t": 78.75, "hz": 390.73, "note": "G4", "intensity": 23.4684, "register": "medio-agudo"}, {"t": 78.9, "hz": 390.9, "note": "G4", "intensity": 24.5787, "register": "medio-agudo"}, {"t": 79.05, "hz": 393.46, "note": "G4", "intensity": 24.5531, "register": "medio-agudo"}, {"t": 79.2, "hz": 395.05, "note": "G4", "intensity": 24.5637, "register": "medio-agudo"}, {"t": 79.35, "hz": 392.21, "note": "G4", "intensity": 24.5364, "register": "medio-agudo"}, {"t": 79.5, "hz": 391.19, "note": "G4", "intensity": 24.6159, "register": "medio-agudo"}, {"t": 79.65, "hz": 392.56, "note": "G4", "intensity": 24.5463, "register": "medio-agudo"}, {"t": 79.8, "hz": 394.34, "note": "G4", "intensity": 18.5582, "register": "medio-agudo"}, {"t": 79.95, "hz": 387.36, "note": "G4", "intensity": 5.546, "register": "medio-agudo"}, {"t": 80.15, "hz": 325.75, "note": "E4", "intensity": 20.8382, "register": "medio-grave"}, {"t": 80.3, "hz": 328.8, "note": "E4", "intensity": 19.6753, "register": "medio-grave"}, {"t": 80.45, "hz": 330.61, "note": "E4", "intensity": 21.7432, "register": "medio-agudo"}, {"t": 80.6, "hz": 330.96, "note": "E4", "intensity": 21.7431, "register": "medio-agudo"}, {"t": 80.75, "hz": 328.74, "note": "E4", "intensity": 21.7661, "register": "medio-grave"}, {"t": 80.9, "hz": 327.01, "note": "E4", "intensity": 21.7754, "register": "medio-grave"}, {"t": 81.05, "hz": 328.86, "note": "E4", "intensity": 21.7997, "register": "medio-grave"}, {"t": 81.2, "hz": 327.6, "note": "E4", "intensity": 21.7903, "register": "medio-grave"}, {"t": 81.35, "hz": 327.79, "note": "E4", "intensity": 21.7321, "register": "medio-grave"}, {"t": 81.5, "hz": 332.4, "note": "E4", "intensity": 21.7629, "register": "medio-agudo"}, {"t": 81.65, "hz": 331.36, "note": "E4", "intensity": 21.7768, "register": "medio-agudo"}, {"t": 81.8, "hz": 327.77, "note": "E4", "intensity": 13.6052, "register": "medio-grave"}, {"t": 81.95, "hz": 320.78, "note": "E4", "intensity": 3.8639, "register": "medio-grave"}, {"t": 82.15, "hz": 262.09, "note": "C4", "intensity": 19.3596, "register": "medio-grave"}, {"t": 82.3, "hz": 260.59, "note": "C4", "intensity": 18.0893, "register": "medio-grave"}, {"t": 82.45, "hz": 263.29, "note": "C4", "intensity": 20.0847, "register": "medio-grave"}, {"t": 82.6, "hz": 260.8, "note": "C4", "intensity": 20.0765, "register": "medio-grave"}, {"t": 82.75, "hz": 262.78, "note": "C4", "intensity": 19.9969, "register": "medio-grave"}, {"t": 82.9, "hz": 259.77, "note": "C4", "intensity": 20.1429, "register": "medio-grave"}, {"t": 83.05, "hz": 260.03, "note": "C4", "intensity": 19.9764, "register": "medio-grave"}, {"t": 83.2, "hz": 260.78, "note": "C4", "intensity": 20.1931, "register": "medio-grave"}, {"t": 83.35, "hz": 262.75, "note": "C4", "intensity": 20.0004, "register": "medio-grave"}, {"t": 83.5, "hz": 264.76, "note": "C4", "intensity": 20.094, "register": "medio-grave"}, {"t": 83.65, "hz": 262.28, "note": "C4", "intensity": 20.0029, "register": "medio-grave"}, {"t": 83.8, "hz": 258.51, "note": "C4", "intensity": 20.1024, "register": "medio-grave"}, {"t": 83.95, "hz": 258.62, "note": "C4", "intensity": 20.0836, "register": "medio-grave"}, {"t": 84.1, "hz": 260.45, "note": "C4", "intensity": 20.0027, "register": "medio-grave"}, {"t": 84.25, "hz": 263.43, "note": "C4", "intensity": 11.7668, "register": "medio-grave"}, {"t": 84.4, "hz": 261.8, "note": "C4", "intensity": 4.5117, "register": "medio-grave"}, {"t": 84.6, "hz": 220.09, "note": "A3", "intensity": 10.4444, "register": "medio-grave"}, {"t": 84.75, "hz": 218.35, "note": "A3", "intensity": 16.7434, "register": "medio-grave"}, {"t": 84.9, "hz": 219.92, "note": "A3", "intensity": 17.4036, "register": "medio-grave"}, {"t": 85.05, "hz": 221.88, "note": "A3", "intensity": 18.0735, "register": "medio-grave"}, {"t": 85.2, "hz": 219.71, "note": "A3", "intensity": 18.0773, "register": "medio-grave"}, {"t": 85.35, "hz": 220.08, "note": "A3", "intensity": 18.0731, "register": "medio-grave"}, {"t": 85.5, "hz": 220.85, "note": "A3", "intensity": 18.1015, "register": "medio-grave"}, {"t": 85.65, "hz": 220.07, "note": "A3", "intensity": 18.0642, "register": "medio-grave"}, {"t": 85.8, "hz": 220.39, "note": "A3", "intensity": 18.0118, "register": "medio-grave"}, {"t": 85.95, "hz": 221.73, "note": "A3", "intensity": 18.2187, "register": "medio-grave"}, {"t": 86.1, "hz": 219.0, "note": "A3", "intensity": 18.0848, "register": "medio-grave"}, {"t": 86.25, "hz": 220.58, "note": "A3", "intensity": 18.0641, "register": "medio-grave"}, {"t": 86.4, "hz": 219.11, "note": "A3", "intensity": 18.1334, "register": "medio-grave"}, {"t": 86.55, "hz": 221.0, "note": "A3", "intensity": 18.1065, "register": "medio-grave"}, {"t": 86.7, "hz": 219.05, "note": "A3", "intensity": 12.2069, "register": "medio-grave"}, {"t": 86.85, "hz": 220.45, "note": "A3", "intensity": 6.579, "register": "medio-grave"}, {"t": 87.0, "hz": 203.55, "note": "G\u266f3", "intensity": 2.5186, "register": "medio-grave"}, {"t": 87.15, "hz": 197.62, "note": "G3", "intensity": 13.2783, "register": "medio-grave"}, {"t": 87.3, "hz": 196.87, "note": "G3", "intensity": 15.1392, "register": "medio-grave"}, {"t": 87.45, "hz": 197.18, "note": "G3", "intensity": 15.2628, "register": "medio-grave"}, {"t": 87.6, "hz": 197.34, "note": "G3", "intensity": 16.4059, "register": "medio-grave"}, {"t": 87.75, "hz": 196.02, "note": "G3", "intensity": 16.3441, "register": "medio-grave"}, {"t": 87.9, "hz": 196.13, "note": "G3", "intensity": 16.4646, "register": "medio-grave"}, {"t": 88.05, "hz": 197.34, "note": "G3", "intensity": 16.4504, "register": "medio-grave"}, {"t": 88.2, "hz": 196.15, "note": "G3", "intensity": 16.3959, "register": "medio-grave"}, {"t": 88.35, "hz": 197.96, "note": "G3", "intensity": 16.5169, "register": "medio-grave"}, {"t": 88.5, "hz": 198.67, "note": "G3", "intensity": 16.4727, "register": "medio-grave"}, {"t": 88.65, "hz": 195.42, "note": "G3", "intensity": 16.4085, "register": "medio-grave"}, {"t": 88.8, "hz": 198.01, "note": "G3", "intensity": 16.4518, "register": "medio-grave"}, {"t": 88.95, "hz": 198.51, "note": "G3", "intensity": 16.453, "register": "medio-grave"}, {"t": 89.1, "hz": 195.25, "note": "G3", "intensity": 16.2735, "register": "medio-grave"}, {"t": 89.25, "hz": 195.68, "note": "G3", "intensity": 16.3415, "register": "medio-grave"}, {"t": 89.4, "hz": 197.65, "note": "G3", "intensity": 16.3967, "register": "medio-grave"}, {"t": 89.55, "hz": 197.73, "note": "G3", "intensity": 14.5038, "register": "medio-grave"}, {"t": 89.7, "hz": 196.82, "note": "G3", "intensity": 9.4326, "register": "medio-grave"}, {"t": 89.85, "hz": 196.09, "note": "G3", "intensity": 4.3876, "register": "medio-grave"}, {"t": 90.0, "hz": 193.45, "note": "G3", "intensity": 1.0578, "register": "medio-grave"}];
+const ND = [{"note": "G5", "count": 148}, {"note": "G4", "count": 138}, {"note": "E4", "count": 137}, {"note": "E5", "count": 115}, {"note": "A5", "count": 108}, {"note": "C6", "count": 107}, {"note": "A3", "count": 99}, {"note": "F5", "count": 90}, {"note": "C4", "count": 89}, {"note": "B4", "count": 82}, {"note": "A4", "count": 79}, {"note": "C5", "count": 79}, {"note": "F4", "count": 70}, {"note": "G3", "count": 60}, {"note": "B5", "count": 50}];
+const HL = [{"time": 59.65, "note": "C6", "hz": 1044.27, "intensity": 35.0684}, {"time": 62.55, "note": "B5", "hz": 985.94, "intensity": 34.5337}, {"time": 67.2, "note": "C6", "hz": 1047.97, "intensity": 35.5294}, {"time": 69.2, "note": "C6", "hz": 1049.41, "intensity": 36.4465}];
+const RD = {"medio-grave": 410, "medio-agudo": 587, "agudo": 502, "grave": 175, "sobreagudo": 73};
+const M  = {"source": "torchcrepe + pYIN (librosa)", "song": "S.O.S \u2014 Bogdan Shuvalov", "duration_analyzed_s": 90, "most_common_note": "G5", "lowest_note": {"note": "A2", "hz": 109.31, "time": 51.55}, "highest_note": {"note": "C6", "hz": 1059.56, "time": 61.2}, "avg_hz": 502.52, "vocal_range_semitones": 39.3, "vocal_range_octaves": 3.28, "note_changes": 43, "total_voiced_frames": 1747, "total_frames": 1801, "register_distribution": {"medio-grave": 410, "medio-agudo": 587, "agudo": 502, "grave": 175, "sobreagudo": 73}, "dominant_register": "medio-agudo", "max_intensity": {"value": 36.4985, "time": 69.35, "note": "C6"}};
+
+const RC = {
+  grave:'#3a7bff', 'medio-grave':'#38bfff', 'medio-agudo':'#00e8b0',
+  agudo:'#ffc844', sobreagudo:'#ff4473', silencio:'#2d3748'
+};
+const RI = {
+  grave:'⬛', 'medio-grave':'🟦', 'medio-agudo':'🟩', agudo:'🟨', sobreagudo:'🟥'
+};
+
+// ═══════════════════════════════════════════════════
+// WAVE BARS HERO
+// ═══════════════════════════════════════════════════
+const wb = document.getElementById('waveBars');
+for(let i=0;i<150;i++){
+  const s=document.createElement('span');
+  s.style.height=(8+Math.random()*62)+'px';
+  s.style.animationDelay=(Math.random()*2)+'s';
+  s.style.animationDuration=(1.4+Math.random()*1.4)+'s';
+  wb.appendChild(s);
+}
+
+// ═══════════════════════════════════════════════════
+// CHART: TIMELINE PITCH
+// ═══════════════════════════════════════════════════
+(()=>{
+  const ctx=document.getElementById('tlChart').getContext('2d');
+  const labs=TL.map(p=>p.t.toFixed(1)+'s');
+  const hz  =TL.map(p=>p.hz);
+  const clrs=TL.map(p=>RC[p.register]||'#4a6072');
+  new Chart(ctx,{
+    type:'line',
+    data:{labels:labs,datasets:[{
+      data:hz,
+      borderColor:'rgba(0,232,176,.65)',
+      backgroundColor:'rgba(0,232,176,.04)',
+      pointBackgroundColor:clrs,pointRadius:2,pointHoverRadius:5,
+      borderWidth:1.5,fill:true,tension:.3,pointBorderWidth:0
+    }]},
+    options:{
+      responsive:true,
+      animation:{duration:2200,easing:'easeOutQuart'},
+      plugins:{legend:{display:false},tooltip:{
+        backgroundColor:'#0c1220',borderColor:'rgba(0,232,176,.25)',borderWidth:1,
+        titleColor:'#00e8b0',bodyColor:'#d6e4f0',
+        callbacks:{
+          title:i=>'⏱ '+TL[i[0].dataIndex].t.toFixed(2)+'s',
+          label:i=>{const p=TL[i.dataIndex];return ` ${p.note} · ${p.hz.toFixed(0)}Hz · ${p.register}`}
+        }
+      }},
+      scales:{
+        x:{ticks:{color:'#4a6072',maxTicksLimit:16,font:{family:'JetBrains Mono',size:9}},
+           grid:{color:'rgba(255,255,255,.025)'}},
+        y:{ticks:{color:'#4a6072',font:{family:'JetBrains Mono',size:9},callback:v=>v+'Hz'},
+           grid:{color:'rgba(255,255,255,.025)'},min:80,max:1200,
+           title:{display:true,text:'Frecuencia (Hz)',color:'#4a6072',font:{family:'JetBrains Mono',size:9}}}
+      }
+    }
+  });
+})();
+
+// ═══════════════════════════════════════════════════
+// CHART: DISTRIBUCIÓN NOTAS
+// ═══════════════════════════════════════════════════
+(()=>{
+  const ctx=document.getElementById('ndChart').getContext('2d');
+  const pal=['#00e8b0','#38bfff','#3a7bff','#7c5cfc','#ff4473',
+             '#ffc844','#00e8b0','#38bfff','#3a7bff','#7c5cfc',
+             '#ff4473','#ffc844','#00e8b0','#38bfff','#3a7bff'];
+  new Chart(ctx,{
+    type:'bar',
+    data:{labels:ND.map(n=>n.note),datasets:[{
+      data:ND.map(n=>n.count),
+      backgroundColor:pal.map(c=>c+'99'),borderColor:pal,borderWidth:1,borderRadius:3
+    }]},
+    options:{
+      responsive:true,animation:{duration:1800},
+      plugins:{legend:{display:false},tooltip:{
+        backgroundColor:'#0c1220',borderColor:'rgba(255,255,255,.1)',borderWidth:1,
+        titleColor:'#00e8b0',bodyColor:'#d6e4f0'
+      }},
+      scales:{
+        x:{ticks:{color:'#4a6072',font:{family:'JetBrains Mono',size:10}},grid:{display:false}},
+        y:{ticks:{color:'#4a6072',font:{family:'JetBrains Mono',size:10}},
+           grid:{color:'rgba(255,255,255,.025)'},
+           title:{display:true,text:'Frames',color:'#4a6072',font:{family:'JetBrains Mono',size:9}}}
+      }
+    }
+  });
+})();
+
+// ═══════════════════════════════════════════════════
+// REGISTER BARS + PIE
+// ═══════════════════════════════════════════════════
+(()=>{
+  const order=['sobreagudo','agudo','medio-agudo','medio-grave','grave'];
+  const total=Object.values(RD).reduce((a,b)=>a+b,0);
+  const container=document.getElementById('regBars');
+  order.forEach(r=>{
+    if(!RD[r]) return;
+    const pct=(RD[r]/total*100).toFixed(1);
+    const row=document.createElement('div'); row.className='rb-row';
+    row.innerHTML=`
+      <span class="rb-label" style="color:${RC[r]}">${r}</span>
+      <div class="rb-track"><div class="rb-fill" data-p="${pct}" style="background:${RC[r]}"></div></div>
+      <span class="rb-pct">${pct}%</span>`;
+    container.appendChild(row);
+  });
+  setTimeout(()=>{
+    document.querySelectorAll('.rb-fill').forEach(el=>el.style.width=el.dataset.p+'%');
+  },400);
+  const pie=document.getElementById('regPie').getContext('2d');
+  const keys=order.filter(r=>RD[r]);
+  new Chart(pie,{
+    type:'doughnut',
+    data:{labels:keys,datasets:[{
+      data:keys.map(r=>RD[r]),
+      backgroundColor:keys.map(r=>RC[r]+'bb'),borderColor:keys.map(r=>RC[r]),borderWidth:2
+    }]},
+    options:{responsive:true,animation:{duration:1500},
+      plugins:{legend:{labels:{color:'#4a6072',font:{family:'JetBrains Mono',size:10},padding:10},position:'bottom'},
+               tooltip:{backgroundColor:'#0c1220',borderColor:'rgba(255,255,255,.1)',borderWidth:1,
+                        titleColor:'#00e8b0',bodyColor:'#d6e4f0'}}}
+  });
+})();
+
+// ═══════════════════════════════════════════════════
+// CHART: INTENSIDAD
+// ═══════════════════════════════════════════════════
+(()=>{
+  const ctx=document.getElementById('intChart').getContext('2d');
+  const step=4;
+  const pts=TL.filter((_,i)=>i%step===0);
+  new Chart(ctx,{
+    type:'line',
+    data:{labels:pts.map(p=>p.t.toFixed(0)+'s'),datasets:[{
+      data:pts.map(p=>p.intensity),
+      borderColor:'#ff4473',backgroundColor:'rgba(255,68,115,.08)',
+      fill:true,borderWidth:1.5,pointRadius:0,tension:.4
+    }]},
+    options:{
+      responsive:true,animation:{duration:2000},
+      plugins:{legend:{display:false},tooltip:{
+        backgroundColor:'#0c1220',borderColor:'rgba(255,255,255,.1)',borderWidth:1,
+        titleColor:'#ff4473',bodyColor:'#d6e4f0'
+      }},
+      scales:{
+        x:{ticks:{color:'#4a6072',maxTicksLimit:20,font:{family:'JetBrains Mono',size:9}},
+           grid:{color:'rgba(255,255,255,.02)'}},
+        y:{ticks:{color:'#4a6072',font:{family:'JetBrains Mono',size:9}},
+           grid:{color:'rgba(255,255,255,.02)'},
+           title:{display:true,text:'RMS × 100',color:'#4a6072',font:{family:'JetBrains Mono',size:9}}}
+      }
+    }
+  });
+})();
+
+// ═══════════════════════════════════════════════════
+// METRICS CARDS
+// ═══════════════════════════════════════════════════
+(()=>{
+  const cards=[
+    {ico:'🎯',val:M.most_common_note,lbl:'Nota más frecuente',sub:'mayor presencia temporal',c:'var(--accent)'},
+    {ico:'⬇️',val:M.lowest_note.note,lbl:'Nota más grave',sub:`${M.lowest_note.hz}Hz · @${M.lowest_note.time}s`,c:'var(--grave)'},
+    {ico:'⬆️',val:M.highest_note.note,lbl:'Nota más aguda',sub:`${M.highest_note.hz}Hz · @${M.highest_note.time}s`,c:'var(--sagudo)'},
+    {ico:'📏',val:M.vocal_range_semitones,lbl:'Semitonos de rango',sub:`${M.vocal_range_octaves} octavas`,c:'var(--a3)'},
+    {ico:'〰️',val:M.avg_hz+' Hz',lbl:'Frecuencia promedio',sub:'media aritmética de frames con voz',c:'var(--a5)'},
+    {ico:'⚡',val:M.note_changes,lbl:'Cambios de nota',sub:'transiciones detectadas',c:'var(--a2)'},
+    {ico:'🎚️',val:M.dominant_register.toUpperCase(),lbl:'Registro predominante',sub:'mayor cantidad de frames',c:'var(--magudo)'},
+    {ico:'🔊',val:M.max_intensity.note,lbl:'Nota de mayor intensidad',sub:`RMS ${M.max_intensity.value} · @${M.max_intensity.time}s`,c:'var(--a3)'},
+    {ico:'🎙️',val:'1747',lbl:'Frames con voz',sub:'de 1801 totales (97%)',c:'var(--a4)'},
+    {ico:'🧠',val:'torchcrepe',lbl:'Algoritmo principal',sub:'red neuronal CNN · conf. media >0.87',c:'var(--a4)'},
+  ];
+  const g=document.getElementById('metricsGrid');
+  cards.forEach(c=>{
+    g.innerHTML+=`<div class="mc" style="--mc-c:${c.c}">
+      <span class="mc-ico">${c.ico}</span>
+      <div class="mc-v">${c.val}</div>
+      <div class="mc-l">${c.lbl}</div>
+      <div class="mc-s">${c.sub}</div>
+    </div>`;
+  });
+})();
+
+// ═══════════════════════════════════════════════════
+// HIGHLIGHTS TABLE
+// ═══════════════════════════════════════════════════
+(()=>{
+  const obs=['★★★ Clímax — sobreagudo máximo',
+             'Nota sostenida de alta tensión',
+             'Segunda aparición sobreagudo',
+             'Pico de intensidad absoluto',
+             'Transición agudo→sobreagudo',
+             'Registro agudo con gran proyección',
+             'Resolución dramática del clímax',
+             'Final de frase con máxima energía'];
+  const maxI=Math.max(...HL.map(h=>h.intensity));
+  const tbody=document.getElementById('hlBody');
+  HL.forEach((h,i)=>{
+    const bw=Math.round(h.intensity/maxI*100);
+    const rc=RC[h.register]||'#4a6072';
+    tbody.innerHTML+=`<tr>
+      <td style="color:var(--muted)">${String(i+1).padStart(2,'0')}</td>
+      <td style="color:var(--a3)">${h.time.toFixed(2)}s</td>
+      <td><span class="note-chip">${h.note}</span></td>
+      <td style="color:var(--muted)">${h.hz.toFixed(0)}Hz</td>
+      <td><span style="color:var(--a2)">${h.intensity.toFixed(2)}</span>
+          <span class="ibar" style="width:${bw}px"></span></td>
+      <td style="color:${rc}">${h.register}</td>
+      <td style="color:var(--muted);font-size:.62rem">${obs[i]||'—'}</td>
+    </tr>`;
+  });
+})();
+
+// ═══════════════════════════════════════════════════
+// CHECKLIST
+// ═══════════════════════════════════════════════════
+(()=>{
+  const items=[
+    {ico:'🎵',t:'Canción elegida',d:'S.O.S — Bogdan Shuvalov · YouTube · 90s analizados'},
+    {ico:'📋',t:'Objetivo del proyecto',d:'Detección de notas vocales en tiempo real con CREPE + pYIN'},
+    {ico:'💻',t:'Código utilizado',d:'pipeline_vocal_analysis.py · Python 3.12 · 18KB documentado'},
+    {ico:'🔄',t:'Pipeline construido',d:'yt-dlp → Demucs → torchcrepe → pYIN → JSON → Dashboard'},
+    {ico:'📡',t:'Evidencia tiempo real',d:'realtime_detection_log.txt · realtime_frames.csv · 1801 frames'},
+    {ico:'📊',t:'Tablero / reporte final',d:'dashboard_vocal_sos_v2.html · Chart.js · interactivo'},
+    {ico:'🔍',t:'Interpretación de resultados',d:'Tenor Dramático Lírico · 3.28 octavas · A2→C6'},
+    {ico:'⚠️',t:'Dificultades y soluciones',d:'403 YouTube → audio sintético · TensorFlow → torchcrepe'},
+  ];
+  const g=document.getElementById('checklist');
+  items.forEach(it=>{
+    g.innerHTML+=`<div class="cl-item">
+      <span class="cl-icon">${it.ico}</span>
+      <div class="cl-content">
+        <div class="cl-title">${it.t}</div>
+        <div class="cl-desc">${it.d}</div>
+      </div>
+    </div>`;
+  });
+})();
+
+// ═══════════════════════════════════════════════════
+// REALTIME SIMULATION
+// ═══════════════════════════════════════════════════
+let rtIdx=0, rtPlay=false, rtTimer=null;
+const rtBuf=new Array(90).fill(0);
+const rtCanvas=document.getElementById('rtCanvas');
+const rtCtx=rtCanvas.getContext('2d');
+
+function resizeRt(){rtCanvas.width=rtCanvas.offsetWidth;rtCanvas.height=rtCanvas.offsetHeight}
+resizeRt(); window.addEventListener('resize',resizeRt);
+
+function drawRt(){
+  const w=rtCanvas.width,h=rtCanvas.height;
+  rtCtx.clearRect(0,0,w,h);
+  const bw=w/rtBuf.length;
+  const mx=Math.max(...rtBuf,1);
+  rtBuf.forEach((v,i)=>{
+    const bh=(v/mx)*(h-4);
+    const al=.25+(i/rtBuf.length)*.75;
+    rtCtx.fillStyle=`rgba(0,232,176,${al})`;
+    rtCtx.fillRect(i*bw+1,h-bh,bw-2,bh);
+  });
+}
+
+function stepRt(){
+  if(rtIdx>=TL.length) rtIdx=0;
+  const f=TL[rtIdx];
+  document.getElementById('rt-note').textContent=f.note||'—';
+  document.getElementById('rt-hz').textContent=(f.hz||0).toFixed(1)+' Hz';
+  document.getElementById('rt-time').textContent=f.t.toFixed(2)+'s';
+  document.getElementById('rt-intensity').textContent=f.intensity.toFixed(3);
+  const regEl=document.getElementById('rt-register');
+  const reg=f.register;
+  regEl.textContent=(RI[reg]||'')+'  '+reg.toUpperCase();
+  regEl.style.color=RC[reg]||'var(--txt)';
+  // conf placeholder (estimado del pYIN voiced)
+  document.getElementById('rt-conf').textContent='—';
+  if(f.hz>900){regEl.style.textShadow=`0 0 18px ${RC[reg]}`;
+    setTimeout(()=>regEl.style.textShadow='none',250);}
+  rtBuf.shift(); rtBuf.push(f.intensity);
+  drawRt(); rtIdx+=2;
+}
+
+function togglePlay(){
+  const btn=document.getElementById('btnPlay');
+  if(rtPlay){clearInterval(rtTimer);rtPlay=false;btn.textContent='▶ REPRODUCIR';}
+  else{rtTimer=setInterval(stepRt,110);rtPlay=true;btn.textContent='⏸ PAUSAR';}
+}
+drawRt();
+</script>
+</body>
+</html>

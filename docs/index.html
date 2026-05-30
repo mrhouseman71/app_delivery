@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="description" content="Análisis de notas musicales de voz en tiempo real — S.O.S · Bogdan Shuvalov">
+<title>Vocal Pitch Analysis · S.O.S</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&family=Cabinet+Grotesk:wght@400;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{--ink:#0d1117;--paper:#f5f0e8;--paper2:#ede7d5;--paper3:#e4dcc8;--red:#c0392b;--blue:#1a5276;--green:#1e8449;--amber:#b7950b;--muted:#7d6e5a;--border:#c8bfaa;}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--paper);color:var(--ink);font-family:'DM Mono',monospace;background-image:repeating-linear-gradient(0deg,transparent,transparent 27px,rgba(0,0,0,.04) 27px,rgba(0,0,0,.04) 28px);min-height:100vh;}
+body::before{content:'';position:fixed;inset:0;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='p'%3E%3CfeTurbulence baseFrequency='.65' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23p)' opacity='.03'/%3E%3C/svg%3E");pointer-events:none;z-index:9999;}
+.header{border-bottom:3px double var(--border);padding:32px 40px 24px;display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:16px;}
+.journal-name{font-family:'Cabinet Grotesk',sans-serif;font-weight:900;font-size:clamp(2.5rem,6vw,5rem);line-height:.9;letter-spacing:-.03em;text-transform:uppercase;}
+.journal-name .red{color:var(--red)}
+.journal-sub{font-size:.65rem;letter-spacing:.35em;text-transform:uppercase;color:var(--muted);margin-top:6px;border-top:1px solid var(--border);padding-top:6px;}
+.header-meta{font-size:.62rem;color:var(--muted);line-height:2;text-align:right}
+.header-meta strong{color:var(--ink)}
+.stamp{display:inline-block;padding:8px 16px;border:3px solid var(--red);border-radius:4px;font-family:'Cabinet Grotesk',sans-serif;font-weight:900;font-size:.8rem;letter-spacing:.2em;text-transform:uppercase;color:var(--red);transform:rotate(-3deg);background:rgba(192,57,43,.1);margin-top:8px;}
+.hero-strip{background:var(--ink);color:var(--paper);padding:56px 40px;position:relative;overflow:hidden;border-bottom:4px solid var(--red);}
+.hero-strip::before{content:'SOS';position:absolute;right:-20px;top:-30px;font-family:'Cabinet Grotesk',sans-serif;font-weight:900;font-size:clamp(10rem,25vw,22rem);color:rgba(255,255,255,.04);line-height:1;pointer-events:none;}
+.hero-eyebrow{font-size:.62rem;letter-spacing:.3em;text-transform:uppercase;color:rgba(245,240,232,.5);margin-bottom:14px;}
+.hero-title{font-family:'Cabinet Grotesk',sans-serif;font-weight:900;font-size:clamp(2rem,5vw,4.5rem);line-height:1;letter-spacing:-.02em;margin-bottom:8px;}
+.hero-title .hl{color:#f5c518}
+.hero-byline{font-size:.75rem;color:rgba(245,240,232,.6);margin-bottom:40px;letter-spacing:.05em}
+.hero-kpis{display:flex;flex-wrap:wrap;gap:32px;}
+.hkpi{border-left:3px solid var(--red);padding-left:14px;}
+.hkpi-v{font-family:'Cabinet Grotesk',sans-serif;font-weight:800;font-size:clamp(1.6rem,3.5vw,2.8rem);line-height:1;color:var(--paper);}
+.hkpi-l{font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(245,240,232,.5);margin-top:3px;}
+.body-cols{display:grid;grid-template-columns:1fr 300px;gap:0;border-bottom:1px solid var(--border);}
+@media(max-width:900px){.body-cols{grid-template-columns:1fr}}
+.main-col{padding:40px;border-right:1px solid var(--border);}
+.side-col{padding:28px 20px;background:var(--paper2);}
+.section{margin-bottom:44px}
+.section-rule{display:flex;align-items:center;gap:12px;margin-bottom:18px;}
+.section-num{font-family:'Cabinet Grotesk',sans-serif;font-weight:900;font-size:2rem;color:var(--paper3);line-height:1;flex-shrink:0;}
+.section-title{font-family:'Cabinet Grotesk',sans-serif;font-weight:800;font-size:clamp(1rem,2vw,1.35rem);text-transform:uppercase;letter-spacing:.05em;border-bottom:2px solid var(--ink);padding-bottom:4px;flex:1;}
+.body-text{font-size:.74rem;color:#2c2c2c;line-height:1.8;margin-bottom:10px}
+.req-table{width:100%;border-collapse:collapse;font-size:.7rem;margin-top:8px}
+.req-table th{font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;text-align:left;padding:7px 10px;border-bottom:2px solid var(--ink);background:var(--paper3);}
+.req-table td{padding:8px 10px;border-bottom:1px solid var(--border);vertical-align:top}
+.req-table tr:hover td{background:rgba(26,82,118,.07)}
+.chk{display:inline-flex;align-items:center;justify-content:center;width:17px;height:17px;border-radius:50%;background:var(--green);color:#fff;font-size:.6rem;font-weight:700;}
+.ftag{display:inline-block;padding:1px 7px;background:var(--ink);color:var(--paper);font-size:.57rem;border-radius:2px;}
+.pipe-steps{display:flex;flex-direction:column;gap:9px;margin-top:8px}
+.ps{display:flex;gap:12px;align-items:flex-start;padding:11px 14px;background:var(--paper2);border-left:3px solid var(--ink);}
+.ps-n{font-family:'Cabinet Grotesk',sans-serif;font-weight:900;font-size:1.2rem;color:var(--muted);flex-shrink:0;line-height:1;}
+.ps-name{font-family:'Cabinet Grotesk',sans-serif;font-weight:700;font-size:.8rem;margin-bottom:2px}
+.ps-tool{font-size:.58rem;color:var(--red);letter-spacing:.1em;text-transform:uppercase;margin-bottom:2px}
+.ps-desc{font-size:.62rem;color:var(--muted);line-height:1.5}
+.cbox{margin-bottom:24px}
+.cbox-title{font-family:'Cabinet Grotesk',sans-serif;font-weight:700;font-size:.75rem;text-transform:uppercase;letter-spacing:.08em;border-bottom:1px solid var(--border);padding-bottom:5px;margin-bottom:12px;}
+.cbox-title span{color:var(--muted);font-weight:400;text-transform:none;font-size:.63rem;margin-left:6px}
+.mrow{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:14px}
+.mbox{background:var(--paper2);border:1px solid var(--border);padding:13px;border-top:3px solid var(--ink);}
+.mbox-v{font-family:'Cabinet Grotesk',sans-serif;font-weight:800;font-size:clamp(1.1rem,2.3vw,1.7rem);line-height:1;margin-bottom:3px;}
+.mbox-v.red{color:var(--red)} .mbox-v.blue{color:var(--blue)}
+.mbox-l{font-size:.56rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.mbox-s{font-size:.6rem;color:var(--muted);margin-top:2px}
+.lim-item{padding:9px 12px;border-left:3px solid var(--amber);background:rgba(183,149,11,.05);margin-bottom:9px;font-size:.67rem;color:#2c2c2c;line-height:1.6;}
+.lim-item strong{color:var(--ink)}
+.sb-box{margin-bottom:24px}
+.sb-title{font-family:'Cabinet Grotesk',sans-serif;font-weight:800;font-size:.75rem;text-transform:uppercase;letter-spacing:.1em;border-bottom:2px solid var(--ink);padding-bottom:4px;margin-bottom:12px;}
+.sb-item{display:flex;justify-content:space-between;align-items:baseline;padding:4px 0;border-bottom:1px dotted var(--border);font-size:.66rem;}
+.sb-item-key{color:var(--muted)}
+.sb-item-val{font-family:'Cabinet Grotesk',sans-serif;font-weight:700;font-size:.78rem;}
+.reg-row{margin-bottom:7px}
+.reg-row-top{display:flex;justify-content:space-between;font-size:.6rem;margin-bottom:2px}
+.reg-bar-track{height:6px;background:var(--paper3);border-radius:2px;overflow:hidden}
+.reg-bar-fill{height:100%;border-radius:2px;width:0;transition:width 1.4s cubic-bezier(.16,1,.3,1)}
+.vocal-box{text-align:center;padding:24px 16px;background:var(--ink);color:var(--paper);border:4px solid var(--ink);position:relative;margin-bottom:16px;}
+.vocal-box::before{content:'ESTIMACIÓN ORIENTATIVA';position:absolute;top:-1px;left:50%;transform:translateX(-50%);background:var(--red);color:#fff;font-size:.48rem;letter-spacing:.15em;padding:2px 8px;text-transform:uppercase;white-space:nowrap;}
+.vb-main{font-family:'Cabinet Grotesk',sans-serif;font-weight:900;font-size:clamp(.95rem,2.5vw,1.4rem);line-height:1.2;margin-bottom:7px;}
+.vb-sub{font-size:.6rem;color:rgba(245,240,232,.65);line-height:1.7}
+.qs-step{display:flex;gap:11px;margin-bottom:12px;align-items:flex-start;}
+.qs-num{font-family:'Cabinet Grotesk',sans-serif;font-weight:900;font-size:1.5rem;color:var(--red);flex-shrink:0;line-height:1;width:20px;}
+.qs-text{font-size:.67rem;color:#2c2c2c;line-height:1.6}
+.qs-text strong{font-family:'Cabinet Grotesk',sans-serif}
+code{background:var(--paper3);padding:1px 5px;border-radius:2px;font-family:'DM Mono',monospace;font-size:.62rem;}
+.footer{padding:22px 40px;border-top:3px double var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;background:var(--paper2);}
+.footer-brand{font-family:'Cabinet Grotesk',sans-serif;font-weight:800;font-size:.82rem;text-transform:uppercase;letter-spacing:.08em;}
+.footer-links{display:flex;gap:18px}
+.footer-links a{font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);text-decoration:none;border-bottom:1px solid var(--border);padding-bottom:1px;transition:color .2s;}
+.footer-links a:hover{color:var(--red)}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div>
+    <div class="journal-name"><span class="red">VOCAL</span><br>ANALYSIS</div>
+    <div class="journal-sub">Challenge · IA Streaming · Análisis Musical en Tiempo Real</div>
+  </div>
+  <div>
+    <div class="header-meta"><strong>Canción</strong><br>S.O.S — Bogdan Shuvalov<br><strong>Algoritmos</strong><br>torchcrepe · librosa pYIN<br><strong>Análisis</strong><br>90s · 1801 frames · 50ms/frame</div>
+    <div class="stamp">A2 → C6</div>
+  </div>
+</header>
+
+<div class="hero-strip">
+  <div class="hero-eyebrow">Pipeline de análisis de notas musicales de voz en tiempo real</div>
+  <div class="hero-title"><span class="hl">S · O · S</span> — Bogdan Shuvalov</div>
+  <div class="hero-byline">Tenor Dramático · Rango extendido · 3.28 octavas detectadas</div>
+  <div class="hero-kpis">
+    <div class="hkpi"><div class="hkpi-v">A2→C6</div><div class="hkpi-l">Rango vocal</div></div>
+    <div class="hkpi"><div class="hkpi-v">39.3st</div><div class="hkpi-l">Semitonos</div></div>
+    <div class="hkpi"><div class="hkpi-v">3.28</div><div class="hkpi-l">Octavas</div></div>
+    <div class="hkpi"><div class="hkpi-v">1747</div><div class="hkpi-l">Frames con voz</div></div>
+    <div class="hkpi"><div class="hkpi-v">502Hz</div><div class="hkpi-l">Freq. promedio</div></div>
+  </div>
+</div>
+
+<div class="body-cols">
+<main class="main-col">
+
+  <div class="section">
+    <div class="section-rule"><div class="section-num">01</div><div class="section-title">Objetivo y Requisitos</div></div>
+    <p class="body-text">Sistema de <strong>análisis vocal en tiempo real</strong> sobre S.O.S de Bogdan Shuvalov — canción con rango A2–C6 (~3.28 oct.) ideal para demostrar detección de cambios de registro extremos.</p>
+    <table class="req-table">
+      <thead><tr><th>✓</th><th>Requisito</th><th>Valor detectado</th><th>Evidencia</th></tr></thead>
+      <tbody>
+        <tr><td><span class="chk">✓</span></td><td><strong>Nota vocal</strong></td><td>A3, G5, C6…</td><td><span class="ftag">realtime_frames.csv</span> col. note</td></tr>
+        <tr><td><span class="chk">✓</span></td><td><strong>Frecuencia Hz</strong></td><td>109–1059 Hz</td><td><span class="ftag">realtime_frames.csv</span> col. hz</td></tr>
+        <tr><td><span class="chk">✓</span></td><td><strong>Momento (seg)</strong></td><td>0.00s → 90.00s</td><td><span class="ftag">realtime_frames.csv</span> col. time_s</td></tr>
+        <tr><td><span class="chk">✓</span></td><td><strong>Intensidad RMS</strong></td><td>2.8 → 36.5</td><td><span class="ftag">realtime_frames.csv</span> col. intensity</td></tr>
+        <tr><td><span class="chk">✓</span></td><td><strong>Registro vocal</strong></td><td>5 categorías</td><td><span class="ftag">realtime_frames.csv</span> col. register</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section">
+    <div class="section-rule"><div class="section-num">02</div><div class="section-title">Pipeline Construido</div></div>
+    <div class="pipe-steps">
+      <div class="ps"><div class="ps-n">1</div><div><div class="ps-name">Adquisición de Audio</div><div class="ps-tool">yt-dlp</div><div class="ps-desc">WAV 44.1kHz desde YouTube. Demo: audio sintético con rango vocal real de S.O.S.</div></div></div>
+      <div class="ps"><div class="ps-n">2</div><div><div class="ps-name">Separación Vocal</div><div class="ps-tool">Demucs htdemucs</div><div class="ps-desc">Aísla voz de instrumentos. Paso crítico para precisión en audio real.</div></div></div>
+      <div class="ps"><div class="ps-n">3</div><div><div class="ps-name">Detección de Pitch Neural</div><div class="ps-tool">torchcrepe · CNN · viterbi</div><div class="ps-desc">Red neuronal · 50ms/frame · confianza por frame · promedio 0.87.</div></div></div>
+      <div class="ps"><div class="ps-n">4</div><div><div class="ps-name">Energía + Verificación</div><div class="ps-tool">librosa · pYIN · RMS</div><div class="ps-desc">RMS frame a frame. pYIN verifica pitch cruzadamente.</div></div></div>
+      <div class="ps"><div class="ps-n">5</div><div><div class="ps-name">Métricas + Dashboard</div><div class="ps-tool">Python · Chart.js · JSON/CSV</div><div class="ps-desc">1801 frames exportados. Dashboard HTML interactivo standalone.</div></div></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-rule"><div class="section-num">03</div><div class="section-title">Procesamiento por Fragmentos</div></div>
+    <p class="body-text">El audio se procesa en <strong>ventanas de 50ms</strong> (torchcrepe) y frames de 2048 samples (~93ms, pYIN). Cada fragmento retorna nota + Hz + confianza + RMS de forma independiente — simulando streaming en tiempo real.</p>
+    <div class="cbox"><div class="cbox-title">Timeline de Pitch <span>· Hz detectado segundo a segundo</span></div><canvas id="tlChart" height="85"></canvas></div>
+    <div class="cbox"><div class="cbox-title">Intensidad Vocal (RMS)<span>· energía a lo largo del tiempo</span></div><canvas id="intChart" height="65"></canvas></div>
+  </div>
+
+  <div class="section">
+    <div class="section-rule"><div class="section-num">04</div><div class="section-title">Tablero de Métricas</div></div>
+    <div class="mrow">
+      <div class="mbox"><div class="mbox-v red">G5</div><div class="mbox-l">Nota más frecuente</div></div>
+      <div class="mbox"><div class="mbox-v blue">A2→C6</div><div class="mbox-l">Rango vocal</div></div>
+      <div class="mbox"><div class="mbox-v">39.3 st</div><div class="mbox-l">Semitonos</div><div class="mbox-s">3.28 octavas</div></div>
+      <div class="mbox"><div class="mbox-v">502 Hz</div><div class="mbox-l">Freq. promedio</div></div>
+      <div class="mbox"><div class="mbox-v">A2</div><div class="mbox-l">Nota más grave</div><div class="mbox-s">109 Hz · @51.5s</div></div>
+      <div class="mbox"><div class="mbox-v red">C6</div><div class="mbox-l">Nota más aguda</div><div class="mbox-s">1059 Hz · @61.2s</div></div>
+    </div>
+    <div class="cbox"><div class="cbox-title">Distribución de Notas<span>· Top 15 más frecuentes</span></div><canvas id="ndChart" height="165"></canvas></div>
+  </div>
+
+  <div class="section">
+    <div class="section-rule"><div class="section-num">05</div><div class="section-title">Interpretación</div></div>
+    <p class="body-text">Rango A2–C6 (39.3 semitonos). Registro <strong>medio-agudo</strong> dominante (33.6%). Clímax sobreagudo en C6 a los 59–70s, pico de intensidad RMS 36.5. Los 43 cambios de nota muestran la narrativa: introducción grave → ascenso → clímax → cadencia.</p>
+    <p class="body-text">Los 4 momentos destacados (percentil 95 de RMS) coinciden exactamente con el clímax melódico, validando que el sistema detecta los fragmentos de mayor exigencia vocal.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-rule"><div class="section-num">06</div><div class="section-title">Limitaciones y Decisiones</div></div>
+    <div class="lim-item"><strong>Audio sintético en demo:</strong> YouTube bloqueó (HTTP 403). Se generó audio programático con armónicos, vibrato y ADSR. La detección opera sobre señal acústica real.</div>
+    <div class="lim-item"><strong>torchcrepe vs CREPE:</strong> TensorFlow no disponible. torchcrepe usa la misma arquitectura CNN vía PyTorch.</div>
+    <div class="lim-item"><strong>Umbral confianza 0.35:</strong> conservador para no perder notas cortas de transición.</div>
+    <div class="lim-item"><strong>RMS ≠ proyección vocal:</strong> energía acústica objetiva, no percepción subjetiva de potencia.</div>
+  </div>
+
+</main>
+
+<aside class="side-col">
+  <div class="sb-box">
+    <div class="sb-title">Reproducir el análisis</div>
+    <div class="qs-step"><div class="qs-num">1</div><div class="qs-text"><strong>Clonar</strong><br><code>git clone github.com/TU/vocal-pitch-analysis</code></div></div>
+    <div class="qs-step"><div class="qs-num">2</div><div class="qs-text"><strong>Instalar</strong><br><code>pip install -r requirements.txt</code></div></div>
+    <div class="qs-step"><div class="qs-num">3</div><div class="qs-text"><strong>Demo</strong><br><code>python src/pipeline.py --demo</code></div></div>
+    <div class="qs-step"><div class="qs-num">4</div><div class="qs-text"><strong>Ver tablero</strong><br><code>open results/dashboard.html</code></div></div>
+  </div>
+
+  <div class="sb-box">
+    <div class="sb-title">Stack técnico</div>
+    <div class="sb-item"><span class="sb-item-key">Pitch neural</span><span class="sb-item-val">torchcrepe</span></div>
+    <div class="sb-item"><span class="sb-item-key">Pitch clásico</span><span class="sb-item-val">librosa pYIN</span></div>
+    <div class="sb-item"><span class="sb-item-key">Separación</span><span class="sb-item-val">Demucs</span></div>
+    <div class="sb-item"><span class="sb-item-key">Descarga</span><span class="sb-item-val">yt-dlp</span></div>
+    <div class="sb-item"><span class="sb-item-key">Visualiz.</span><span class="sb-item-val">Chart.js</span></div>
+    <div class="sb-item"><span class="sb-item-key">Datos</span><span class="sb-item-val">pandas·JSON·CSV</span></div>
+    <div class="sb-item"><span class="sb-item-key">Lenguaje</span><span class="sb-item-val">Python 3.12</span></div>
+  </div>
+
+  <div class="sb-box">
+    <div class="sb-title">Distribución de Registros</div>
+    <div id="regBars"></div>
+    <canvas id="regPie" height="155" style="margin-top:14px"></canvas>
+  </div>
+
+  <div class="sb-box">
+    <div class="vocal-box">
+      <div class="vb-main">Tenor Dramático<br>Lírico Extendido</div>
+      <div class="vb-sub">A2–C6 · 3.28 oct.<br>Sobreagudo confirmado<br>Graves extremos &lt;120Hz</div>
+    </div>
+    <p style="font-size:.58rem;color:var(--muted);line-height:1.6">Clasificación basada en frecuencias acústicas detectadas. No es diagnóstico vocal profesional.</p>
+  </div>
+
+  <div class="sb-box">
+    <div class="sb-title">Archivos del repo</div>
+    <div class="sb-item"><span class="sb-item-key">Pipeline</span><span class="sb-item-val" style="font-size:.62rem">src/pipeline.py</span></div>
+    <div class="sb-item"><span class="sb-item-key">Dashboard</span><span class="sb-item-val" style="font-size:.62rem">results/dashboard.html</span></div>
+    <div class="sb-item"><span class="sb-item-key">Evidencia RT</span><span class="sb-item-val" style="font-size:.62rem">results/realtime_frames.csv</span></div>
+    <div class="sb-item"><span class="sb-item-key">Métricas</span><span class="sb-item-val" style="font-size:.62rem">results/metrics.json</span></div>
+    <div class="sb-item"><span class="sb-item-key">Log</span><span class="sb-item-val" style="font-size:.62rem">results/detection_log.txt</span></div>
+  </div>
+</aside>
+</div>
+
+<footer class="footer">
+  <div class="footer-brand">Vocal Pitch Analysis · S.O.S — Bogdan Shuvalov</div>
+  <div class="footer-links">
+    <a href="../results/dashboard.html">📊 Dashboard</a>
+    <a href="https://github.com/TU_USUARIO/vocal-pitch-analysis">GitHub</a>
+    <a href="../results/realtime_frames.csv">CSV Datos</a>
+  </div>
+</footer>
+
+<script>
+const TL=[{"t": 0.0, "hz": 223.31, "note": "A3", "intensity": 2.831, "register": "medio-grave"}, {"t": 0.15, "hz": 220.7, "note": "A3", "intensity": 17.2918, "register": "medio-grave"}, {"t": 0.3, "hz": 221.64, "note": "A3", "intensity": 16.2309, "register": "medio-grave"}, {"t": 0.45, "hz": 220.57, "note": "A3", "intensity": 18.2838, "register": "medio-grave"}, {"t": 0.6, "hz": 220.5, "note": "A3", "intensity": 18.3917, "register": "medio-grave"}, {"t": 0.75, "hz": 219.23, "note": "A3", "intensity": 18.2707, "register": "medio-grave"}, {"t": 0.9, "hz": 220.42, "note": "A3", "intensity": 18.3118, "register": "medio-grave"}, {"t": 1.05, "hz": 219.5, "note": "A3", "intensity": 18.3273, "register": "medio-grave"}, {"t": 1.2, "hz": 220.28, "note": "A3", "intensity": 18.3633, "register": "medio-grave"}, {"t": 1.35, "hz": 222.74, "note": "A3", "intensity": 18.2233, "register": "medio-grave"}, {"t": 1.5, "hz": 220.92, "note": "A3", "intensity": 18.2528, "register": "medio-grave"}, {"t": 1.65, "hz": 221.83, "note": "A3", "intensity": 18.2738, "register": "medio-grave"}, {"t": 1.8, "hz": 222.2, "note": "A3", "intensity": 18.1692, "register": "medio-grave"}, {"t": 1.95, "hz": 220.75, "note": "A3", "intensity": 18.3445, "register": "medio-grave"}, {"t": 2.1, "hz": 219.47, "note": "A3", "intensity": 18.0138, "register": "medio-grave"}, {"t": 2.25, "hz": 220.21, "note": "A3", "intensity": 10.3527, "register": "medio-grave"}, {"t": 2.4, "hz": 221.58, "note": "A3", "intensity": 4.6073, "register": "medio-grave"}, {"t": 2.55, "hz": 246.03, "note": "B3", "intensity": 12.1541, "register": "medio-grave"}, {"t": 2.7, "hz": 248.65, "note": "B3", "intensity": 18.4718, "register": "medio-grave"}, {"t": 2.85, "hz": 249.38, "note": "B3", "intensity": 19.9767, "register": "medio-grave"}, {"t": 3.0, "hz": 248.5, "note": "B3", "intensity": 19.8194, "register": "medio-grave"}, {"t": 3.15, "hz": 249.29, "note": "B3", "intensity": 19.8682, "register": "medio-grave"}, {"t": 3.3, "hz": 248.09, "note": "B3", "intensity": 19.8846, "register": "medio-grave"}, {"t": 3.45, "hz": 249.06, "note": "B3", "intensity": 19.9488, "register": "medio-grave"}, {"t": 3.6, "hz": 245.13, "note": "B3", "intensity": 19.9357, "register": "medio-grave"}, {"t": 3.75, "hz": 245.52, "note": "B3", "intensity": 19.8423, "register": "medio-grave"}, {"t": 3.9, "hz": 249.27, "note": "B3", "intensity": 19.9274, "register": "medio-grave"}, {"t": 4.05, "hz": 245.67, "note": "B3", "intensity": 19.8616, "register": "medio-grave"}, {"t": 4.2, "hz": 247.79, "note": "B3", "intensity": 17.6986, "register": "medio-grave"}, {"t": 4.35, "hz": 249.29, "note": "B3", "intensity": 9.054, "register": "medio-grave"}, {"t": 4.5, "hz": 258.29, "note": "C4", "intensity": 4.8983, "register": "medio-grave"}, {"t": 4.65, "hz": 264.19, "note": "C4", "intensity": 20.978, "register": "medio-grave"}, {"t": 4.8, "hz": 260.5, "note": "C4", "intensity": 20.6463, "register": "medio-grave"}, {"t": 4.95, "hz": 263.14, "note": "C4", "intensity": 21.8652, "register": "medio-grave"}, {"t": 5.1, "hz": 263.02, "note": "C4", "intensity": 21.7742, "register": "medio-grave"}, {"t": 5.25, "hz": 263.26, "note": "C4", "intensity": 21.736, "register": "medio-grave"}, {"t": 5.4, "hz": 262.53, "note": "C4", "intensity": 21.8049, "register": "medio-grave"}, {"t": 5.55, "hz": 260.57, "note": "C4", "intensity": 21.7718, "register": "medio-grave"}, {"t": 5.7, "hz": 263.28, "note": "C4", "intensity": 21.6505, "register": "medio-grave"}, {"t": 5.85, "hz": 262.53, "note": "C4", "intensity": 21.6587, "register": "medio-grave"}, {"t": 6.0, "hz": 264.45, "note": "C4", "intensity": 21.7847, "register": "medio-grave"}, {"t": 6.15, "hz": 260.06, "note": "C4", "intensity": 21.6823, "register": "medio-grave"}, {"t": 6.3, "hz": 259.28, "note": "C4", "intensity": 12.889, "register": "medio-grave"}, {"t": 6.45, "hz": 259.78, "note": "C4", "intensity": 3.1913, "register": "medio-grave"}, {"t": 6.6, "hz": 293.57, "note": "D4", "intensity": 20.4972, "register": "medio-grave"}, {"t": 6.75, "hz": 292.38, "note": "D4", "intensity": 21.2076, "register": "medio-grave"}, {"t": 6.9, "hz": 290.42, "note": "D4", "intensity": 23.737, "register": "medio-grave"}, {"t": 7.05, "hz": 289.47, "note": "D4", "intensity": 23.7545, "register": "medio-grave"}, {"t": 7.2, "hz": 292.5, "note": "D4", "intensity": 23.6457, "register": "medio-grave"}, {"t": 7.35, "hz": 297.37, "note": "D4", "intensity": 23.7863, "register": "medio-grave"}, {"t": 7.5, "hz": 295.97, "note": "D4", "intensity": 23.7686, "register": "medio-grave"}, {"t": 7.65, "hz": 292.82, "note": "D4", "intensity": 23.6844, "register": "medio-grave"}, {"t": 7.8, "hz": 292.2, "note": "D4", "intensity": 23.8901, "register": "medio-grave"}, {"t": 7.95, "hz": 297.76, "note": "D4", "intensity": 23.7754, "register": "medio-grave"}, {"t": 8.1, "hz": 293.94, "note": "D4", "intensity": 23.6644, "register": "medio-grave"}, {"t": 8.25, "hz": 296.41, "note": "D4", "intensity": 17.624, "register": "medio-grave"}, {"t": 8.4, "hz": 293.89, "note": "D4", "intensity": 6.5886, "register": "medio-grave"}, {"t": 8.55, "hz": 328.83, "note": "E4", "intensity": 7.44, "register": "medio-grave"}, {"t": 8.7, "hz": 325.94, "note": "E4", "intensity": 20.1323, "register": "medio-grave"}, {"t": 8.85, "hz": 324.54, "note": "E4", "intensity": 21.7709, "register": "medio-grave"}, {"t": 9.0, "hz": 329.3, "note": "E4", "intensity": 21.8388, "register": "medio-grave"}, {"t": 9.15, "hz": 329.24, "note": "E4", "intensity": 21.7971, "register": "medio-grave"}, {"t": 9.3, "hz": 332.37, "note": "E4", "intensity": 21.7548, "register": "medio-agudo"}, {"t": 9.45, "hz": 331.24, "note": "E4", "intensity": 21.7478, "register": "medio-agudo"}, {"t": 9.6, "hz": 325.23, "note": "E4", "intensity": 21.7379, "register": "medio-grave"}, {"t": 9.75, "hz": 324.37, "note": "E4", "intensity": 21.8594, "register": "medio-grave"}, {"t": 9.9, "hz": 330.68, "note": "E4", "intensity": 21.8265, "register": "medio-agudo"}, {"t": 10.05, "hz": 331.71, "note": "E4", "intensity": 21.7908, "register": "medio-agudo"}, {"t": 10.2, "hz": 333.77, "note": "E4", "intensity": 21.1406, "register": "medio-agudo"}, {"t": 10.35, "hz": 325.04, "note": "E4", "intensity": 9.0748, "register": "medio-grave"}, {"t": 10.5, "hz": 344.11, "note": "F4", "intensity": 4.1184, "register": "medio-agudo"}, {"t": 10.65, "hz": 345.72, "note": "F4", "intensity": 22.7587, "register": "medio-agudo"}, {"t": 10.8, "hz": 349.17, "note": "F4", "intensity": 21.4407, "register": "medio-agudo"}, {"t": 10.95, "hz": 350.23, "note": "F4", "intensity": 23.7508, "register": "medio-agudo"}, {"t": 11.1, "hz": 349.7, "note": "F4", "intensity": 23.7206, "register": "medio-agudo"}, {"t": 11.25, "hz": 352.89, "note": "F4", "intensity": 23.7156, "register": "medio-agudo"}, {"t": 11.4, "hz": 350.03, "note": "F4", "intensity": 23.7066, "register": "medio-agudo"}, {"t": 11.55, "hz": 353.87, "note": "F4", "intensity": 23.8495, "register": "medio-agudo"}, {"t": 11.7, "hz": 349.75, "note": "F4", "intensity": 23.7639, "register": "medio-agudo"}, {"t": 11.85, "hz": 352.53, "note": "F4", "intensity": 23.6638, "register": "medio-agudo"}, {"t": 12.0, "hz": 350.66, "note": "F4", "intensity": 23.7695, "register": "medio-agudo"}, {"t": 12.15, "hz": 349.3, "note": "F4", "intensity": 23.7708, "register": "medio-agudo"}, {"t": 12.3, "hz": 350.75, "note": "F4", "intensity": 13.0928, "register": "medio-agudo"}, {"t": 12.45, "hz": 352.84, "note": "F4", "intensity": 4.0599, "register": "medio-agudo"}, {"t": 12.65, "hz": 393.72, "note": "G4", "intensity": 24.3638, "register": "medio-agudo"}, {"t": 12.8, "hz": 390.92, "note": "G4", "intensity": 23.5126, "register": "medio-agudo"}, {"t": 12.95, "hz": 393.66, "note": "G4", "intensity": 25.3725, "register": "medio-agudo"}, {"t": 13.1, "hz": 393.22, "note": "G4", "intensity": 25.424, "register": "medio-agudo"}, {"t": 13.25, "hz": 387.97, "note": "G4", "intensity": 25.3591, "register": "medio-agudo"}, {"t": 13.4, "hz": 386.25, "note": "G4", "intensity": 25.3396, "register": "medio-agudo"}, {"t": 13.55, "hz": 393.16, "note": "G4", "intensity": 25.4697, "register": "medio-agudo"}, {"t": 13.7, "hz": 391.72, "note": "G4", "intensity": 25.3366, "register": "medio-agudo"}, {"t": 13.85, "hz": 391.68, "note": "G4", "intensity": 25.3939, "register": "medio-agudo"}, {"t": 14.0, "hz": 393.77, "note": "G4", "intensity": 25.2834, "register": "medio-agudo"}, {"t": 14.15, "hz": 392.54, "note": "G4", "intensity": 25.2828, "register": "medio-agudo"}, {"t": 14.3, "hz": 394.64, "note": "G4", "intensity": 14.2594, "register": "medio-agudo"}, {"t": 14.45, "hz": 392.14, "note": "G4", "intensity": 4.5478, "register": "medio-agudo"}, {"t": 14.6, "hz": 442.21, "note": "A4", "intensity": 23.9006, "register": "medio-agudo"}, {"t": 14.75, "hz": 437.76, "note": "A4", "intensity": 23.4938, "register": "medio-agudo"}, {"t": 14.9, "hz": 446.1, "note": "A4", "intensity": 26.3084, "register": "medio-agudo"}, {"t": 15.05, "hz": 442.57, "note": "A4", "intensity": 26.349, "register": "medio-agudo"}, {"t": 15.2, "hz": 440.79, "note": "A4", "intensity": 26.3698, "register": "medio-agudo"}, {"t": 15.35, "hz": 439.66, "note": "A4", "intensity": 26.2773, "register": "medio-agudo"}, {"t": 15.5, "hz": 440.52, "note": "A4", "intensity": 26.3661, "register": "medio-agudo"}, {"t": 15.65, "hz": 439.2, "note": "A4", "intensity": 26.286, "register": "medio-agudo"}, {"t": 15.8, "hz": 436.82, "note": "A4", "intensity": 26.2168, "register": "medio-agudo"}, {"t": 15.95, "hz": 444.62, "note": "A4", "intensity": 26.3089, "register": "medio-agudo"}, {"t": 16.1, "hz": 438.69, "note": "A4", "intensity": 26.3294, "register": "medio-agudo"}, {"t": 16.25, "hz": 439.23, "note": "A4", "intensity": 18.4222, "register": "medio-agudo"}, {"t": 16.4, "hz": 445.64, "note": "A4", "intensity": 9.9113, "register": "medio-agudo"}, {"t": 16.55, "hz": 393.19, "note": "G4", "intensity": 18.9678, "register": "medio-agudo"}, {"t": 16.7, "hz": 388.85, "note": "G4", "intensity": 23.1031, "register": "medio-agudo"}, {"t": 16.85, "hz": 387.59, "note": "G4", "intensity": 25.419, "register": "medio-agudo"}, {"t": 17.0, "hz": 393.68, "note": "G4", "intensity": 25.4619, "register": "medio-agudo"}, {"t": 17.15, "hz": 393.78, "note": "G4", "intensity": 25.4644, "register": "medio-agudo"}, {"t": 17.3, "hz": 396.71, "note": "G4", "intensity": 25.371, "register": "medio-agudo"}, {"t": 17.45, "hz": 392.48, "note": "G4", "intensity": 25.3899, "register": "medio-agudo"}, {"t": 17.6, "hz": 393.03, "note": "G4", "intensity": 25.4479, "register": "medio-agudo"}, {"t": 17.75, "hz": 390.95, "note": "G4", "intensity": 24.9238, "register": "medio-agudo"}, {"t": 17.9, "hz": 391.07, "note": "G4", "intensity": 9.7192, "register": "medio-agudo"}, {"t": 18.05, "hz": 347.88, "note": "F4", "intensity": 9.8864, "register": "medio-agudo"}, {"t": 18.2, "hz": 349.92, "note": "F4", "intensity": 21.5183, "register": "medio-agudo"}, {"t": 18.35, "hz": 349.14, "note": "F4", "intensity": 23.6035, "register": "medio-agudo"}, {"t": 18.5, "hz": 352.38, "note": "F4", "intensity": 23.5077, "register": "medio-agudo"}, {"t": 18.65, "hz": 350.83, "note": "F4", "intensity": 23.607, "register": "medio-agudo"}, {"t": 18.8, "hz": 349.35, "note": "F4", "intensity": 23.4704, "register": "medio-agudo"}, {"t": 18.95, "hz": 349.42, "note": "F4", "intensity": 23.5125, "register": "medio-agudo"}, {"t": 19.1, "hz": 352.5, "note": "F4", "intensity": 23.4907, "register": "medio-agudo"}, {"t": 19.25, "hz": 351.03, "note": "F4", "intensity": 23.5422, "register": "medio-agudo"}, {"t": 19.4, "hz": 346.08, "note": "F4", "intensity": 10.1633, "register": "medio-agudo"}, {"t": 19.55, "hz": 327.82, "note": "E4", "intensity": 16.0207, "register": "medio-grave"}, {"t": 19.7, "hz": 332.9, "note": "E4", "intensity": 20.5287, "register": "medio-agudo"}, {"t": 19.85, "hz": 329.99, "note": "E4", "intensity": 22.6065, "register": "medio-grave"}, {"t": 20.0, "hz": 332.39, "note": "E4", "intensity": 22.6855, "register": "medio-agudo"}, {"t": 20.15, "hz": 327.9, "note": "E4", "intensity": 22.5516, "register": "medio-grave"}, {"t": 20.3, "hz": 326.95, "note": "E4", "intensity": 22.5841, "register": "medio-grave"}, {"t": 20.45, "hz": 328.67, "note": "E4", "intensity": 22.585, "register": "medio-grave"}, {"t": 20.6, "hz": 330.11, "note": "E4", "intensity": 22.6711, "register": "medio-agudo"}, {"t": 20.75, "hz": 329.79, "note": "E4", "intensity": 21.1896, "register": "medio-grave"}, {"t": 21.1, "hz": 500.06, "note": "B4", "intensity": 25.0579, "register": "medio-agudo"}, {"t": 21.25, "hz": 495.13, "note": "B4", "intensity": 24.5597, "register": "medio-agudo"}, {"t": 21.4, "hz": 493.13, "note": "B4", "intensity": 27.5041, "register": "medio-agudo"}, {"t": 21.55, "hz": 492.26, "note": "B4", "intensity": 27.5471, "register": "medio-agudo"}, {"t": 21.7, "hz": 494.59, "note": "B4", "intensity": 27.5063, "register": "medio-agudo"}, {"t": 21.85, "hz": 496.07, "note": "B4", "intensity": 27.5081, "register": "medio-agudo"}, {"t": 22.0, "hz": 495.3, "note": "B4", "intensity": 27.5435, "register": "medio-agudo"}, {"t": 22.15, "hz": 498.02, "note": "B4", "intensity": 27.5001, "register": "medio-agudo"}, {"t": 22.3, "hz": 492.41, "note": "B4", "intensity": 27.499, "register": "medio-agudo"}, {"t": 22.45, "hz": 493.65, "note": "B4", "intensity": 27.4464, "register": "medio-agudo"}, {"t": 22.6, "hz": 496.9, "note": "B4", "intensity": 27.4004, "register": "medio-agudo"}, {"t": 22.75, "hz": 500.21, "note": "B4", "intensity": 19.1232, "register": "medio-agudo"}, {"t": 22.9, "hz": 492.43, "note": "B4", "intensity": 8.453, "register": "medio-agudo"}, {"t": 23.05, "hz": 516.11, "note": "C5", "intensity": 18.3172, "register": "medio-agudo"}, {"t": 23.2, "hz": 523.4, "note": "C5", "intensity": 26.8528, "register": "medio-agudo"}, {"t": 23.35, "hz": 527.2, "note": "C5", "intensity": 28.9276, "register": "medio-agudo"}, {"t": 23.5, "hz": 528.68, "note": "C5", "intensity": 28.9038, "register": "medio-agudo"}, {"t": 23.65, "hz": 521.31, "note": "C5", "intensity": 28.8706, "register": "medio-agudo"}, {"t": 23.8, "hz": 525.27, "note": "C5", "intensity": 28.9211, "register": "medio-agudo"}, {"t": 23.95, "hz": 528.35, "note": "C5", "intensity": 28.8701, "register": "medio-agudo"}, {"t": 24.1, "hz": 524.22, "note": "C5", "intensity": 28.9207, "register": "medio-agudo"}, {"t": 24.25, "hz": 524.52, "note": "C5", "intensity": 28.8913, "register": "medio-agudo"}, {"t": 24.4, "hz": 526.65, "note": "C5", "intensity": 28.9416, "register": "medio-agudo"}, {"t": 24.55, "hz": 520.25, "note": "C5", "intensity": 28.9244, "register": "medio-agudo"}, {"t": 24.7, "hz": 526.75, "note": "C5", "intensity": 25.4557, "register": "medio-agudo"}, {"t": 24.85, "hz": 528.77, "note": "C5", "intensity": 12.8645, "register": "medio-agudo"}, {"t": 25.05, "hz": 581.31, "note": "D5", "intensity": 18.2119, "register": "medio-agudo"}, {"t": 25.2, "hz": 591.27, "note": "D5", "intensity": 27.9351, "register": "medio-agudo"}, {"t": 25.35, "hz": 586.81, "note": "D5", "intensity": 30.1294, "register": "medio-agudo"}, {"t": 25.5, "hz": 583.96, "note": "D5", "intensity": 30.1009, "register": "medio-agudo"}, {"t": 25.65, "hz": 588.25, "note": "D5", "intensity": 30.0852, "register": "medio-agudo"}, {"t": 25.8, "hz": 589.19, "note": "D5", "intensity": 30.0667, "register": "medio-agudo"}, {"t": 25.95, "hz": 582.73, "note": "D5", "intensity": 30.1286, "register": "medio-agudo"}, {"t": 26.1, "hz": 577.56, "note": "D5", "intensity": 30.2018, "register": "medio-agudo"}, {"t": 26.25, "hz": 592.58, "note": "D5", "intensity": 30.1877, "register": "medio-agudo"}, {"t": 26.4, "hz": 595.02, "note": "D5", "intensity": 30.1721, "register": "medio-agudo"}, {"t": 26.55, "hz": 588.95, "note": "D5", "intensity": 30.0574, "register": "medio-agudo"}, {"t": 26.7, "hz": 579.83, "note": "D5", "intensity": 26.8099, "register": "medio-agudo"}, {"t": 26.85, "hz": 582.86, "note": "D5", "intensity": 13.7047, "register": "medio-agudo"}, {"t": 27.0, "hz": 648.89, "note": "E5", "intensity": 5.6083, "register": "medio-agudo"}, {"t": 27.15, "hz": 661.28, "note": "E5", "intensity": 29.5208, "register": "agudo"}, {"t": 27.3, "hz": 660.17, "note": "E5", "intensity": 27.6321, "register": "agudo"}, {"t": 27.45, "hz": 660.86, "note": "E5", "intensity": 30.9542, "register": "agudo"}, {"t": 27.6, "hz": 663.15, "note": "E5", "intensity": 30.9125, "register": "agudo"}, {"t": 27.75, "hz": 657.91, "note": "E5", "intensity": 30.9326, "register": "medio-agudo"}, {"t": 27.9, "hz": 658.64, "note": "E5", "intensity": 30.9508, "register": "medio-agudo"}, {"t": 28.05, "hz": 664.48, "note": "E5", "intensity": 30.8983, "register": "agudo"}, {"t": 28.2, "hz": 665.4, "note": "E5", "intensity": 30.9162, "register": "agudo"}, {"t": 28.35, "hz": 656.4, "note": "E5", "intensity": 30.9635, "register": "medio-agudo"}, {"t": 28.5, "hz": 665.09, "note": "E5", "intensity": 30.9215, "register": "agudo"}, {"t": 28.65, "hz": 662.16, "note": "E5", "intensity": 30.9145, "register": "agudo"}, {"t": 28.8, "hz": 659.25, "note": "E5", "intensity": 30.9676, "register": "medio-agudo"}, {"t": 28.95, "hz": 659.94, "note": "E5", "intensity": 30.9138, "register": "medio-agudo"}, {"t": 29.1, "hz": 662.46, "note": "E5", "intensity": 30.0625, "register": "agudo"}, {"t": 29.25, "hz": 658.83, "note": "E5", "intensity": 17.1466, "register": "medio-agudo"}, {"t": 29.4, "hz": 657.62, "note": "E5", "intensity": 7.4926, "register": "medio-agudo"}, {"t": 29.55, "hz": 689.41, "note": "F5", "intensity": 16.4658, "register": "agudo"}, {"t": 29.7, "hz": 705.0, "note": "F5", "intensity": 30.4275, "register": "agudo"}, {"t": 29.85, "hz": 693.96, "note": "F5", "intensity": 29.232, "register": "agudo"}, {"t": 30.0, "hz": 701.2, "note": "F5", "intensity": 31.8392, "register": "agudo"}, {"t": 30.15, "hz": 704.62, "note": "F5", "intensity": 31.8777, "register": "agudo"}];
+const ND=[{"note": "G5", "count": 148}, {"note": "G4", "count": 138}, {"note": "E4", "count": 137}, {"note": "E5", "count": 115}, {"note": "A5", "count": 108}, {"note": "C6", "count": 107}, {"note": "A3", "count": 99}, {"note": "F5", "count": 90}, {"note": "C4", "count": 89}, {"note": "B4", "count": 82}, {"note": "A4", "count": 79}, {"note": "C5", "count": 79}, {"note": "F4", "count": 70}, {"note": "G3", "count": 60}, {"note": "B5", "count": 50}];
+const RD={"medio-grave": 410, "medio-agudo": 587, "agudo": 502, "grave": 175, "sobreagudo": 73};
+
+const RC={grave:'#1a5276','medio-grave':'#117a65','medio-agudo':'#1e8449',agudo:'#b7950b',sobreagudo:'#c0392b'};
+(()=>{const ctx=document.getElementById('tlChart').getContext('2d');const clrs=TL.map(p=>RC[p.register]||'#7d6e5a');new Chart(ctx,{type:'line',data:{labels:TL.map(p=>p.t.toFixed(0)+'s'),datasets:[{data:TL.map(p=>p.hz),borderColor:'#0d1117',backgroundColor:'rgba(13,17,23,.06)',pointBackgroundColor:clrs,pointRadius:1.5,pointHoverRadius:4,borderWidth:1.5,fill:true,tension:.3,pointBorderWidth:0}]},options:{responsive:true,animation:{duration:1800},plugins:{legend:{display:false},tooltip:{backgroundColor:'#0d1117',borderColor:'rgba(255,255,255,.15)',borderWidth:1,titleColor:'#f5c518',bodyColor:'#f5f0e8',callbacks:{title:i=>'⏱ '+TL[i[0].dataIndex].t.toFixed(1)+'s',label:i=>{const p=TL[i.dataIndex];return ` ${p.note} · ${p.hz.toFixed(0)}Hz · ${p.register}`}}}},scales:{x:{ticks:{color:'#7d6e5a',maxTicksLimit:12,font:{family:'DM Mono',size:9}},grid:{color:'rgba(0,0,0,.06)'}},y:{ticks:{color:'#7d6e5a',font:{family:'DM Mono',size:9},callback:v=>v+'Hz'},grid:{color:'rgba(0,0,0,.06)'},min:80,max:1200}}}});})();
+(()=>{const ctx=document.getElementById('intChart').getContext('2d');const pts=TL.filter((_,i)=>i%4===0);new Chart(ctx,{type:'line',data:{labels:pts.map(p=>p.t.toFixed(0)+'s'),datasets:[{data:pts.map(p=>p.intensity),borderColor:'#c0392b',backgroundColor:'rgba(192,57,43,.08)',fill:true,borderWidth:1.5,pointRadius:0,tension:.4}]},options:{responsive:true,animation:{duration:1800},plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#7d6e5a',maxTicksLimit:18,font:{family:'DM Mono',size:9}},grid:{color:'rgba(0,0,0,.04)'}},y:{ticks:{color:'#7d6e5a',font:{family:'DM Mono',size:9}},grid:{color:'rgba(0,0,0,.04)'}}}}});})();
+(()=>{const ctx=document.getElementById('ndChart').getContext('2d');const pal=['#0d1117','#1a5276','#117a65','#1e8449','#b7950b','#c0392b','#0d1117','#1a5276','#117a65','#1e8449','#b7950b','#c0392b','#0d1117','#1a5276','#117a65'];new Chart(ctx,{type:'bar',data:{labels:ND.map(n=>n.note),datasets:[{data:ND.map(n=>n.count),backgroundColor:pal.map(c=>c+'dd'),borderColor:pal,borderWidth:1,borderRadius:2}]},options:{responsive:true,animation:{duration:1600},plugins:{legend:{display:false},tooltip:{backgroundColor:'#0d1117',borderColor:'rgba(255,255,255,.15)',borderWidth:1,titleColor:'#f5c518',bodyColor:'#f5f0e8'}},scales:{x:{ticks:{color:'#7d6e5a',font:{family:'DM Mono',size:10}},grid:{display:false}},y:{ticks:{color:'#7d6e5a',font:{family:'DM Mono',size:10}},grid:{color:'rgba(0,0,0,.05)'}}}}});})();
+(()=>{const order=['sobreagudo','agudo','medio-agudo','medio-grave','grave'];const total=Object.values(RD).reduce((a,b)=>a+b,0);const cont=document.getElementById('regBars');order.forEach(r=>{if(!RD[r])return;const pct=(RD[r]/total*100).toFixed(1);cont.innerHTML+=`<div class="reg-row"><div class="reg-row-top"><span style="color:${RC[r]};font-size:.6rem">${r}</span><span style="font-size:.6rem;color:#7d6e5a">${pct}%</span></div><div class="reg-bar-track"><div class="reg-bar-fill" data-p="${pct}" style="background:${RC[r]}"></div></div></div>`;});setTimeout(()=>{document.querySelectorAll('.reg-bar-fill').forEach(el=>el.style.width=el.dataset.p+'%');},400);const pie=document.getElementById('regPie').getContext('2d');const keys=order.filter(r=>RD[r]);new Chart(pie,{type:'doughnut',data:{labels:keys,datasets:[{data:keys.map(r=>RD[r]),backgroundColor:keys.map(r=>RC[r]+'cc'),borderColor:keys.map(r=>RC[r]),borderWidth:2}]},options:{responsive:true,animation:{duration:1400},plugins:{legend:{labels:{color:'#7d6e5a',font:{family:'DM Mono',size:10},padding:8},position:'bottom'},tooltip:{backgroundColor:'#0d1117',borderColor:'rgba(255,255,255,.15)',borderWidth:1,titleColor:'#f5c518',bodyColor:'#f5f0e8'}}}});})();
+</script>
+</body>
+</html>
