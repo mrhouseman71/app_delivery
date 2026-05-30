@@ -1,0 +1,120 @@
+{
+  "most_common_note": "G5",
+  "lowest_note": {
+    "note": "A2",
+    "hz": 109.37,
+    "time": 50.666
+  },
+  "highest_note": {
+    "note": "C6",
+    "hz": 1058.66,
+    "time": 59.675
+  },
+  "avg_hz": 502.6,
+  "vocal_range_semitones": 39.3,
+  "vocal_range_octaves": 3.27,
+  "note_changes": 52,
+  "total_voiced_frames": 3865,
+  "total_frames": 3876,
+  "register_distribution": {
+    "medio-grave": 939,
+    "medio-agudo": 1355,
+    "agudo": 1123,
+    "grave": 382,
+    "sobreagudo": 66
+  },
+  "dominant_register": "medio-agudo",
+  "top_notes": [
+    [
+      "G5",
+      322
+    ],
+    [
+      "E4",
+      319
+    ],
+    [
+      "G4",
+      300
+    ],
+    [
+      "E5",
+      278
+    ],
+    [
+      "A5",
+      236
+    ],
+    [
+      "C6",
+      235
+    ],
+    [
+      "A3",
+      215
+    ],
+    [
+      "F5",
+      194
+    ],
+    [
+      "C4",
+      193
+    ],
+    [
+      "B4",
+      191
+    ],
+    [
+      "C5",
+      172
+    ],
+    [
+      "A4",
+      171
+    ],
+    [
+      "F4",
+      152
+    ],
+    [
+      "G3",
+      129
+    ],
+    [
+      "B5",
+      108
+    ]
+  ],
+  "max_intensity": {
+    "value": 36.6404,
+    "time": 68.522,
+    "note": "C6"
+  },
+  "highlight_moments": [
+    {
+      "time": 35.503,
+      "note": "A5",
+      "hz": 885.1,
+      "intensity": 34.7848
+    },
+    {
+      "time": 59.652,
+      "note": "C6",
+      "hz": 1052.56,
+      "intensity": 34.806
+    },
+    {
+      "time": 67.175,
+      "note": "C6",
+      "hz": 1052.56,
+      "intensity": 35.5072
+    },
+    {
+      "time": 69.195,
+      "note": "C6",
+      "hz": 1046.5,
+      "intensity": 36.588
+    }
+  ]
+}

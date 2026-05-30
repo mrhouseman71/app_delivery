@@ -9,6 +9,7 @@ torch>=2.0.0             # backend para torchcrepe
 
 # ─── Vocal separation ──────────────────────────────────────
 demucs>=4.0.0            # htdemucs: separación voz / instrumentos
+torchcodec>=0.1.0        # codec para carga de audio en torchaudio
 
 # ─── Audio / video download ────────────────────────────────
 yt-dlp>=2024.1.0         # descarga de video/audio de YouTube
