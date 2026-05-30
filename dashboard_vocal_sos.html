@@ -1,0 +1,1192 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Análisis Vocal — S.O.S · Bogdan Shuvalov</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Unbounded:wght@300;700;900&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg: #050810;
+    --surface: #0a0f1e;
+    --surface2: #111827;
+    --accent: #00f5c4;
+    --accent2: #ff3a6e;
+    --accent3: #ffd166;
+    --accent4: #6e3aff;
+    --text: #e8eaf6;
+    --muted: #4a5568;
+    --grave: #3a7bff;
+    --mediograve: #00c8ff;
+    --medioagudo: #00f5c4;
+    --agudo: #ffd166;
+    --sobreagudo: #ff3a6e;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Space Mono', monospace;
+    overflow-x: hidden;
+    min-height: 100vh;
+  }
+
+  /* Grain overlay */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 9999; opacity: 0.4;
+  }
+
+  /* HERO */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+    text-align: center;
+    padding: 60px 20px;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute; inset: 0;
+    background: 
+      radial-gradient(ellipse 80% 60% at 50% 40%, rgba(0,245,196,0.07) 0%, transparent 70%),
+      radial-gradient(ellipse 50% 40% at 20% 80%, rgba(110,58,255,0.08) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 50% at 80% 20%, rgba(255,58,110,0.06) 0%, transparent 60%);
+    animation: heroBreath 8s ease-in-out infinite alternate;
+  }
+  @keyframes heroBreath {
+    from { opacity: 0.6; }
+    to   { opacity: 1.0; }
+  }
+
+  /* Waveform decorative bars */
+  .waveform-deco {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 80px;
+    display: flex; align-items: flex-end; gap: 2px;
+    padding: 0 10px;
+    opacity: 0.3;
+  }
+  .waveform-deco span {
+    flex: 1;
+    background: linear-gradient(to top, var(--accent), transparent);
+    border-radius: 2px 2px 0 0;
+    animation: waveAnim 2s ease-in-out infinite alternate;
+  }
+
+  .badge {
+    display: inline-block;
+    padding: 6px 16px;
+    border: 1px solid var(--accent);
+    border-radius: 2px;
+    font-size: 0.65rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 24px;
+    animation: fadeUp 0.6s ease both;
+  }
+
+  .hero h1 {
+    font-family: 'Unbounded', sans-serif;
+    font-weight: 900;
+    font-size: clamp(2.5rem, 7vw, 6rem);
+    line-height: 1.0;
+    letter-spacing: -0.02em;
+    margin-bottom: 12px;
+    animation: fadeUp 0.8s 0.1s ease both;
+  }
+  .hero h1 .sos {
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero .artist {
+    font-family: 'Unbounded', sans-serif;
+    font-weight: 300;
+    font-size: clamp(0.85rem, 2.5vw, 1.4rem);
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 48px;
+    animation: fadeUp 0.8s 0.2s ease both;
+  }
+
+  .hero-stats {
+    display: flex; flex-wrap: wrap; gap: 24px; justify-content: center;
+    animation: fadeUp 0.8s 0.3s ease both;
+    margin-bottom: 40px;
+  }
+  .hero-stat {
+    text-align: center;
+  }
+  .hero-stat .val {
+    font-family: 'Unbounded', sans-serif;
+    font-size: clamp(1.5rem, 4vw, 2.5rem);
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--accent), var(--accent4));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+    display: block;
+  }
+  .hero-stat .lbl {
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+
+  .scroll-cue {
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    animation: bounce 2s infinite;
+  }
+  @keyframes bounce {
+    0%,100% { transform: translateY(0); }
+    50%      { transform: translateY(8px); }
+  }
+  @keyframes fadeUp {
+    from { opacity:0; transform:translateY(20px); }
+    to   { opacity:1; transform:translateY(0); }
+  }
+
+  /* SECTION */
+  section {
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 80px 24px;
+  }
+
+  .section-header {
+    margin-bottom: 48px;
+  }
+  .section-header .eyebrow {
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+  .section-header h2 {
+    font-family: 'Unbounded', sans-serif;
+    font-weight: 700;
+    font-size: clamp(1.4rem, 3vw, 2.2rem);
+    line-height: 1.1;
+  }
+
+  /* METRIC CARDS */
+  .metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 16px;
+    margin-bottom: 64px;
+  }
+  .metric-card {
+    background: var(--surface);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 4px;
+    padding: 24px;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.3s, transform 0.3s;
+  }
+  .metric-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+  }
+  .metric-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--card-accent, var(--accent));
+  }
+  .metric-card .mc-icon {
+    font-size: 1.4rem;
+    margin-bottom: 12px;
+    display: block;
+  }
+  .metric-card .mc-val {
+    font-family: 'Unbounded', sans-serif;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--card-accent, var(--accent));
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .metric-card .mc-lbl {
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .metric-card .mc-sub {
+    font-size: 0.7rem;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+
+  /* CHARTS */
+  .chart-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-bottom: 48px;
+  }
+  @media (max-width: 768px) {
+    .chart-grid { grid-template-columns: 1fr; }
+  }
+
+  .chart-box {
+    background: var(--surface);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 4px;
+    padding: 24px;
+  }
+  .chart-box.wide {
+    grid-column: 1 / -1;
+  }
+  .chart-box h3 {
+    font-family: 'Unbounded', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text);
+    margin-bottom: 20px;
+  }
+  .chart-box h3 span {
+    color: var(--muted);
+    font-weight: 400;
+    margin-left: 8px;
+  }
+
+  /* REGISTER BAR */
+  .register-bars {
+    display: flex; flex-direction: column; gap: 12px;
+    margin-top: 8px;
+  }
+  .reg-bar-row {
+    display: flex; align-items: center; gap: 12px;
+  }
+  .reg-bar-label {
+    width: 90px;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    flex-shrink: 0;
+  }
+  .reg-bar-track {
+    flex: 1;
+    height: 10px;
+    background: rgba(255,255,255,0.04);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .reg-bar-fill {
+    height: 100%;
+    border-radius: 2px;
+    transition: width 1.5s cubic-bezier(0.16,1,0.3,1);
+  }
+  .reg-bar-count {
+    font-size: 0.65rem;
+    color: var(--muted);
+    width: 50px;
+    text-align: right;
+    flex-shrink: 0;
+  }
+
+  /* HIGHLIGHTS */
+  .highlights-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.75rem;
+  }
+  .highlights-table th {
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-align: left;
+    padding: 8px 12px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .highlights-table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid rgba(255,255,255,0.03);
+    vertical-align: middle;
+  }
+  .highlights-table tr:hover td {
+    background: rgba(0,245,196,0.03);
+  }
+  .note-pill {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 2px;
+    font-family: 'Unbounded', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 700;
+    background: rgba(0,245,196,0.1);
+    color: var(--accent);
+    border: 1px solid rgba(0,245,196,0.2);
+  }
+  .intensity-bar-inline {
+    display: inline-block;
+    height: 6px;
+    background: linear-gradient(90deg, var(--accent2), var(--accent3));
+    border-radius: 3px;
+    vertical-align: middle;
+    margin-left: 8px;
+  }
+
+  /* PIPELINE */
+  .pipeline {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    flex-wrap: wrap;
+    margin-top: 8px;
+  }
+  .pipe-step {
+    background: var(--surface2);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 4px;
+    padding: 16px 20px;
+    flex: 1;
+    min-width: 140px;
+    text-align: center;
+  }
+  .pipe-step .ps-icon { font-size: 1.6rem; display: block; margin-bottom: 8px; }
+  .pipe-step .ps-title {
+    font-family: 'Unbounded', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 4px;
+    color: var(--accent);
+  }
+  .pipe-step .ps-desc { font-size: 0.6rem; color: var(--muted); line-height: 1.4; }
+  .pipe-arrow {
+    color: var(--muted);
+    font-size: 1.2rem;
+    padding: 0 8px;
+    flex-shrink: 0;
+  }
+
+  /* VOCAL TYPE */
+  .vocal-type-box {
+    background: linear-gradient(135deg, rgba(0,245,196,0.05), rgba(110,58,255,0.05));
+    border: 1px solid rgba(0,245,196,0.15);
+    border-radius: 4px;
+    padding: 32px;
+    text-align: center;
+  }
+  .vocal-type-box .vt-title {
+    font-family: 'Unbounded', sans-serif;
+    font-size: clamp(1.8rem, 4vw, 3rem);
+    font-weight: 900;
+    background: linear-gradient(135deg, var(--accent), var(--accent4));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 16px;
+  }
+  .vocal-type-box .vt-disclaimer {
+    font-size: 0.65rem;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+    line-height: 1.6;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  .vocal-type-box .vt-tags {
+    display: flex; gap: 8px; justify-content: center; flex-wrap: wrap;
+    margin: 16px 0;
+  }
+  .vt-tag {
+    padding: 4px 14px;
+    border: 1px solid rgba(0,245,196,0.3);
+    border-radius: 2px;
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  /* LIMITATIONS */
+  .limitations {
+    background: var(--surface);
+    border-left: 3px solid var(--accent3);
+    padding: 24px;
+    border-radius: 0 4px 4px 0;
+  }
+  .limitations h3 {
+    font-family: 'Unbounded', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--accent3);
+    margin-bottom: 12px;
+  }
+  .limitations ul {
+    list-style: none;
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  .limitations li {
+    font-size: 0.72rem;
+    color: var(--muted);
+    padding-left: 16px;
+    position: relative;
+    line-height: 1.5;
+  }
+  .limitations li::before {
+    content: '//';
+    position: absolute; left: 0;
+    color: var(--accent3);
+    font-size: 0.6rem;
+  }
+
+  /* REALTIME PANEL */
+  .realtime-demo {
+    background: var(--surface);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 4px;
+    padding: 28px;
+    margin-bottom: 48px;
+  }
+  .rt-header {
+    display: flex; align-items: center; gap: 12px; margin-bottom: 24px;
+  }
+  .rt-dot {
+    width: 10px; height: 10px; border-radius: 50%;
+    background: var(--accent2);
+    animation: rtBlink 1.2s ease-in-out infinite;
+    flex-shrink: 0;
+  }
+  @keyframes rtBlink {
+    0%,100% { opacity:1; box-shadow: 0 0 8px var(--accent2); }
+    50%      { opacity:0.3; box-shadow: none; }
+  }
+  .rt-header h3 {
+    font-family: 'Unbounded', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+  .rt-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+  .rt-cell {
+    background: var(--surface2);
+    border-radius: 4px;
+    padding: 16px;
+    text-align: center;
+  }
+  .rt-cell .rc-val {
+    font-family: 'Unbounded', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--accent);
+    display: block;
+    transition: all 0.3s;
+  }
+  .rt-cell .rc-lbl {
+    font-size: 0.55rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--muted); border-radius: 2px; }
+
+  /* FOOTER */
+  footer {
+    text-align: center;
+    padding: 40px 24px;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  footer .ft-title { color: var(--accent); font-weight: 700; margin-bottom: 6px; }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-bg"></div>
+  
+  <div class="badge">🎵 Vocal Analysis Report · Pipeline IA</div>
+  
+  <h1>
+    <span class="sos">S·O·S</span>
+  </h1>
+  <p class="artist">Bogdan Shuvalov · Análisis de Notas Vocales en Tiempo Real</p>
+
+  <div class="hero-stats">
+    <div class="hero-stat">
+      <span class="val">3.27</span>
+      <span class="lbl">Octavas de rango</span>
+    </div>
+    <div class="hero-stat">
+      <span class="val">A2→C6</span>
+      <span class="lbl">Rango vocal</span>
+    </div>
+    <div class="hero-stat">
+      <span class="val">39.3</span>
+      <span class="lbl">Semitonos</span>
+    </div>
+    <div class="hero-stat">
+      <span class="val">90s</span>
+      <span class="lbl">Duración analizada</span>
+    </div>
+    <div class="hero-stat">
+      <span class="val">52</span>
+      <span class="lbl">Cambios de nota</span>
+    </div>
+  </div>
+
+  <div class="scroll-cue">↓ Ver tablero completo</div>
+
+  <div class="waveform-deco" id="waveDeco"></div>
+</div>
+
+
+<!-- SECCIÓN: PIPELINE -->
+<section>
+  <div class="section-header">
+    <div class="eyebrow">Arquitectura</div>
+    <h2>Pipeline de Análisis</h2>
+  </div>
+
+  <div class="pipeline">
+    <div class="pipe-step">
+      <span class="ps-icon">🎬</span>
+      <div class="ps-title">Video / Audio</div>
+      <div class="ps-desc">S.O.S — Bogdan Shuvalov<br>90s · WAV 44.1kHz</div>
+    </div>
+    <div class="pipe-arrow">→</div>
+    <div class="pipe-step">
+      <span class="ps-icon">🎤</span>
+      <div class="ps-title">Separación Vocal</div>
+      <div class="ps-desc">Demucs htdemucs<br>separación voz/instrumento</div>
+    </div>
+    <div class="pipe-arrow">→</div>
+    <div class="pipe-step">
+      <span class="ps-icon">🔬</span>
+      <div class="ps-title">Análisis pYIN</div>
+      <div class="ps-desc">librosa.pyin<br>frames de 2048 samples</div>
+    </div>
+    <div class="pipe-arrow">→</div>
+    <div class="pipe-step">
+      <span class="ps-icon">🎼</span>
+      <div class="ps-title">Notas + Registro</div>
+      <div class="ps-desc">Hz → MIDI → nota<br>+ RMS intensidad</div>
+    </div>
+    <div class="pipe-arrow">→</div>
+    <div class="pipe-step">
+      <span class="ps-icon">📊</span>
+      <div class="ps-title">Dashboard</div>
+      <div class="ps-desc">Métricas + charts<br>tiempo real simulado</div>
+    </div>
+  </div>
+</section>
+
+
+<!-- SECCIÓN: TIEMPO REAL (simulado) -->
+<section style="padding-top: 0;">
+  <div class="section-header">
+    <div class="eyebrow">Detección</div>
+    <h2>Visualización en Tiempo Real</h2>
+  </div>
+
+  <div class="realtime-demo">
+    <div class="rt-header">
+      <div class="rt-dot"></div>
+      <h3>Detección frame a frame · reproducción animada</h3>
+      <button id="btnPlayPause" onclick="togglePlay()" style="margin-left:auto;background:rgba(0,245,196,0.1);border:1px solid var(--accent);color:var(--accent);padding:8px 20px;border-radius:2px;font-family:'Space Mono',monospace;font-size:0.65rem;cursor:pointer;letter-spacing:0.1em;">▶ PLAY</button>
+    </div>
+    <div class="rt-grid">
+      <div class="rt-cell">
+        <span class="rc-val" id="rt-note">—</span>
+        <div class="rc-lbl">Nota detectada</div>
+      </div>
+      <div class="rt-cell">
+        <span class="rc-val" id="rt-hz">— Hz</span>
+        <div class="rc-lbl">Frecuencia</div>
+      </div>
+      <div class="rt-cell">
+        <span class="rc-val" id="rt-time">0.00s</span>
+        <div class="rc-lbl">Momento</div>
+      </div>
+      <div class="rt-cell">
+        <span class="rc-val" id="rt-intensity">—</span>
+        <div class="rc-lbl">Intensidad</div>
+      </div>
+      <div class="rt-cell" style="grid-column: span 2;">
+        <span class="rc-val" id="rt-register" style="font-size:1rem;">—</span>
+        <div class="rc-lbl">Registro vocal</div>
+      </div>
+    </div>
+
+    <!-- Mini waveform de intensidad en tiempo real -->
+    <canvas id="realtimeCanvas" style="width:100%;height:60px;background:rgba(0,0,0,0.2);border-radius:4px;"></canvas>
+    <div style="font-size:0.55rem;color:var(--muted);margin-top:6px;letter-spacing:0.1em;">▲ INTENSIDAD EN TIEMPO REAL (buffer deslizante)</div>
+  </div>
+</section>
+
+
+<!-- SECCIÓN: MÉTRICAS -->
+<section style="padding-top: 0;">
+  <div class="section-header">
+    <div class="eyebrow">Resultados</div>
+    <h2>Métricas Musicales</h2>
+  </div>
+
+  <div class="metrics-grid">
+    <div class="metric-card" style="--card-accent: var(--accent)">
+      <span class="mc-icon">🎯</span>
+      <div class="mc-val">G5</div>
+      <div class="mc-lbl">Nota más frecuente</div>
+    </div>
+    <div class="metric-card" style="--card-accent: var(--grave)">
+      <span class="mc-icon">⬇️</span>
+      <div class="mc-val">A2</div>
+      <div class="mc-lbl">Nota más grave</div>
+      <div class="mc-sub">109.37 Hz · 50.666s</div>
+    </div>
+    <div class="metric-card" style="--card-accent: var(--sobreagudo)">
+      <span class="mc-icon">⬆️</span>
+      <div class="mc-val">C6</div>
+      <div class="mc-lbl">Nota más aguda</div>
+      <div class="mc-sub">1058.66 Hz · 59.675s</div>
+    </div>
+    <div class="metric-card" style="--card-accent: var(--accent3)">
+      <span class="mc-icon">📏</span>
+      <div class="mc-val">39.3</div>
+      <div class="mc-lbl">Semitonos de rango</div>
+      <div class="mc-sub">3.27 octavas aprox.</div>
+    </div>
+    <div class="metric-card" style="--card-accent: var(--accent4)">
+      <span class="mc-icon">〰️</span>
+      <div class="mc-val">502.59 Hz</div>
+      <div class="mc-lbl">Frecuencia promedio</div>
+    </div>
+    <div class="metric-card" style="--card-accent: var(--accent2)">
+      <span class="mc-icon">⚡</span>
+      <div class="mc-val">52</div>
+      <div class="mc-lbl">Cambios de nota</div>
+    </div>
+    <div class="metric-card" style="--card-accent: var(--medioagudo)">
+      <span class="mc-icon">🎚️</span>
+      <div class="mc-val">MEDIO-AGUDO</div>
+      <div class="mc-lbl">Registro predominante</div>
+    </div>
+    <div class="metric-card" style="--card-accent: var(--accent3)">
+      <span class="mc-icon">🔊</span>
+      <div class="mc-val">C6</div>
+      <div class="mc-lbl">Nota de mayor intensidad</div>
+      <div class="mc-sub">@ 67.779s</div>
+    </div>
+  </div>
+</section>
+
+
+<!-- SECCIÓN: CHARTS -->
+<section style="padding-top: 0;">
+  <div class="section-header">
+    <div class="eyebrow">Visualización</div>
+    <h2>Gráficos de Análisis</h2>
+  </div>
+
+  <div class="chart-grid">
+    <!-- Timeline de pitch -->
+    <div class="chart-box wide">
+      <h3>Timeline de Notas <span>· Hz a lo largo de la canción</span></h3>
+      <canvas id="timelineChart" height="100"></canvas>
+    </div>
+
+    <!-- Distribución de notas -->
+    <div class="chart-box">
+      <h3>Distribución de Notas <span>· Top 15</span></h3>
+      <canvas id="noteDistChart" height="220"></canvas>
+    </div>
+
+    <!-- Registro -->
+    <div class="chart-box">
+      <h3>Distribución por Registro</h3>
+      <div class="register-bars" id="registerBars"></div>
+      <br>
+      <canvas id="registerPieChart" height="180"></canvas>
+    </div>
+
+    <!-- Intensidad timeline -->
+    <div class="chart-box wide">
+      <h3>Intensidad Vocal <span>· RMS a lo largo del tiempo</span></h3>
+      <canvas id="intensityChart" height="80"></canvas>
+    </div>
+  </div>
+</section>
+
+
+<!-- SECCIÓN: MOMENTOS DESTACADOS -->
+<section style="padding-top: 0;">
+  <div class="section-header">
+    <div class="eyebrow">Interpretación</div>
+    <h2>Fragmentos Destacados</h2>
+  </div>
+
+  <table class="highlights-table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Tiempo</th>
+        <th>Nota</th>
+        <th>Hz</th>
+        <th>Intensidad</th>
+        <th>Registro</th>
+        <th>Observación</th>
+      </tr>
+    </thead>
+    <tbody id="highlightsBody"></tbody>
+  </table>
+</section>
+
+
+<!-- SECCIÓN: TIPO VOCAL -->
+<section style="padding-top: 0;">
+  <div class="section-header">
+    <div class="eyebrow">Interpretación Orientativa</div>
+    <h2>Tipo de Voz Estimado</h2>
+  </div>
+
+  <div class="vocal-type-box">
+    <div class="vt-title">Tenor Dramático / Lírico Ampliado</div>
+    <div class="vt-tags">
+      <span class="vt-tag">Rango A2 → C6</span>
+      <span class="vt-tag">3.27 Octavas</span>
+      <span class="vt-tag">Registro agudo predominante</span>
+      <span class="vt-tag">Sobreagudo confirmado</span>
+      <span class="vt-tag">Graves profundos</span>
+    </div>
+    <p class="vt-disclaimer">
+      ⚠️ Esta clasificación es una <strong>estimación orientativa</strong> basada exclusivamente en los datos detectados 
+      en este fragmento analizado. No constituye una clasificación vocal profesional. Los resultados dependen 
+      de la calidad del audio, la separación de pistas y las limitaciones del algoritmo pYIN. 
+      El amplio rango detectado (A2–C6 · ~3.27 octavas) sugiere características asociadas a voces con 
+      un registro excepcionalmente extenso, consistente con el estilo vocal de Bogdan Shuvalov.
+    </p>
+  </div>
+</section>
+
+
+<!-- SECCIÓN: LIMITACIONES -->
+<section style="padding-top: 0;">
+  <div class="section-header">
+    <div class="eyebrow">Transparencia</div>
+    <h2>Limitaciones del Modelo</h2>
+  </div>
+
+  <div class="limitations">
+    <h3>// Decisiones y limitaciones documentadas</h3>
+    <ul>
+      <li>El audio analizado es una <strong>simulación sintética</strong> basada en la secuencia de notas de S.O.S, generada programáticamente con armónicos, vibrato y envolventes ADSR. Esto se debió a restricciones de red para descargar el video original de YouTube.</li>
+      <li>El algoritmo <strong>pYIN</strong> (librosa) fue elegido por su robustez en señales monofónicas. No es ideal para voces mezcladas con instrumentos; la separación previa con <strong>Demucs</strong> mejoraría significativamente la precisión.</li>
+      <li>Las notas en la frontera entre registros (ej. E4 ~330 Hz) pueden clasificarse alternativamente como "medio-grave" o "medio-agudo" dependiendo del frame exacto y el vibrato presente.</li>
+      <li>La <strong>intensidad (RMS)</strong> mide energía acústica, no proyección vocal perceptiva. Un fortissimo limpio puede tener menos RMS que un sonido ruidoso de baja calidad.</li>
+      <li>La clasificación "sobreagudo" corresponde a frecuencias >C6 (~1047 Hz), que en voces masculinas es extremadamente raro y exigente. En el análisis fue detectado brevemente en el clímax.</li>
+      <li>Los <strong>cambios de nota</strong> contados incluyen variaciones de centavos por vibrato; un umbral de suavizado mejoraría la métrica en producción real.</li>
+    </ul>
+  </div>
+</section>
+
+
+<footer>
+  <div class="ft-title">Vocal Analysis Pipeline · Challenge IA Streaming</div>
+  <div>Audio → Librosa pYIN → Métricas → Dashboard · Python 3.12 · librosa 0.10</div>
+</footer>
+
+
+<script>
+// ============================================================
+// DATA
+// ============================================================
+const TIMELINE = [{"t": 0.0, "hz": 223.85, "note": "A3", "intensity": 2.831, "register": "medio-grave"}, {"t": 0.116, "hz": 218.73, "note": "A3", "intensity": 15.9415, "register": "medio-grave"}, {"t": 0.232, "hz": 222.56, "note": "A3", "intensity": 17.156, "register": "medio-grave"}, {"t": 0.348, "hz": 220.0, "note": "A3", "intensity": 16.0273, "register": "medio-grave"}, {"t": 0.464, "hz": 220.0, "note": "A3", "intensity": 18.2783, "register": "medio-grave"}, {"t": 0.58, "hz": 221.27, "note": "A3", "intensity": 18.2746, "register": "medio-grave"}, {"t": 0.697, "hz": 218.73, "note": "A3", "intensity": 18.331, "register": "medio-grave"}, {"t": 0.813, "hz": 220.0, "note": "A3", "intensity": 18.3106, "register": "medio-grave"}, {"t": 0.929, "hz": 220.0, "note": "A3", "intensity": 18.3063, "register": "medio-grave"}, {"t": 1.045, "hz": 220.0, "note": "A3", "intensity": 18.3273, "register": "medio-grave"}, {"t": 1.161, "hz": 220.0, "note": "A3", "intensity": 18.2348, "register": "medio-grave"}, {"t": 1.277, "hz": 220.0, "note": "A3", "intensity": 18.2836, "register": "medio-grave"}, {"t": 1.393, "hz": 220.0, "note": "A3", "intensity": 18.203, "register": "medio-grave"}, {"t": 1.509, "hz": 220.0, "note": "A3", "intensity": 18.2528, "register": "medio-grave"}, {"t": 1.625, "hz": 220.0, "note": "A3", "intensity": 18.3023, "register": "medio-grave"}, {"t": 1.741, "hz": 220.0, "note": "A3", "intensity": 18.3487, "register": "medio-grave"}, {"t": 1.858, "hz": 220.0, "note": "A3", "intensity": 18.2393, "register": "medio-grave"}, {"t": 1.974, "hz": 220.0, "note": "A3", "intensity": 18.3795, "register": "medio-grave"}, {"t": 2.09, "hz": 220.0, "note": "A3", "intensity": 18.0138, "register": "medio-grave"}, {"t": 2.206, "hz": 220.0, "note": "A3", "intensity": 12.2012, "register": "medio-grave"}, {"t": 2.322, "hz": 220.0, "note": "A3", "intensity": 7.4662, "register": "medio-grave"}, {"t": 2.438, "hz": 221.27, "note": "A3", "intensity": 2.7975, "register": "medio-grave"}, {"t": 2.554, "hz": 248.37, "note": "B3", "intensity": 12.1541, "register": "medio-grave"}, {"t": 2.67, "hz": 245.52, "note": "B3", "intensity": 18.963, "register": "medio-grave"}, {"t": 2.786, "hz": 248.37, "note": "B3", "intensity": 17.759, "register": "medio-grave"}, {"t": 2.902, "hz": 246.94, "note": "B3", "intensity": 20.0064, "register": "medio-grave"}, {"t": 3.019, "hz": 245.52, "note": "B3", "intensity": 19.9842, "register": "medio-grave"}, {"t": 3.135, "hz": 249.81, "note": "B3", "intensity": 19.898, "register": "medio-grave"}, {"t": 3.251, "hz": 245.52, "note": "B3", "intensity": 19.981, "register": "medio-grave"}, {"t": 3.367, "hz": 246.94, "note": "B3", "intensity": 19.9496, "register": "medio-grave"}, {"t": 3.483, "hz": 248.37, "note": "B3", "intensity": 19.9287, "register": "medio-grave"}, {"t": 3.599, "hz": 245.52, "note": "B3", "intensity": 19.9357, "register": "medio-grave"}, {"t": 3.715, "hz": 248.37, "note": "B3", "intensity": 19.904, "register": "medio-grave"}, {"t": 3.831, "hz": 248.37, "note": "B3", "intensity": 20.0586, "register": "medio-grave"}, {"t": 3.947, "hz": 245.52, "note": "B3", "intensity": 20.0297, "register": "medio-grave"}, {"t": 4.063, "hz": 248.37, "note": "B3", "intensity": 19.8704, "register": "medio-grave"}, {"t": 4.18, "hz": 246.94, "note": "B3", "intensity": 19.0302, "register": "medio-grave"}, {"t": 4.296, "hz": 246.94, "note": "B3", "intensity": 11.6876, "register": "medio-grave"}, {"t": 4.412, "hz": 248.37, "note": "B3", "intensity": 5.1983, "register": "medio-grave"}, {"t": 4.528, "hz": 261.63, "note": "C4", "intensity": 8.4617, "register": "medio-grave"}, {"t": 4.644, "hz": 261.63, "note": "C4", "intensity": 20.978, "register": "medio-grave"}, {"t": 4.76, "hz": 261.63, "note": "C4", "intensity": 19.2956, "register": "medio-grave"}, {"t": 4.876, "hz": 261.63, "note": "C4", "intensity": 21.737, "register": "medio-grave"}, {"t": 4.992, "hz": 261.63, "note": "C4", "intensity": 21.7761, "register": "medio-grave"}, {"t": 5.108, "hz": 261.63, "note": "C4", "intensity": 21.7742, "register": "medio-grave"}, {"t": 5.224, "hz": 261.63, "note": "C4", "intensity": 21.7067, "register": "medio-grave"}, {"t": 5.341, "hz": 261.63, "note": "C4", "intensity": 21.8111, "register": "medio-grave"}, {"t": 5.457, "hz": 261.63, "note": "C4", "intensity": 21.8807, "register": "medio-grave"}, {"t": 5.573, "hz": 261.63, "note": "C4", "intensity": 21.7718, "register": "medio-grave"}, {"t": 5.689, "hz": 263.14, "note": "C4", "intensity": 21.6505, "register": "medio-grave"}, {"t": 5.805, "hz": 261.63, "note": "C4", "intensity": 21.7414, "register": "medio-grave"}, {"t": 5.921, "hz": 261.63, "note": "C4", "intensity": 21.8211, "register": "medio-grave"}, {"t": 6.037, "hz": 263.14, "note": "C4", "intensity": 21.8381, "register": "medio-grave"}, {"t": 6.153, "hz": 260.12, "note": "C4", "intensity": 21.6823, "register": "medio-grave"}, {"t": 6.269, "hz": 261.63, "note": "C4", "intensity": 14.3582, "register": "medio-grave"}, {"t": 6.385, "hz": 263.14, "note": "C4", "intensity": 7.297, "register": "medio-grave"}, {"t": 6.502, "hz": 291.97, "note": "D4", "intensity": 4.877, "register": "medio-grave"}, {"t": 6.618, "hz": 295.37, "note": "D4", "intensity": 22.43, "register": "medio-grave"}, {"t": 6.734, "hz": 293.66, "note": "D4", "intensity": 21.4244, "register": "medio-grave"}, {"t": 6.85, "hz": 291.97, "note": "D4", "intensity": 23.73, "register": "medio-grave"}, {"t": 6.966, "hz": 295.37, "note": "D4", "intensity": 23.6873, "register": "medio-grave"}, {"t": 7.082, "hz": 293.66, "note": "D4", "intensity": 23.7836, "register": "medio-grave"}, {"t": 7.198, "hz": 293.66, "note": "D4", "intensity": 23.6457, "register": "medio-grave"}, {"t": 7.314, "hz": 295.37, "note": "D4", "intensity": 23.7452, "register": "medio-grave"}, {"t": 7.43, "hz": 291.97, "note": "D4", "intensity": 23.8086, "register": "medio-grave"}, {"t": 7.546, "hz": 293.66, "note": "D4", "intensity": 23.8257, "register": "medio-grave"}, {"t": 7.663, "hz": 293.66, "note": "D4", "intensity": 23.6438, "register": "medio-grave"}, {"t": 7.779, "hz": 293.66, "note": "D4", "intensity": 23.7991, "register": "medio-grave"}, {"t": 7.895, "hz": 293.66, "note": "D4", "intensity": 23.7375, "register": "medio-grave"}, {"t": 8.011, "hz": 293.66, "note": "D4", "intensity": 23.8292, "register": "medio-grave"}, {"t": 8.127, "hz": 293.66, "note": "D4", "intensity": 23.8553, "register": "medio-grave"}, {"t": 8.243, "hz": 293.66, "note": "D4", "intensity": 17.624, "register": "medio-grave"}, {"t": 8.359, "hz": 293.66, "note": "D4", "intensity": 9.5995, "register": "medio-grave"}, {"t": 8.475, "hz": 300.53, "note": "D4", "intensity": 2.7369, "register": "medio-grave"}, {"t": 8.591, "hz": 329.63, "note": "E4", "intensity": 18.5208, "register": "medio-grave"}, {"t": 8.707, "hz": 329.63, "note": "E4", "intensity": 20.1323, "register": "medio-grave"}, {"t": 8.824, "hz": 329.63, "note": "E4", "intensity": 21.0995, "register": "medio-grave"}, {"t": 8.94, "hz": 331.54, "note": "E4", "intensity": 21.8948, "register": "medio-agudo"}, {"t": 9.056, "hz": 329.63, "note": "E4", "intensity": 21.8571, "register": "medio-grave"}, {"t": 9.172, "hz": 329.63, "note": "E4", "intensity": 21.8133, "register": "medio-grave"}, {"t": 9.288, "hz": 331.54, "note": "E4", "intensity": 21.7593, "register": "medio-agudo"}, {"t": 9.404, "hz": 327.73, "note": "E4", "intensity": 21.8298, "register": "medio-grave"}, {"t": 9.52, "hz": 331.54, "note": "E4", "intensity": 21.705, "register": "medio-agudo"}, {"t": 9.636, "hz": 329.63, "note": "E4", "intensity": 21.8481, "register": "medio-grave"}, {"t": 9.752, "hz": 327.73, "note": "E4", "intensity": 21.8594, "register": "medio-grave"}, {"t": 9.868, "hz": 333.46, "note": "E4", "intensity": 21.819, "register": "medio-agudo"}, {"t": 9.985, "hz": 327.73, "note": "E4", "intensity": 21.7166, "register": "medio-grave"}, {"t": 10.101, "hz": 329.63, "note": "E4", "intensity": 21.8425, "register": "medio-grave"}, {"t": 10.217, "hz": 331.54, "note": "E4", "intensity": 18.4858, "register": "medio-agudo"}, {"t": 10.333, "hz": 325.84, "note": "E4", "intensity": 10.4488, "register": "medio-grave"}, {"t": 10.449, "hz": 331.54, "note": "E4", "intensity": 4.8553, "register": "medio-agudo"}, {"t": 10.565, "hz": 351.25, "note": "F4", "intensity": 16.4681, "register": "medio-agudo"}, {"t": 10.681, "hz": 347.22, "note": "F4", "intensity": 22.4553, "register": "medio-agudo"}, {"t": 10.797, "hz": 351.25, "note": "F4", "intensity": 21.4407, "register": "medio-agudo"}, {"t": 10.913, "hz": 349.23, "note": "F4", "intensity": 23.6638, "register": "medio-agudo"}, {"t": 11.029, "hz": 349.23, "note": "F4", "intensity": 23.7844, "register": "medio-agudo"}, {"t": 11.146, "hz": 349.23, "note": "F4", "intensity": 23.7172, "register": "medio-agudo"}, {"t": 11.262, "hz": 349.23, "note": "F4", "intensity": 23.7601, "register": "medio-agudo"}, {"t": 11.378, "hz": 349.23, "note": "F4", "intensity": 23.7066, "register": "medio-agudo"}, {"t": 11.494, "hz": 349.23, "note": "F4", "intensity": 23.7932, "register": "medio-agudo"}, {"t": 11.61, "hz": 349.23, "note": "F4", "intensity": 23.8048, "register": "medio-agudo"}, {"t": 11.726, "hz": 349.23, "note": "F4", "intensity": 23.8586, "register": "medio-agudo"}, {"t": 11.842, "hz": 349.23, "note": "F4", "intensity": 23.6638, "register": "medio-agudo"}, {"t": 11.958, "hz": 349.23, "note": "F4", "intensity": 23.7318, "register": "medio-agudo"}, {"t": 12.074, "hz": 349.23, "note": "F4", "intensity": 23.8452, "register": "medio-agudo"}, {"t": 12.19, "hz": 349.23, "note": "F4", "intensity": 22.0101, "register": "medio-agudo"}, {"t": 12.307, "hz": 349.23, "note": "F4", "intensity": 13.0928, "register": "medio-agudo"}, {"t": 12.423, "hz": 351.25, "note": "F4", "intensity": 5.5093, "register": "medio-agudo"}, {"t": 12.539, "hz": 394.27, "note": "G4", "intensity": 12.0449, "register": "medio-agudo"}, {"t": 12.655, "hz": 389.74, "note": "G4", "intensity": 24.3638, "register": "medio-agudo"}, {"t": 12.771, "hz": 394.27, "note": "G4", "intensity": 22.7794, "register": "medio-agudo"}, {"t": 12.887, "hz": 389.74, "note": "G4", "intensity": 25.4596, "register": "medio-agudo"}, {"t": 13.003, "hz": 392.0, "note": "G4", "intensity": 25.3831, "register": "medio-agudo"}, {"t": 13.119, "hz": 394.27, "note": "G4", "intensity": 25.3849, "register": "medio-agudo"}, {"t": 13.235, "hz": 389.74, "note": "G4", "intensity": 25.3822, "register": "medio-agudo"}, {"t": 13.351, "hz": 394.27, "note": "G4", "intensity": 25.4009, "register": "medio-agudo"}, {"t": 13.468, "hz": 394.27, "note": "G4", "intensity": 25.3011, "register": "medio-agudo"}, {"t": 13.584, "hz": 389.74, "note": "G4", "intensity": 25.4104, "register": "medio-agudo"}, {"t": 13.7, "hz": 394.27, "note": "G4", "intensity": 25.3366, "register": "medio-agudo"}, {"t": 13.816, "hz": 392.0, "note": "G4", "intensity": 25.3374, "register": "medio-agudo"}, {"t": 13.932, "hz": 389.74, "note": "G4", "intensity": 25.3926, "register": "medio-agudo"}, {"t": 14.048, "hz": 394.27, "note": "G4", "intensity": 25.408, "register": "medio-agudo"}, {"t": 14.164, "hz": 389.74, "note": "G4", "intensity": 24.9522, "register": "medio-agudo"}, {"t": 14.28, "hz": 392.0, "note": "G4", "intensity": 15.9356, "register": "medio-agudo"}, {"t": 14.396, "hz": 392.0, "note": "G4", "intensity": 7.7015, "register": "medio-agudo"}, {"t": 14.512, "hz": 440.0, "note": "A4", "intensity": 7.1471, "register": "medio-agudo"}, {"t": 14.629, "hz": 440.0, "note": "A4", "intensity": 25.2813, "register": "medio-agudo"}, {"t": 14.745, "hz": 440.0, "note": "A4", "intensity": 23.4938, "register": "medio-agudo"}, {"t": 14.861, "hz": 440.0, "note": "A4", "intensity": 26.3032, "register": "medio-agudo"}, {"t": 14.977, "hz": 440.0, "note": "A4", "intensity": 26.3147, "register": "medio-agudo"}, {"t": 15.093, "hz": 440.0, "note": "A4", "intensity": 26.3193, "register": "medio-agudo"}, {"t": 15.209, "hz": 440.0, "note": "A4", "intensity": 26.3698, "register": "medio-agudo"}, {"t": 15.325, "hz": 440.0, "note": "A4", "intensity": 26.2672, "register": "medio-agudo"}, {"t": 15.441, "hz": 440.0, "note": "A4", "intensity": 26.2673, "register": "medio-agudo"}, {"t": 15.557, "hz": 440.0, "note": "A4", "intensity": 26.3586, "register": "medio-agudo"}, {"t": 15.673, "hz": 442.55, "note": "A4", "intensity": 26.4199, "register": "medio-agudo"}, {"t": 15.79, "hz": 440.0, "note": "A4", "intensity": 26.2168, "register": "medio-agudo"}, {"t": 15.906, "hz": 440.0, "note": "A4", "intensity": 26.3377, "register": "medio-agudo"}, {"t": 16.022, "hz": 442.55, "note": "A4", "intensity": 26.3008, "register": "medio-agudo"}, {"t": 16.138, "hz": 437.47, "note": "A4", "intensity": 26.391, "register": "medio-agudo"}, {"t": 16.254, "hz": 442.55, "note": "A4", "intensity": 18.4222, "register": "medio-agudo"}, {"t": 16.37, "hz": 440.0, "note": "A4", "intensity": 9.9113, "register": "medio-agudo"}, {"t": 16.486, "hz": 401.16, "note": "G4", "intensity": 4.2553, "register": "medio-agudo"}, {"t": 16.602, "hz": 394.27, "note": "G4", "intensity": 24.0589, "register": "medio-agudo"}, {"t": 16.718, "hz": 392.0, "note": "G4", "intensity": 23.6479, "register": "medio-agudo"}, {"t": 16.834, "hz": 389.74, "note": "G4", "intensity": 25.4798, "register": "medio-agudo"}, {"t": 16.951, "hz": 394.27, "note": "G4", "intensity": 25.3912, "register": "medio-agudo"}, {"t": 17.067, "hz": 389.74, "note": "G4", "intensity": 25.436, "register": "medio-agudo"}, {"t": 17.183, "hz": 392.0, "note": "G4", "intensity": 25.4484, "register": "medio-agudo"}, {"t": 17.299, "hz": 394.27, "note": "G4", "intensity": 25.371, "register": "medio-agudo"}, {"t": 17.415, "hz": 389.74, "note": "G4", "intensity": 25.4251, "register": "medio-agudo"}, {"t": 17.531, "hz": 394.27, "note": "G4", "intensity": 25.485, "register": "medio-agudo"}, {"t": 17.647, "hz": 392.0, "note": "G4", "intensity": 25.3948, "register": "medio-agudo"}, {"t": 17.763, "hz": 392.0, "note": "G4", "intensity": 23.6023, "register": "medio-agudo"}, {"t": 17.879, "hz": 392.0, "note": "G4", "intensity": 11.8836, "register": "medio-agudo"}, {"t": 17.995, "hz": 355.33, "note": "F4", "intensity": 5.5865, "register": "medio-agudo"}, {"t": 18.112, "hz": 349.23, "note": "F4", "intensity": 22.5174, "register": "medio-agudo"}, {"t": 18.228, "hz": 349.23, "note": "F4", "intensity": 22.0624, "register": "medio-agudo"}, {"t": 18.344, "hz": 349.23, "note": "F4", "intensity": 23.6035, "register": "medio-agudo"}, {"t": 18.46, "hz": 349.23, "note": "F4", "intensity": 23.5661, "register": "medio-agudo"}, {"t": 18.576, "hz": 349.23, "note": "F4", "intensity": 23.4532, "register": "medio-agudo"}, {"t": 18.692, "hz": 349.23, "note": "F4", "intensity": 23.5208, "register": "medio-agudo"}, {"t": 18.808, "hz": 349.23, "note": "F4", "intensity": 23.4704, "register": "medio-agudo"}, {"t": 18.924, "hz": 349.23, "note": "F4", "intensity": 23.4789, "register": "medio-agudo"}, {"t": 19.04, "hz": 349.23, "note": "F4", "intensity": 23.5069, "register": "medio-agudo"}, {"t": 19.156, "hz": 351.25, "note": "F4", "intensity": 23.5829, "register": "medio-agudo"}, {"t": 19.273, "hz": 349.23, "note": "F4", "intensity": 21.088, "register": "medio-agudo"}, {"t": 19.389, "hz": 347.22, "note": "F4", "intensity": 10.1633, "register": "medio-agudo"}, {"t": 19.505, "hz": 331.54, "note": "E4", "intensity": 6.7257, "register": "medio-agudo"}, {"t": 19.621, "hz": 327.73, "note": "E4", "intensity": 21.5929, "register": "medio-grave"}, {"t": 19.737, "hz": 327.73, "note": "E4", "intensity": 21.6509, "register": "medio-grave"}, {"t": 19.853, "hz": 333.46, "note": "E4", "intensity": 22.6065, "register": "medio-agudo"}, {"t": 19.969, "hz": 327.73, "note": "E4", "intensity": 22.5517, "register": "medio-grave"}, {"t": 20.085, "hz": 331.54, "note": "E4", "intensity": 22.5673, "register": "medio-agudo"}, {"t": 20.201, "hz": 331.54, "note": "E4", "intensity": 22.6433, "register": "medio-agudo"}, {"t": 20.317, "hz": 327.73, "note": "E4", "intensity": 22.6214, "register": "medio-grave"}, {"t": 20.434, "hz": 331.54, "note": "E4", "intensity": 22.5692, "register": "medio-agudo"}, {"t": 20.55, "hz": 329.63, "note": "E4", "intensity": 22.6525, "register": "medio-grave"}, {"t": 20.666, "hz": 327.73, "note": "E4", "intensity": 22.6216, "register": "medio-grave"}, {"t": 20.782, "hz": 331.54, "note": "E4", "intensity": 19.6182, "register": "medio-agudo"}, {"t": 20.898, "hz": 327.73, "note": "E4", "intensity": 10.9549, "register": "medio-grave"}, {"t": 21.037, "hz": 493.88, "note": "B4", "intensity": 12.6825, "register": "medio-agudo"}, {"t": 21.153, "hz": 493.88, "note": "B4", "intensity": 26.4279, "register": "medio-agudo"}, {"t": 21.269, "hz": 493.88, "note": "B4", "intensity": 24.8119, "register": "medio-agudo"}, {"t": 21.386, "hz": 493.88, "note": "B4", "intensity": 27.4665, "register": "medio-agudo"}, {"t": 21.502, "hz": 493.88, "note": "B4", "intensity": 27.493, "register": "medio-agudo"}, {"t": 21.618, "hz": 493.88, "note": "B4", "intensity": 27.42, "register": "medio-agudo"}, {"t": 21.734, "hz": 493.88, "note": "B4", "intensity": 27.437, "register": "medio-agudo"}, {"t": 21.85, "hz": 493.88, "note": "B4", "intensity": 27.5081, "register": "medio-agudo"}, {"t": 21.966, "hz": 493.88, "note": "B4", "intensity": 27.4796, "register": "medio-agudo"}, {"t": 22.082, "hz": 493.88, "note": "B4", "intensity": 27.4817, "register": "medio-agudo"}, {"t": 22.198, "hz": 493.88, "note": "B4", "intensity": 27.5084, "register": "medio-agudo"}, {"t": 22.314, "hz": 493.88, "note": "B4", "intensity": 27.3842, "register": "medio-agudo"}, {"t": 22.43, "hz": 493.88, "note": "B4", "intensity": 27.5141, "register": "medio-agudo"}, {"t": 22.547, "hz": 493.88, "note": "B4", "intensity": 27.4532, "register": "medio-agudo"}, {"t": 22.663, "hz": 491.04, "note": "B4", "intensity": 27.1366, "register": "medio-agudo"}, {"t": 22.779, "hz": 496.74, "note": "B4", "intensity": 17.3413, "register": "medio-agudo"}, {"t": 22.895, "hz": 491.04, "note": "B4", "intensity": 8.453, "register": "medio-agudo"}, {"t": 23.011, "hz": 517.24, "note": "C5", "intensity": 7.5778, "register": "medio-agudo"}, {"t": 23.127, "hz": 526.28, "note": "C5", "intensity": 27.7172, "register": "medio-agudo"}, {"t": 23.243, "hz": 520.24, "note": "C5", "intensity": 26.3667, "register": "medio-agudo"}, {"t": 23.359, "hz": 523.25, "note": "C5", "intensity": 28.9276, "register": "medio-agudo"}, {"t": 23.475, "hz": 526.28, "note": "C5", "intensity": 28.9038, "register": "medio-agudo"}, {"t": 23.591, "hz": 520.24, "note": "C5", "intensity": 28.8926, "register": "medio-agudo"}, {"t": 23.708, "hz": 526.28, "note": "C5", "intensity": 28.874, "register": "medio-agudo"}, {"t": 23.824, "hz": 523.25, "note": "C5", "intensity": 28.8789, "register": "medio-agudo"}, {"t": 23.94, "hz": 520.24, "note": "C5", "intensity": 28.8701, "register": "medio-agudo"}, {"t": 24.056, "hz": 526.28, "note": "C5", "intensity": 28.8676, "register": "medio-agudo"}, {"t": 24.172, "hz": 523.25, "note": "C5", "intensity": 28.8623, "register": "medio-agudo"}, {"t": 24.288, "hz": 523.25, "note": "C5", "intensity": 28.925, "register": "medio-agudo"}, {"t": 24.404, "hz": 526.28, "note": "C5", "intensity": 28.9416, "register": "medio-agudo"}, {"t": 24.52, "hz": 523.25, "note": "C5", "intensity": 28.9498, "register": "medio-agudo"}, {"t": 24.636, "hz": 523.25, "note": "C5", "intensity": 28.8752, "register": "medio-agudo"}, {"t": 24.752, "hz": 523.25, "note": "C5", "intensity": 20.3389, "register": "medio-agudo"}, {"t": 24.869, "hz": 523.25, "note": "C5", "intensity": 10.9953, "register": "medio-agudo"}, {"t": 24.985, "hz": 570.61, "note": "D5", "intensity": 3.9016, "register": "medio-agudo"}, {"t": 25.101, "hz": 587.33, "note": "D5", "intensity": 26.9002, "register": "medio-agudo"}, {"t": 25.217, "hz": 587.33, "note": "D5", "intensity": 27.5017, "register": "medio-agudo"}, {"t": 25.333, "hz": 587.33, "note": "D5", "intensity": 29.577, "register": "medio-agudo"}, {"t": 25.449, "hz": 587.33, "note": "D5", "intensity": 30.2117, "register": "medio-agudo"}, {"t": 25.565, "hz": 587.33, "note": "D5", "intensity": 30.1794, "register": "medio-agudo"}, {"t": 25.681, "hz": 590.73, "note": "D5", "intensity": 30.0909, "register": "medio-agudo"}, {"t": 25.797, "hz": 587.33, "note": "D5", "intensity": 30.0667, "register": "medio-agudo"}, {"t": 25.913, "hz": 587.33, "note": "D5", "intensity": 30.1855, "register": "medio-agudo"}, {"t": 26.03, "hz": 590.73, "note": "D5", "intensity": 30.1338, "register": "medio-agudo"}, {"t": 26.146, "hz": 583.95, "note": "D5", "intensity": 30.0887, "register": "medio-agudo"}, {"t": 26.262, "hz": 587.33, "note": "D5", "intensity": 30.1031, "register": "medio-agudo"}, {"t": 26.378, "hz": 590.73, "note": "D5", "intensity": 30.1502, "register": "medio-agudo"}, {"t": 26.494, "hz": 583.95, "note": "D5", "intensity": 30.1547, "register": "medio-agudo"}, {"t": 26.61, "hz": 590.73, "note": "D5", "intensity": 30.1408, "register": "medio-agudo"}, {"t": 26.726, "hz": 587.33, "note": "D5", "intensity": 24.4072, "register": "medio-agudo"}, {"t": 26.842, "hz": 583.95, "note": "D5", "intensity": 13.7047, "register": "medio-agudo"}, {"t": 26.958, "hz": 590.73, "note": "D5", "intensity": 4.2286, "register": "medio-agudo"}, {"t": 27.074, "hz": 659.26, "note": "E5", "intensity": 19.622, "register": "medio-agudo"}, {"t": 27.191, "hz": 659.26, "note": "E5", "intensity": 29.6901, "register": "medio-agudo"}, {"t": 27.307, "hz": 663.07, "note": "E5", "intensity": 27.6321, "register": "agudo"}, {"t": 27.423, "hz": 655.46, "note": "E5", "intensity": 30.965, "register": "medio-agudo"}, {"t": 27.539, "hz": 663.07, "note": "E5", "intensity": 30.9925, "register": "agudo"}, {"t": 27.655, "hz": 659.26, "note": "E5", "intensity": 30.9943, "register": "medio-agudo"}, {"t": 27.771, "hz": 659.26, "note": "E5", "intensity": 30.9969, "register": "medio-agudo"}, {"t": 27.887, "hz": 659.26, "note": "E5", "intensity": 30.9212, "register": "medio-agudo"}, {"t": 28.003, "hz": 659.26, "note": "E5", "intensity": 30.9652, "register": "medio-agudo"}, {"t": 28.119, "hz": 659.26, "note": "E5", "intensity": 30.9262, "register": "medio-agudo"}, {"t": 28.235, "hz": 659.26, "note": "E5", "intensity": 30.9096, "register": "medio-agudo"}, {"t": 28.352, "hz": 659.26, "note": "E5", "intensity": 30.9635, "register": "medio-agudo"}, {"t": 28.468, "hz": 659.26, "note": "E5", "intensity": 30.9629, "register": "medio-agudo"}, {"t": 28.584, "hz": 659.26, "note": "E5", "intensity": 30.8993, "register": "medio-agudo"}, {"t": 28.7, "hz": 659.26, "note": "E5", "intensity": 30.9062, "register": "medio-agudo"}, {"t": 28.816, "hz": 659.26, "note": "E5", "intensity": 30.9444, "register": "medio-agudo"}, {"t": 28.932, "hz": 663.07, "note": "E5", "intensity": 31.0382, "register": "agudo"}, {"t": 29.048, "hz": 659.26, "note": "E5", "intensity": 30.994, "register": "medio-agudo"}, {"t": 29.164, "hz": 663.07, "note": "E5", "intensity": 24.0807, "register": "agudo"}, {"t": 29.28, "hz": 659.26, "note": "E5", "intensity": 15.5101, "register": "medio-agudo"}, {"t": 29.396, "hz": 655.46, "note": "E5", "intensity": 7.4926, "register": "medio-agudo"}, {"t": 29.513, "hz": 698.46, "note": "F5", "intensity": 6.9417, "register": "agudo"}, {"t": 29.629, "hz": 698.46, "note": "F5", "intensity": 29.2264, "register": "agudo"}, {"t": 29.745, "hz": 694.43, "note": "F5", "intensity": 29.5209, "register": "agudo"}, {"t": 29.861, "hz": 706.57, "note": "F5", "intensity": 29.232, "register": "agudo"}, {"t": 29.977, "hz": 694.43, "note": "F5", "intensity": 31.7703, "register": "agudo"}, {"t": 30.093, "hz": 698.46, "note": "F5", "intensity": 31.7671, "register": "agudo"}, {"t": 30.209, "hz": 702.5, "note": "F5", "intensity": 31.8316, "register": "agudo"}, {"t": 30.325, "hz": 694.43, "note": "F5", "intensity": 31.8433, "register": "agudo"}, {"t": 30.441, "hz": 702.5, "note": "F5", "intensity": 31.7586, "register": "agudo"}, {"t": 30.557, "hz": 698.46, "note": "F5", "intensity": 31.7885, "register": "agudo"}, {"t": 30.674, "hz": 694.43, "note": "F5", "intensity": 31.7964, "register": "agudo"}, {"t": 30.79, "hz": 702.5, "note": "F5", "intensity": 31.826, "register": "agudo"}, {"t": 30.906, "hz": 698.46, "note": "F5", "intensity": 31.8537, "register": "agudo"}, {"t": 31.022, "hz": 698.46, "note": "F5", "intensity": 31.7454, "register": "agudo"}, {"t": 31.138, "hz": 698.46, "note": "F5", "intensity": 31.877, "register": "agudo"}, {"t": 31.254, "hz": 698.46, "note": "F5", "intensity": 31.8166, "register": "agudo"}, {"t": 31.37, "hz": 698.46, "note": "F5", "intensity": 31.8228, "register": "agudo"}, {"t": 31.486, "hz": 698.46, "note": "F5", "intensity": 31.8157, "register": "agudo"}, {"t": 31.602, "hz": 698.46, "note": "F5", "intensity": 30.5114, "register": "agudo"}, {"t": 31.718, "hz": 698.46, "note": "F5", "intensity": 20.3931, "register": "agudo"}, {"t": 31.835, "hz": 698.46, "note": "F5", "intensity": 12.0911, "register": "agudo"}, {"t": 31.951, "hz": 698.46, "note": "F5", "intensity": 4.0559, "register": "agudo"}, {"t": 32.067, "hz": 783.99, "note": "G5", "intensity": 16.0257, "register": "agudo"}, {"t": 32.183, "hz": 783.99, "note": "G5", "intensity": 32.627, "register": "agudo"}, {"t": 32.299, "hz": 783.99, "note": "G5", "intensity": 30.9492, "register": "agudo"}, {"t": 32.415, "hz": 788.53, "note": "G5", "intensity": 29.6893, "register": "agudo"}, {"t": 32.531, "hz": 783.99, "note": "G5", "intensity": 33.3738, "register": "agudo"}, {"t": 32.647, "hz": 783.99, "note": "G5", "intensity": 33.4312, "register": "agudo"}, {"t": 32.763, "hz": 788.53, "note": "G5", "intensity": 33.4274, "register": "agudo"}, {"t": 32.879, "hz": 779.48, "note": "G5", "intensity": 33.4537, "register": "agudo"}, {"t": 32.996, "hz": 783.99, "note": "G5", "intensity": 33.3966, "register": "agudo"}, {"t": 33.112, "hz": 788.53, "note": "G5", "intensity": 33.4394, "register": "agudo"}, {"t": 33.228, "hz": 779.48, "note": "G5", "intensity": 33.4116, "register": "agudo"}, {"t": 33.344, "hz": 788.53, "note": "G5", "intensity": 33.4276, "register": "agudo"}, {"t": 33.46, "hz": 783.99, "note": "G5", "intensity": 33.4074, "register": "agudo"}, {"t": 33.576, "hz": 779.48, "note": "G5", "intensity": 33.3835, "register": "agudo"}, {"t": 33.692, "hz": 793.1, "note": "G5", "intensity": 33.4212, "register": "agudo"}, {"t": 33.808, "hz": 783.99, "note": "G5", "intensity": 33.4361, "register": "agudo"}, {"t": 33.924, "hz": 783.99, "note": "G5", "intensity": 33.4038, "register": "agudo"}, {"t": 34.04, "hz": 788.53, "note": "G5", "intensity": 33.4135, "register": "agudo"}, {"t": 34.157, "hz": 779.48, "note": "G5", "intensity": 33.4071, "register": "agudo"}, {"t": 34.273, "hz": 783.99, "note": "G5", "intensity": 33.457, "register": "agudo"}, {"t": 34.389, "hz": 783.99, "note": "G5", "intensity": 33.4119, "register": "agudo"}, {"t": 34.505, "hz": 783.99, "note": "G5", "intensity": 33.3604, "register": "agudo"}, {"t": 34.621, "hz": 783.99, "note": "G5", "intensity": 24.0052, "register": "agudo"}, {"t": 34.737, "hz": 783.99, "note": "G5", "intensity": 16.6656, "register": "agudo"}, {"t": 34.853, "hz": 783.99, "note": "G5", "intensity": 9.4236, "register": "agudo"}, {"t": 34.969, "hz": 788.53, "note": "G5", "intensity": 2.6967, "register": "agudo"}, {"t": 35.085, "hz": 880.0, "note": "A5", "intensity": 20.4969, "register": "agudo"}, {"t": 35.201, "hz": 880.0, "note": "A5", "intensity": 33.4927, "register": "agudo"}, {"t": 35.318, "hz": 880.0, "note": "A5", "intensity": 31.8999, "register": "agudo"}, {"t": 35.434, "hz": 880.0, "note": "A5", "intensity": 31.3635, "register": "agudo"}, {"t": 35.55, "hz": 880.0, "note": "A5", "intensity": 34.4218, "register": "agudo"}, {"t": 35.666, "hz": 885.1, "note": "A5", "intensity": 34.3732, "register": "agudo"}, {"t": 35.782, "hz": 880.0, "note": "A5", "intensity": 34.3992, "register": "agudo"}, {"t": 35.898, "hz": 880.0, "note": "A5", "intensity": 34.3811, "register": "agudo"}, {"t": 36.014, "hz": 885.1, "note": "A5", "intensity": 34.4079, "register": "agudo"}, {"t": 36.13, "hz": 874.93, "note": "A5", "intensity": 34.3848, "register": "agudo"}, {"t": 36.246, "hz": 885.1, "note": "A5", "intensity": 34.3393, "register": "agudo"}, {"t": 36.362, "hz": 880.0, "note": "A5", "intensity": 34.4306, "register": "agudo"}, {"t": 36.479, "hz": 874.93, "note": "A5", "intensity": 34.4043, "register": "agudo"}, {"t": 36.595, "hz": 890.23, "note": "A5", "intensity": 34.4183, "register": "agudo"}, {"t": 36.711, "hz": 874.93, "note": "A5", "intensity": 34.3974, "register": "agudo"}, {"t": 36.827, "hz": 880.0, "note": "A5", "intensity": 34.389, "register": "agudo"}, {"t": 36.943, "hz": 885.1, "note": "A5", "intensity": 34.3919, "register": "agudo"}, {"t": 37.059, "hz": 874.93, "note": "A5", "intensity": 34.3957, "register": "agudo"}, {"t": 37.175, "hz": 885.1, "note": "A5", "intensity": 34.3841, "register": "agudo"}, {"t": 37.291, "hz": 885.1, "note": "A5", "intensity": 34.3264, "register": "agudo"}, {"t": 37.407, "hz": 874.93, "note": "A5", "intensity": 34.3756, "register": "agudo"}, {"t": 37.523, "hz": 885.1, "note": "A5", "intensity": 33.2727, "register": "agudo"}, {"t": 37.64, "hz": 880.0, "note": "A5", "intensity": 23.4866, "register": "agudo"}, {"t": 37.756, "hz": 880.0, "note": "A5", "intensity": 15.9583, "register": "agudo"}, {"t": 37.872, "hz": 880.0, "note": "A5", "intensity": 8.5057, "register": "agudo"}, {"t": 37.988, "hz": 797.69, "note": "G5", "intensity": 2.967, "register": "agudo"}, {"t": 38.104, "hz": 783.99, "note": "G5", "intensity": 29.4229, "register": "agudo"}, {"t": 38.22, "hz": 783.99, "note": "G5", "intensity": 29.6755, "register": "agudo"}, {"t": 38.336, "hz": 783.99, "note": "G5", "intensity": 32.1336, "register": "agudo"}, {"t": 38.452, "hz": 783.99, "note": "G5", "intensity": 32.6364, "register": "agudo"}, {"t": 38.568, "hz": 783.99, "note": "G5", "intensity": 32.6581, "register": "agudo"}, {"t": 38.684, "hz": 783.99, "note": "G5", "intensity": 32.6122, "register": "agudo"}, {"t": 38.801, "hz": 783.99, "note": "G5", "intensity": 32.6131, "register": "agudo"}, {"t": 38.917, "hz": 783.99, "note": "G5", "intensity": 32.655, "register": "agudo"}, {"t": 39.033, "hz": 783.99, "note": "G5", "intensity": 32.623, "register": "agudo"}, {"t": 39.149, "hz": 788.53, "note": "G5", "intensity": 32.634, "register": "agudo"}, {"t": 39.265, "hz": 783.99, "note": "G5", "intensity": 32.6964, "register": "agudo"}, {"t": 39.381, "hz": 779.48, "note": "G5", "intensity": 32.6659, "register": "agudo"}, {"t": 39.497, "hz": 788.53, "note": "G5", "intensity": 32.6462, "register": "agudo"}, {"t": 39.613, "hz": 779.48, "note": "G5", "intensity": 32.6495, "register": "agudo"}, {"t": 39.729, "hz": 783.99, "note": "G5", "intensity": 26.0865, "register": "agudo"}, {"t": 39.845, "hz": 788.53, "note": "G5", "intensity": 14.4957, "register": "agudo"}, {"t": 39.962, "hz": 774.99, "note": "G5", "intensity": 4.3674, "register": "agudo"}, {"t": 40.078, "hz": 698.46, "note": "F5", "intensity": 24.4337, "register": "agudo"}, {"t": 40.194, "hz": 702.5, "note": "F5", "intensity": 29.2336, "register": "agudo"}, {"t": 40.31, "hz": 694.43, "note": "F5", "intensity": 29.8754, "register": "agudo"}, {"t": 40.426, "hz": 702.5, "note": "F5", "intensity": 31.4874, "register": "agudo"}, {"t": 40.542, "hz": 698.46, "note": "F5", "intensity": 31.4387, "register": "agudo"}, {"t": 40.658, "hz": 698.46, "note": "F5", "intensity": 31.4591, "register": "agudo"}, {"t": 40.774, "hz": 702.5, "note": "F5", "intensity": 31.4494, "register": "agudo"}, {"t": 40.89, "hz": 698.46, "note": "F5", "intensity": 31.4754, "register": "agudo"}, {"t": 41.006, "hz": 698.46, "note": "F5", "intensity": 31.4236, "register": "agudo"}, {"t": 41.123, "hz": 698.46, "note": "F5", "intensity": 31.502, "register": "agudo"}, {"t": 41.239, "hz": 698.46, "note": "F5", "intensity": 31.4817, "register": "agudo"}, {"t": 41.355, "hz": 698.46, "note": "F5", "intensity": 31.4686, "register": "agudo"}, {"t": 41.471, "hz": 698.46, "note": "F5", "intensity": 31.5048, "register": "agudo"}, {"t": 41.587, "hz": 698.46, "note": "F5", "intensity": 31.5039, "register": "agudo"}, {"t": 41.703, "hz": 698.46, "note": "F5", "intensity": 28.0222, "register": "agudo"}, {"t": 41.819, "hz": 698.46, "note": "F5", "intensity": 16.29, "register": "agudo"}, {"t": 41.935, "hz": 698.46, "note": "F5", "intensity": 6.2345, "register": "agudo"}, {"t": 42.051, "hz": 659.26, "note": "E5", "intensity": 12.1364, "register": "medio-agudo"}, {"t": 42.167, "hz": 659.26, "note": "E5", "intensity": 30.4291, "register": "medio-agudo"}, {"t": 42.284, "hz": 659.26, "note": "E5", "intensity": 28.907, "register": "medio-agudo"}, {"t": 42.4, "hz": 663.07, "note": "E5", "intensity": 31.4378, "register": "agudo"}, {"t": 42.516, "hz": 659.26, "note": "E5", "intensity": 31.4729, "register": "medio-agudo"}, {"t": 42.632, "hz": 659.26, "note": "E5", "intensity": 31.5189, "register": "medio-agudo"}, {"t": 42.748, "hz": 663.07, "note": "E5", "intensity": 31.4852, "register": "agudo"}, {"t": 42.864, "hz": 655.46, "note": "E5", "intensity": 31.5025, "register": "medio-agudo"}, {"t": 42.98, "hz": 663.07, "note": "E5", "intensity": 31.4991, "register": "agudo"}, {"t": 43.096, "hz": 659.26, "note": "E5", "intensity": 31.4361, "register": "medio-agudo"}, {"t": 43.212, "hz": 655.46, "note": "E5", "intensity": 31.4579, "register": "medio-agudo"}, {"t": 43.328, "hz": 666.92, "note": "E5", "intensity": 31.5163, "register": "agudo"}, {"t": 43.445, "hz": 655.46, "note": "E5", "intensity": 31.4599, "register": "medio-agudo"}, {"t": 43.561, "hz": 655.46, "note": "E5", "intensity": 31.5084, "register": "medio-agudo"}, {"t": 43.677, "hz": 663.07, "note": "E5", "intensity": 30.1563, "register": "agudo"}, {"t": 43.793, "hz": 655.46, "note": "E5", "intensity": 18.6545, "register": "medio-agudo"}, {"t": 43.909, "hz": 663.07, "note": "E5", "intensity": 8.4806, "register": "agudo"}, {"t": 44.141, "hz": 145.99, "note": "D3", "intensity": 26.3862, "register": "grave"}, {"t": 44.257, "hz": 147.68, "note": "D3", "intensity": 25.4627, "register": "grave"}, {"t": 44.373, "hz": 146.83, "note": "D3", "intensity": 25.9493, "register": "grave"}, {"t": 44.489, "hz": 146.83, "note": "D3", "intensity": 27.7578, "register": "grave"}, {"t": 44.606, "hz": 146.83, "note": "D3", "intensity": 27.6625, "register": "grave"}, {"t": 44.722, "hz": 146.83, "note": "D3", "intensity": 27.5001, "register": "grave"}, {"t": 44.838, "hz": 146.83, "note": "D3", "intensity": 27.9869, "register": "grave"}, {"t": 44.954, "hz": 146.83, "note": "D3", "intensity": 27.6375, "register": "grave"}, {"t": 45.07, "hz": 146.83, "note": "D3", "intensity": 27.658, "register": "grave"}, {"t": 45.186, "hz": 146.83, "note": "D3", "intensity": 27.5986, "register": "grave"}, {"t": 45.302, "hz": 146.83, "note": "D3", "intensity": 27.4861, "register": "grave"}, {"t": 45.418, "hz": 146.83, "note": "D3", "intensity": 27.8096, "register": "grave"}, {"t": 45.534, "hz": 146.83, "note": "D3", "intensity": 27.7446, "register": "grave"}, {"t": 45.65, "hz": 147.68, "note": "D3", "intensity": 27.8691, "register": "grave"}, {"t": 45.767, "hz": 145.99, "note": "D3", "intensity": 27.92, "register": "grave"}, {"t": 45.883, "hz": 147.68, "note": "D3", "intensity": 28.0686, "register": "grave"}, {"t": 45.999, "hz": 146.83, "note": "D3", "intensity": 27.8925, "register": "grave"}, {"t": 46.115, "hz": 145.99, "note": "D3", "intensity": 25.9708, "register": "grave"}, {"t": 46.231, "hz": 147.68, "note": "D3", "intensity": 18.2923, "register": "grave"}, {"t": 46.347, "hz": 145.99, "note": "D3", "intensity": 9.843, "register": "grave"}, {"t": 46.463, "hz": 147.68, "note": "D3", "intensity": 2.9306, "register": "grave"}, {"t": 46.579, "hz": 132.33, "note": "C3", "intensity": 20.8732, "register": "grave"}, {"t": 46.695, "hz": 130.06, "note": "C3", "intensity": 24.6833, "register": "grave"}, {"t": 46.811, "hz": 131.57, "note": "C3", "intensity": 25.3055, "register": "grave"}, {"t": 46.928, "hz": 131.57, "note": "C3", "intensity": 26.6638, "register": "grave"}, {"t": 47.044, "hz": 130.06, "note": "C3", "intensity": 26.752, "register": "grave"}, {"t": 47.16, "hz": 131.57, "note": "C3", "intensity": 26.4925, "register": "grave"}, {"t": 47.276, "hz": 130.81, "note": "C3", "intensity": 26.6176, "register": "grave"}, {"t": 47.392, "hz": 130.81, "note": "C3", "intensity": 26.5692, "register": "grave"}, {"t": 47.508, "hz": 131.57, "note": "C3", "intensity": 26.6722, "register": "grave"}, {"t": 47.624, "hz": 130.81, "note": "C3", "intensity": 26.6692, "register": "grave"}, {"t": 47.74, "hz": 130.81, "note": "C3", "intensity": 26.5739, "register": "grave"}, {"t": 47.856, "hz": 130.81, "note": "C3", "intensity": 26.6708, "register": "grave"}, {"t": 47.972, "hz": 130.81, "note": "C3", "intensity": 26.4275, "register": "grave"}, {"t": 48.089, "hz": 130.81, "note": "C3", "intensity": 26.7681, "register": "grave"}, {"t": 48.205, "hz": 130.81, "note": "C3", "intensity": 23.361, "register": "grave"}, {"t": 48.321, "hz": 130.81, "note": "C3", "intensity": 13.8173, "register": "grave"}, {"t": 48.437, "hz": 130.81, "note": "C3", "intensity": 5.1541, "register": "grave"}, {"t": 48.553, "hz": 123.47, "note": "B2", "intensity": 15.5218, "register": "grave"}, {"t": 48.669, "hz": 123.47, "note": "B2", "intensity": 24.2485, "register": "grave"}, {"t": 48.785, "hz": 123.47, "note": "B2", "intensity": 23.4918, "register": "grave"}, {"t": 48.901, "hz": 123.47, "note": "B2", "intensity": 25.881, "register": "grave"}, {"t": 49.017, "hz": 123.47, "note": "B2", "intensity": 25.4588, "register": "grave"}, {"t": 49.133, "hz": 124.19, "note": "B2", "intensity": 25.5642, "register": "grave"}, {"t": 49.25, "hz": 123.47, "note": "B2", "intensity": 25.9002, "register": "grave"}, {"t": 49.366, "hz": 123.47, "note": "B2", "intensity": 25.4589, "register": "grave"}, {"t": 49.482, "hz": 124.19, "note": "B2", "intensity": 25.5676, "register": "grave"}, {"t": 49.598, "hz": 122.76, "note": "B2", "intensity": 25.942, "register": "grave"}, {"t": 49.714, "hz": 124.19, "note": "B2", "intensity": 25.4008, "register": "grave"}, {"t": 49.83, "hz": 124.19, "note": "B2", "intensity": 25.6223, "register": "grave"}, {"t": 49.946, "hz": 122.76, "note": "B2", "intensity": 25.9052, "register": "grave"}, {"t": 50.062, "hz": 124.91, "note": "B2", "intensity": 25.4041, "register": "grave"}, {"t": 50.178, "hz": 123.47, "note": "B2", "intensity": 24.4845, "register": "grave"}, {"t": 50.294, "hz": 122.76, "note": "B2", "intensity": 15.2279, "register": "grave"}, {"t": 50.411, "hz": 124.91, "note": "B2", "intensity": 6.741, "register": "grave"}, {"t": 50.527, "hz": 110.64, "note": "A2", "intensity": 7.0407, "register": "grave"}, {"t": 50.643, "hz": 110.0, "note": "A2", "intensity": 22.3337, "register": "grave"}, {"t": 50.759, "hz": 110.64, "note": "A2", "intensity": 21.6467, "register": "grave"}, {"t": 50.875, "hz": 110.0, "note": "A2", "intensity": 22.1448, "register": "grave"}, {"t": 50.991, "hz": 110.64, "note": "A2", "intensity": 23.7144, "register": "grave"}, {"t": 51.107, "hz": 110.0, "note": "A2", "intensity": 23.7673, "register": "grave"}, {"t": 51.223, "hz": 110.0, "note": "A2", "intensity": 23.3974, "register": "grave"}, {"t": 51.339, "hz": 110.0, "note": "A2", "intensity": 23.689, "register": "grave"}, {"t": 51.455, "hz": 110.0, "note": "A2", "intensity": 23.626, "register": "grave"}, {"t": 51.572, "hz": 110.0, "note": "A2", "intensity": 23.8173, "register": "grave"}, {"t": 51.688, "hz": 110.0, "note": "A2", "intensity": 23.6982, "register": "grave"}, {"t": 51.804, "hz": 110.0, "note": "A2", "intensity": 23.4757, "register": "grave"}, {"t": 51.92, "hz": 110.0, "note": "A2", "intensity": 23.7848, "register": "grave"}, {"t": 52.036, "hz": 110.64, "note": "A2", "intensity": 23.5289, "register": "grave"}, {"t": 52.152, "hz": 110.0, "note": "A2", "intensity": 23.4763, "register": "grave"}, {"t": 52.268, "hz": 110.0, "note": "A2", "intensity": 23.5768, "register": "grave"}, {"t": 52.384, "hz": 110.64, "note": "A2", "intensity": 23.8509, "register": "grave"}, {"t": 52.5, "hz": 109.37, "note": "A2", "intensity": 23.6858, "register": "grave"}, {"t": 52.616, "hz": 110.64, "note": "A2", "intensity": 22.0333, "register": "grave"}, {"t": 52.733, "hz": 110.0, "note": "A2", "intensity": 14.2362, "register": "grave"}, {"t": 52.849, "hz": 109.37, "note": "A2", "intensity": 8.1527, "register": "grave"}, {"t": 53.034, "hz": 327.73, "note": "E4", "intensity": 10.3283, "register": "medio-grave"}, {"t": 53.15, "hz": 331.54, "note": "E4", "intensity": 22.6785, "register": "medio-agudo"}, {"t": 53.267, "hz": 329.63, "note": "E4", "intensity": 21.168, "register": "medio-grave"}, {"t": 53.383, "hz": 327.73, "note": "E4", "intensity": 23.6897, "register": "medio-grave"}, {"t": 53.499, "hz": 333.46, "note": "E4", "intensity": 23.5566, "register": "medio-agudo"}, {"t": 53.615, "hz": 327.73, "note": "E4", "intensity": 23.5021, "register": "medio-grave"}, {"t": 53.731, "hz": 329.63, "note": "E4", "intensity": 23.5475, "register": "medio-grave"}, {"t": 53.847, "hz": 331.54, "note": "E4", "intensity": 23.6419, "register": "medio-agudo"}, {"t": 53.963, "hz": 327.73, "note": "E4", "intensity": 23.5019, "register": "medio-grave"}, {"t": 54.079, "hz": 331.54, "note": "E4", "intensity": 23.5775, "register": "medio-agudo"}, {"t": 54.195, "hz": 329.63, "note": "E4", "intensity": 23.5164, "register": "medio-grave"}, {"t": 54.311, "hz": 329.63, "note": "E4", "intensity": 23.58, "register": "medio-grave"}, {"t": 54.428, "hz": 331.54, "note": "E4", "intensity": 23.5382, "register": "medio-agudo"}, {"t": 54.544, "hz": 329.63, "note": "E4", "intensity": 23.5773, "register": "medio-grave"}, {"t": 54.66, "hz": 329.63, "note": "E4", "intensity": 23.1964, "register": "medio-grave"}, {"t": 54.776, "hz": 329.63, "note": "E4", "intensity": 15.0303, "register": "medio-grave"}, {"t": 54.892, "hz": 329.63, "note": "E4", "intensity": 7.4174, "register": "medio-grave"}, {"t": 55.008, "hz": 392.0, "note": "G4", "intensity": 6.2919, "register": "medio-agudo"}, {"t": 55.124, "hz": 392.0, "note": "G4", "intensity": 24.8253, "register": "medio-agudo"}, {"t": 55.24, "hz": 392.0, "note": "G4", "intensity": 23.2668, "register": "medio-agudo"}, {"t": 55.356, "hz": 392.0, "note": "G4", "intensity": 26.0002, "register": "medio-agudo"}, {"t": 55.472, "hz": 392.0, "note": "G4", "intensity": 26.0482, "register": "medio-agudo"}, {"t": 55.589, "hz": 392.0, "note": "G4", "intensity": 25.9895, "register": "medio-agudo"}, {"t": 55.705, "hz": 392.0, "note": "G4", "intensity": 26.0369, "register": "medio-agudo"}, {"t": 55.821, "hz": 392.0, "note": "G4", "intensity": 26.0127, "register": "medio-agudo"}, {"t": 55.937, "hz": 389.74, "note": "G4", "intensity": 25.9786, "register": "medio-agudo"}, {"t": 56.053, "hz": 394.27, "note": "G4", "intensity": 26.0221, "register": "medio-agudo"}, {"t": 56.169, "hz": 392.0, "note": "G4", "intensity": 26.0536, "register": "medio-agudo"}, {"t": 56.285, "hz": 389.74, "note": "G4", "intensity": 26.0296, "register": "medio-agudo"}, {"t": 56.401, "hz": 396.55, "note": "G4", "intensity": 26.0163, "register": "medio-agudo"}, {"t": 56.517, "hz": 389.74, "note": "G4", "intensity": 26.0262, "register": "medio-agudo"}, {"t": 56.633, "hz": 392.0, "note": "G4", "intensity": 26.0828, "register": "medio-agudo"}, {"t": 56.75, "hz": 394.27, "note": "G4", "intensity": 18.5358, "register": "medio-agudo"}, {"t": 56.866, "hz": 389.74, "note": "G4", "intensity": 10.1163, "register": "medio-agudo"}, {"t": 56.982, "hz": 450.28, "note": "A4", "intensity": 3.0804, "register": "medio-agudo"}, {"t": 57.098, "hz": 496.74, "note": "B4", "intensity": 22.273, "register": "medio-agudo"}, {"t": 57.214, "hz": 491.04, "note": "B4", "intensity": 26.753, "register": "medio-agudo"}, {"t": 57.33, "hz": 496.74, "note": "B4", "intensity": 24.9748, "register": "medio-agudo"}, {"t": 57.446, "hz": 493.88, "note": "B4", "intensity": 28.3288, "register": "medio-agudo"}, {"t": 57.562, "hz": 493.88, "note": "B4", "intensity": 28.3205, "register": "medio-agudo"}, {"t": 57.678, "hz": 496.74, "note": "B4", "intensity": 28.3032, "register": "medio-agudo"}, {"t": 57.794, "hz": 493.88, "note": "B4", "intensity": 28.2968, "register": "medio-agudo"}, {"t": 57.911, "hz": 493.88, "note": "B4", "intensity": 28.2902, "register": "medio-agudo"}, {"t": 58.027, "hz": 493.88, "note": "B4", "intensity": 28.3624, "register": "medio-agudo"}, {"t": 58.143, "hz": 493.88, "note": "B4", "intensity": 28.3287, "register": "medio-agudo"}, {"t": 58.259, "hz": 493.88, "note": "B4", "intensity": 28.343, "register": "medio-agudo"}, {"t": 58.375, "hz": 493.88, "note": "B4", "intensity": 28.2284, "register": "medio-agudo"}, {"t": 58.491, "hz": 493.88, "note": "B4", "intensity": 28.3223, "register": "medio-agudo"}, {"t": 58.607, "hz": 493.88, "note": "B4", "intensity": 28.2051, "register": "medio-agudo"}, {"t": 58.723, "hz": 493.88, "note": "B4", "intensity": 28.3941, "register": "medio-agudo"}, {"t": 58.839, "hz": 493.88, "note": "B4", "intensity": 28.2885, "register": "medio-agudo"}, {"t": 58.955, "hz": 496.74, "note": "B4", "intensity": 28.2828, "register": "medio-agudo"}, {"t": 59.072, "hz": 493.88, "note": "B4", "intensity": 28.3315, "register": "medio-agudo"}, {"t": 59.188, "hz": 493.88, "note": "B4", "intensity": 20.1045, "register": "medio-agudo"}, {"t": 59.304, "hz": 496.74, "note": "B4", "intensity": 12.7043, "register": "medio-agudo"}, {"t": 59.42, "hz": 491.04, "note": "B4", "intensity": 5.4382, "register": "medio-agudo"}, {"t": 59.582, "hz": 1040.47, "note": "C6", "intensity": 25.1004, "register": "agudo"}, {"t": 59.699, "hz": 1052.56, "note": "C6", "intensity": 34.6487, "register": "sobreagudo"}, {"t": 59.815, "hz": 1046.5, "note": "C6", "intensity": 32.2008, "register": "agudo"}, {"t": 59.931, "hz": 1040.47, "note": "C6", "intensity": 36.3046, "register": "agudo"}, {"t": 60.047, "hz": 1058.66, "note": "C6", "intensity": 36.2548, "register": "sobreagudo"}, {"t": 60.163, "hz": 1040.47, "note": "C6", "intensity": 36.2774, "register": "agudo"}, {"t": 60.279, "hz": 1046.5, "note": "C6", "intensity": 36.2853, "register": "agudo"}, {"t": 60.395, "hz": 1052.56, "note": "C6", "intensity": 36.2767, "register": "sobreagudo"}, {"t": 60.511, "hz": 1040.47, "note": "C6", "intensity": 36.2731, "register": "agudo"}, {"t": 60.627, "hz": 1052.56, "note": "C6", "intensity": 36.3069, "register": "sobreagudo"}, {"t": 60.743, "hz": 1052.56, "note": "C6", "intensity": 36.2772, "register": "sobreagudo"}, {"t": 60.86, "hz": 1046.5, "note": "C6", "intensity": 36.3418, "register": "agudo"}, {"t": 60.976, "hz": 1052.56, "note": "C6", "intensity": 36.3308, "register": "sobreagudo"}, {"t": 61.092, "hz": 1046.5, "note": "C6", "intensity": 36.2604, "register": "agudo"}, {"t": 61.208, "hz": 1046.5, "note": "C6", "intensity": 36.3037, "register": "agudo"}, {"t": 61.324, "hz": 1046.5, "note": "C6", "intensity": 36.2952, "register": "agudo"}, {"t": 61.44, "hz": 1046.5, "note": "C6", "intensity": 36.2925, "register": "agudo"}, {"t": 61.556, "hz": 1046.5, "note": "C6", "intensity": 36.3184, "register": "agudo"}, {"t": 61.672, "hz": 1046.5, "note": "C6", "intensity": 27.0359, "register": "agudo"}, {"t": 61.788, "hz": 1046.5, "note": "C6", "intensity": 17.5542, "register": "agudo"}, {"t": 61.904, "hz": 1046.5, "note": "C6", "intensity": 8.1647, "register": "agudo"}, {"t": 62.02, "hz": 993.49, "note": "B5", "intensity": 9.0591, "register": "agudo"}, {"t": 62.137, "hz": 987.77, "note": "B5", "intensity": 32.4176, "register": "agudo"}, {"t": 62.253, "hz": 987.77, "note": "B5", "intensity": 31.8625, "register": "agudo"}, {"t": 62.369, "hz": 993.49, "note": "B5", "intensity": 31.9056, "register": "agudo"}, {"t": 62.485, "hz": 982.08, "note": "B5", "intensity": 34.4893, "register": "agudo"}, {"t": 62.601, "hz": 993.49, "note": "B5", "intensity": 34.457, "register": "agudo"}, {"t": 62.717, "hz": 987.77, "note": "B5", "intensity": 34.4773, "register": "agudo"}, {"t": 62.833, "hz": 982.08, "note": "B5", "intensity": 34.4868, "register": "agudo"}, {"t": 62.949, "hz": 999.24, "note": "B5", "intensity": 34.4709, "register": "agudo"}, {"t": 63.065, "hz": 982.08, "note": "B5", "intensity": 34.4907, "register": "agudo"}, {"t": 63.181, "hz": 987.77, "note": "B5", "intensity": 34.4671, "register": "agudo"}, {"t": 63.298, "hz": 993.49, "note": "B5", "intensity": 34.4666, "register": "agudo"}, {"t": 63.414, "hz": 982.08, "note": "B5", "intensity": 34.4737, "register": "agudo"}, {"t": 63.53, "hz": 993.49, "note": "B5", "intensity": 34.5033, "register": "agudo"}, {"t": 63.646, "hz": 993.49, "note": "B5", "intensity": 34.4839, "register": "agudo"}, {"t": 63.762, "hz": 982.08, "note": "B5", "intensity": 34.5086, "register": "agudo"}, {"t": 63.878, "hz": 993.49, "note": "B5", "intensity": 34.5469, "register": "agudo"}, {"t": 63.994, "hz": 987.77, "note": "B5", "intensity": 34.4853, "register": "agudo"}, {"t": 64.11, "hz": 987.77, "note": "B5", "intensity": 32.4613, "register": "agudo"}, {"t": 64.226, "hz": 993.49, "note": "B5", "intensity": 21.5214, "register": "agudo"}, {"t": 64.342, "hz": 987.77, "note": "B5", "intensity": 12.4988, "register": "agudo"}, {"t": 64.459, "hz": 993.49, "note": "B5", "intensity": 3.8657, "register": "agudo"}, {"t": 64.575, "hz": 880.0, "note": "A5", "intensity": 21.2396, "register": "agudo"}, {"t": 64.691, "hz": 880.0, "note": "A5", "intensity": 32.1689, "register": "agudo"}, {"t": 64.807, "hz": 880.0, "note": "A5", "intensity": 30.2649, "register": "agudo"}, {"t": 64.923, "hz": 880.0, "note": "A5", "intensity": 33.4397, "register": "agudo"}, {"t": 65.039, "hz": 880.0, "note": "A5", "intensity": 33.4758, "register": "agudo"}, {"t": 65.155, "hz": 880.0, "note": "A5", "intensity": 33.4001, "register": "agudo"}, {"t": 65.271, "hz": 880.0, "note": "A5", "intensity": 33.48, "register": "agudo"}, {"t": 65.387, "hz": 880.0, "note": "A5", "intensity": 33.4707, "register": "agudo"}, {"t": 65.503, "hz": 885.1, "note": "A5", "intensity": 33.4798, "register": "agudo"}, {"t": 65.62, "hz": 880.0, "note": "A5", "intensity": 33.5112, "register": "agudo"}, {"t": 65.736, "hz": 880.0, "note": "A5", "intensity": 33.4515, "register": "agudo"}, {"t": 65.852, "hz": 885.1, "note": "A5", "intensity": 33.4184, "register": "agudo"}, {"t": 65.968, "hz": 874.93, "note": "A5", "intensity": 33.5185, "register": "agudo"}, {"t": 66.084, "hz": 880.0, "note": "A5", "intensity": 33.4663, "register": "agudo"}, {"t": 66.2, "hz": 885.1, "note": "A5", "intensity": 33.4397, "register": "agudo"}, {"t": 66.316, "hz": 874.93, "note": "A5", "intensity": 33.4987, "register": "agudo"}, {"t": 66.432, "hz": 885.1, "note": "A5", "intensity": 33.4446, "register": "agudo"}, {"t": 66.548, "hz": 880.0, "note": "A5", "intensity": 33.498, "register": "agudo"}, {"t": 66.664, "hz": 874.93, "note": "A5", "intensity": 25.9707, "register": "agudo"}, {"t": 66.781, "hz": 890.23, "note": "A5", "intensity": 16.7742, "register": "agudo"}, {"t": 66.897, "hz": 874.93, "note": "A5", "intensity": 8.08, "register": "agudo"}, {"t": 67.013, "hz": 1034.48, "note": "C6", "intensity": 6.7244, "register": "agudo"}, {"t": 67.129, "hz": 1052.56, "note": "C6", "intensity": 30.8901, "register": "sobreagudo"}, {"t": 67.245, "hz": 1040.47, "note": "C6", "intensity": 34.7534, "register": "agudo"}, {"t": 67.361, "hz": 1052.56, "note": "C6", "intensity": 33.026, "register": "sobreagudo"}, {"t": 67.477, "hz": 1052.56, "note": "C6", "intensity": 35.3991, "register": "sobreagudo"}, {"t": 67.593, "hz": 1046.5, "note": "C6", "intensity": 36.4764, "register": "agudo"}, {"t": 67.709, "hz": 1052.56, "note": "C6", "intensity": 36.4216, "register": "sobreagudo"}, {"t": 67.825, "hz": 1046.5, "note": "C6", "intensity": 36.4497, "register": "agudo"}, {"t": 67.942, "hz": 1046.5, "note": "C6", "intensity": 36.4116, "register": "agudo"}, {"t": 68.058, "hz": 1046.5, "note": "C6", "intensity": 36.4729, "register": "agudo"}, {"t": 68.174, "hz": 1046.5, "note": "C6", "intensity": 36.4457, "register": "agudo"}, {"t": 68.29, "hz": 1046.5, "note": "C6", "intensity": 36.4569, "register": "agudo"}, {"t": 68.406, "hz": 1046.5, "note": "C6", "intensity": 36.492, "register": "agudo"}, {"t": 68.522, "hz": 1046.5, "note": "C6", "intensity": 36.4983, "register": "agudo"}, {"t": 68.638, "hz": 1046.5, "note": "C6", "intensity": 36.4751, "register": "agudo"}, {"t": 68.754, "hz": 1052.56, "note": "C6", "intensity": 36.4343, "register": "sobreagudo"}, {"t": 68.87, "hz": 1046.5, "note": "C6", "intensity": 36.4539, "register": "agudo"}, {"t": 68.986, "hz": 1046.5, "note": "C6", "intensity": 36.4402, "register": "agudo"}, {"t": 69.103, "hz": 1052.56, "note": "C6", "intensity": 36.4941, "register": "sobreagudo"}, {"t": 69.219, "hz": 1040.47, "note": "C6", "intensity": 36.4651, "register": "agudo"}, {"t": 69.335, "hz": 1052.56, "note": "C6", "intensity": 36.4478, "register": "sobreagudo"}, {"t": 69.451, "hz": 1046.5, "note": "C6", "intensity": 36.4264, "register": "agudo"}, {"t": 69.567, "hz": 1046.5, "note": "C6", "intensity": 31.4364, "register": "agudo"}, {"t": 69.683, "hz": 1058.66, "note": "C6", "intensity": 21.9099, "register": "sobreagudo"}, {"t": 69.799, "hz": 1040.47, "note": "C6", "intensity": 13.9438, "register": "agudo"}, {"t": 69.915, "hz": 1052.56, "note": "C6", "intensity": 6.1091, "register": "sobreagudo"}, {"t": 70.031, "hz": 793.1, "note": "G5", "intensity": 10.4722, "register": "agudo"}, {"t": 70.147, "hz": 779.48, "note": "G5", "intensity": 28.912, "register": "agudo"}, {"t": 70.264, "hz": 788.53, "note": "G5", "intensity": 29.2497, "register": "agudo"}, {"t": 70.38, "hz": 788.53, "note": "G5", "intensity": 29.0479, "register": "agudo"}, {"t": 70.496, "hz": 779.48, "note": "G5", "intensity": 31.9441, "register": "agudo"}, {"t": 70.612, "hz": 788.53, "note": "G5", "intensity": 31.8854, "register": "agudo"}, {"t": 70.728, "hz": 783.99, "note": "G5", "intensity": 31.9004, "register": "agudo"}, {"t": 70.844, "hz": 783.99, "note": "G5", "intensity": 31.941, "register": "agudo"}, {"t": 70.96, "hz": 788.53, "note": "G5", "intensity": 31.9411, "register": "agudo"}, {"t": 71.076, "hz": 783.99, "note": "G5", "intensity": 31.9278, "register": "agudo"}, {"t": 71.192, "hz": 783.99, "note": "G5", "intensity": 31.9418, "register": "agudo"}, {"t": 71.308, "hz": 783.99, "note": "G5", "intensity": 31.9272, "register": "agudo"}, {"t": 71.425, "hz": 783.99, "note": "G5", "intensity": 31.9489, "register": "agudo"}, {"t": 71.541, "hz": 783.99, "note": "G5", "intensity": 31.9182, "register": "agudo"}, {"t": 71.657, "hz": 783.99, "note": "G5", "intensity": 31.9626, "register": "agudo"}, {"t": 71.773, "hz": 783.99, "note": "G5", "intensity": 31.9371, "register": "agudo"}, {"t": 71.889, "hz": 783.99, "note": "G5", "intensity": 31.9654, "register": "agudo"}, {"t": 72.005, "hz": 783.99, "note": "G5", "intensity": 31.9717, "register": "agudo"}, {"t": 72.121, "hz": 783.99, "note": "G5", "intensity": 29.2247, "register": "agudo"}, {"t": 72.237, "hz": 788.53, "note": "G5", "intensity": 19.1373, "register": "agudo"}, {"t": 72.353, "hz": 783.99, "note": "G5", "intensity": 10.7769, "register": "agudo"}, {"t": 72.469, "hz": 779.48, "note": "G5", "intensity": 3.1358, "register": "agudo"}, {"t": 72.586, "hz": 663.07, "note": "E5", "intensity": 24.3326, "register": "agudo"}, {"t": 72.702, "hz": 655.46, "note": "E5", "intensity": 27.4053, "register": "medio-agudo"}, {"t": 72.818, "hz": 659.26, "note": "E5", "intensity": 28.4276, "register": "medio-agudo"}, {"t": 72.934, "hz": 663.07, "note": "E5", "intensity": 29.6711, "register": "agudo"}, {"t": 73.05, "hz": 655.46, "note": "E5", "intensity": 29.6925, "register": "medio-agudo"}, {"t": 73.166, "hz": 663.07, "note": "E5", "intensity": 29.6821, "register": "agudo"}, {"t": 73.282, "hz": 663.07, "note": "E5", "intensity": 29.6724, "register": "agudo"}, {"t": 73.398, "hz": 655.46, "note": "E5", "intensity": 29.6618, "register": "medio-agudo"}, {"t": 73.514, "hz": 666.92, "note": "E5", "intensity": 29.6301, "register": "agudo"}, {"t": 73.63, "hz": 659.26, "note": "E5", "intensity": 29.7099, "register": "medio-agudo"}, {"t": 73.747, "hz": 655.46, "note": "E5", "intensity": 29.6898, "register": "medio-agudo"}, {"t": 73.863, "hz": 663.07, "note": "E5", "intensity": 29.603, "register": "agudo"}, {"t": 73.979, "hz": 655.46, "note": "E5", "intensity": 29.5918, "register": "medio-agudo"}, {"t": 74.095, "hz": 659.26, "note": "E5", "intensity": 29.7053, "register": "medio-agudo"}, {"t": 74.211, "hz": 663.07, "note": "E5", "intensity": 27.6507, "register": "agudo"}, {"t": 74.327, "hz": 655.46, "note": "E5", "intensity": 14.6845, "register": "medio-agudo"}, {"t": 74.443, "hz": 663.07, "note": "E5", "intensity": 7.0668, "register": "agudo"}, {"t": 74.559, "hz": 523.25, "note": "C5", "intensity": 18.392, "register": "medio-agudo"}, {"t": 74.675, "hz": 523.25, "note": "C5", "intensity": 26.771, "register": "medio-agudo"}, {"t": 74.791, "hz": 523.25, "note": "C5", "intensity": 26.2389, "register": "medio-agudo"}, {"t": 74.908, "hz": 523.25, "note": "C5", "intensity": 28.3376, "register": "medio-agudo"}, {"t": 75.024, "hz": 523.25, "note": "C5", "intensity": 28.3452, "register": "medio-agudo"}, {"t": 75.14, "hz": 523.25, "note": "C5", "intensity": 28.3599, "register": "medio-agudo"}, {"t": 75.256, "hz": 523.25, "note": "C5", "intensity": 28.2807, "register": "medio-agudo"}, {"t": 75.372, "hz": 523.25, "note": "C5", "intensity": 28.37, "register": "medio-agudo"}, {"t": 75.488, "hz": 523.25, "note": "C5", "intensity": 28.3358, "register": "medio-agudo"}, {"t": 75.604, "hz": 523.25, "note": "C5", "intensity": 28.3699, "register": "medio-agudo"}, {"t": 75.72, "hz": 523.25, "note": "C5", "intensity": 28.2675, "register": "medio-agudo"}, {"t": 75.836, "hz": 526.28, "note": "C5", "intensity": 28.2932, "register": "medio-agudo"}, {"t": 75.952, "hz": 520.24, "note": "C5", "intensity": 28.2953, "register": "medio-agudo"}, {"t": 76.069, "hz": 526.28, "note": "C5", "intensity": 28.3354, "register": "medio-agudo"}, {"t": 76.185, "hz": 523.25, "note": "C5", "intensity": 26.5861, "register": "medio-agudo"}, {"t": 76.301, "hz": 520.24, "note": "C5", "intensity": 16.165, "register": "medio-agudo"}, {"t": 76.417, "hz": 529.33, "note": "C5", "intensity": 6.9944, "register": "medio-agudo"}, {"t": 76.533, "hz": 442.55, "note": "A4", "intensity": 11.2104, "register": "medio-agudo"}, {"t": 76.649, "hz": 437.47, "note": "A4", "intensity": 25.3512, "register": "medio-agudo"}, {"t": 76.765, "hz": 442.55, "note": "A4", "intensity": 23.6228, "register": "medio-agudo"}, {"t": 76.881, "hz": 437.47, "note": "A4", "intensity": 26.3579, "register": "medio-agudo"}, {"t": 76.997, "hz": 440.0, "note": "A4", "intensity": 26.3249, "register": "medio-agudo"}, {"t": 77.113, "hz": 442.55, "note": "A4", "intensity": 26.3647, "register": "medio-agudo"}, {"t": 77.23, "hz": 437.47, "note": "A4", "intensity": 26.2869, "register": "medio-agudo"}, {"t": 77.346, "hz": 442.55, "note": "A4", "intensity": 26.2909, "register": "medio-agudo"}, {"t": 77.462, "hz": 440.0, "note": "A4", "intensity": 26.3408, "register": "medio-agudo"}, {"t": 77.578, "hz": 440.0, "note": "A4", "intensity": 26.3737, "register": "medio-agudo"}, {"t": 77.694, "hz": 442.55, "note": "A4", "intensity": 26.2447, "register": "medio-agudo"}, {"t": 77.81, "hz": 440.0, "note": "A4", "intensity": 26.2987, "register": "medio-agudo"}, {"t": 77.926, "hz": 440.0, "note": "A4", "intensity": 26.3539, "register": "medio-agudo"}, {"t": 78.042, "hz": 440.0, "note": "A4", "intensity": 26.3174, "register": "medio-agudo"}, {"t": 78.158, "hz": 440.0, "note": "A4", "intensity": 26.0831, "register": "medio-agudo"}, {"t": 78.274, "hz": 440.0, "note": "A4", "intensity": 16.9134, "register": "medio-agudo"}, {"t": 78.391, "hz": 440.0, "note": "A4", "intensity": 8.3926, "register": "medio-agudo"}, {"t": 78.507, "hz": 394.27, "note": "G4", "intensity": 3.8874, "register": "medio-agudo"}, {"t": 78.623, "hz": 392.0, "note": "G4", "intensity": 23.3802, "register": "medio-agudo"}, {"t": 78.739, "hz": 392.0, "note": "G4", "intensity": 23.4684, "register": "medio-agudo"}, {"t": 78.855, "hz": 392.0, "note": "G4", "intensity": 24.5285, "register": "medio-agudo"}, {"t": 78.971, "hz": 392.0, "note": "G4", "intensity": 24.5226, "register": "medio-agudo"}, {"t": 79.087, "hz": 392.0, "note": "G4", "intensity": 24.576, "register": "medio-agudo"}, {"t": 79.203, "hz": 389.74, "note": "G4", "intensity": 24.5637, "register": "medio-agudo"}, {"t": 79.319, "hz": 394.27, "note": "G4", "intensity": 24.4939, "register": "medio-agudo"}, {"t": 79.435, "hz": 389.74, "note": "G4", "intensity": 24.5983, "register": "medio-agudo"}, {"t": 79.552, "hz": 392.0, "note": "G4", "intensity": 24.5785, "register": "medio-agudo"}, {"t": 79.668, "hz": 394.27, "note": "G4", "intensity": 24.5099, "register": "medio-agudo"}, {"t": 79.784, "hz": 387.49, "note": "G4", "intensity": 22.8976, "register": "medio-agudo"}, {"t": 79.9, "hz": 394.27, "note": "G4", "intensity": 9.6361, "register": "medio-agudo"}, {"t": 80.016, "hz": 335.39, "note": "E4", "intensity": 3.8666, "register": "medio-agudo"}, {"t": 80.132, "hz": 325.84, "note": "E4", "intensity": 20.9655, "register": "medio-grave"}, {"t": 80.248, "hz": 331.54, "note": "E4", "intensity": 19.3724, "register": "medio-agudo"}, {"t": 80.364, "hz": 329.63, "note": "E4", "intensity": 21.7651, "register": "medio-grave"}, {"t": 80.48, "hz": 327.73, "note": "E4", "intensity": 21.7135, "register": "medio-grave"}, {"t": 80.596, "hz": 331.54, "note": "E4", "intensity": 21.7431, "register": "medio-agudo"}, {"t": 80.713, "hz": 329.63, "note": "E4", "intensity": 21.7748, "register": "medio-grave"}, {"t": 80.829, "hz": 329.63, "note": "E4", "intensity": 21.7638, "register": "medio-grave"}, {"t": 80.945, "hz": 331.54, "note": "E4", "intensity": 21.7801, "register": "medio-agudo"}, {"t": 81.061, "hz": 329.63, "note": "E4", "intensity": 21.7997, "register": "medio-grave"}, {"t": 81.177, "hz": 329.63, "note": "E4", "intensity": 21.7736, "register": "medio-grave"}, {"t": 81.293, "hz": 329.63, "note": "E4", "intensity": 21.7785, "register": "medio-grave"}, {"t": 81.409, "hz": 329.63, "note": "E4", "intensity": 21.7995, "register": "medio-grave"}, {"t": 81.525, "hz": 329.63, "note": "E4", "intensity": 21.8516, "register": "medio-grave"}, {"t": 81.641, "hz": 329.63, "note": "E4", "intensity": 21.7768, "register": "medio-grave"}, {"t": 81.757, "hz": 329.63, "note": "E4", "intensity": 15.113, "register": "medio-grave"}, {"t": 81.874, "hz": 329.63, "note": "E4", "intensity": 7.9762, "register": "medio-grave"}, {"t": 81.99, "hz": 274.0, "note": "C\u266f4", "intensity": 2.629, "register": "medio-grave"}, {"t": 82.106, "hz": 261.63, "note": "C4", "intensity": 16.6322, "register": "medio-grave"}, {"t": 82.222, "hz": 263.14, "note": "C4", "intensity": 18.8962, "register": "medio-grave"}, {"t": 82.338, "hz": 261.63, "note": "C4", "intensity": 17.8162, "register": "medio-grave"}, {"t": 82.454, "hz": 261.63, "note": "C4", "intensity": 20.0847, "register": "medio-grave"}, {"t": 82.57, "hz": 263.14, "note": "C4", "intensity": 20.0934, "register": "medio-grave"}, {"t": 82.686, "hz": 260.12, "note": "C4", "intensity": 20.0745, "register": "medio-grave"}, {"t": 82.802, "hz": 263.14, "note": "C4", "intensity": 20.0322, "register": "medio-grave"}, {"t": 82.918, "hz": 263.14, "note": "C4", "intensity": 20.1226, "register": "medio-grave"}, {"t": 83.035, "hz": 260.12, "note": "C4", "intensity": 20.0574, "register": "medio-grave"}, {"t": 83.151, "hz": 263.14, "note": "C4", "intensity": 20.0969, "register": "medio-grave"}, {"t": 83.267, "hz": 261.63, "note": "C4", "intensity": 20.0138, "register": "medio-grave"}, {"t": 83.383, "hz": 260.12, "note": "C4", "intensity": 19.9808, "register": "medio-grave"}, {"t": 83.499, "hz": 264.67, "note": "C4", "intensity": 20.094, "register": "medio-grave"}, {"t": 83.615, "hz": 260.12, "note": "C4", "intensity": 20.0625, "register": "medio-grave"}, {"t": 83.731, "hz": 261.63, "note": "C4", "intensity": 19.9182, "register": "medio-grave"}, {"t": 83.847, "hz": 263.14, "note": "C4", "intensity": 20.0577, "register": "medio-grave"}, {"t": 83.963, "hz": 260.12, "note": "C4", "intensity": 20.0124, "register": "medio-grave"}, {"t": 84.079, "hz": 263.14, "note": "C4", "intensity": 19.982, "register": "medio-grave"}, {"t": 84.196, "hz": 261.63, "note": "C4", "intensity": 13.8155, "register": "medio-grave"}, {"t": 84.312, "hz": 261.63, "note": "C4", "intensity": 8.6118, "register": "medio-grave"}, {"t": 84.428, "hz": 263.14, "note": "C4", "intensity": 3.5115, "register": "medio-grave"}, {"t": 84.544, "hz": 220.0, "note": "A3", "intensity": 7.4427, "register": "medio-grave"}, {"t": 84.66, "hz": 220.0, "note": "A3", "intensity": 17.6487, "register": "medio-grave"}, {"t": 84.776, "hz": 220.0, "note": "A3", "intensity": 16.4952, "register": "medio-grave"}, {"t": 84.892, "hz": 220.0, "note": "A3", "intensity": 17.4036, "register": "medio-grave"}, {"t": 85.008, "hz": 220.0, "note": "A3", "intensity": 18.0688, "register": "medio-grave"}, {"t": 85.124, "hz": 220.0, "note": "A3", "intensity": 18.1091, "register": "medio-grave"}, {"t": 85.24, "hz": 220.0, "note": "A3", "intensity": 18.0326, "register": "medio-grave"}, {"t": 85.357, "hz": 220.0, "note": "A3", "intensity": 18.0731, "register": "medio-grave"}, {"t": 85.473, "hz": 220.0, "note": "A3", "intensity": 18.1846, "register": "medio-grave"}, {"t": 85.589, "hz": 220.0, "note": "A3", "intensity": 18.0168, "register": "medio-grave"}, {"t": 85.705, "hz": 221.27, "note": "A3", "intensity": 18.1425, "register": "medio-grave"}, {"t": 85.821, "hz": 220.0, "note": "A3", "intensity": 17.9731, "register": "medio-grave"}, {"t": 85.937, "hz": 218.73, "note": "A3", "intensity": 18.1988, "register": "medio-grave"}, {"t": 86.053, "hz": 221.27, "note": "A3", "intensity": 18.0448, "register": "medio-grave"}, {"t": 86.169, "hz": 220.0, "note": "A3", "intensity": 18.2092, "register": "medio-grave"}, {"t": 86.285, "hz": 218.73, "note": "A3", "intensity": 18.121, "register": "medio-grave"}, {"t": 86.401, "hz": 222.56, "note": "A3", "intensity": 18.1334, "register": "medio-grave"}, {"t": 86.518, "hz": 218.73, "note": "A3", "intensity": 18.1189, "register": "medio-grave"}, {"t": 86.634, "hz": 221.27, "note": "A3", "intensity": 17.0522, "register": "medio-grave"}, {"t": 86.75, "hz": 221.27, "note": "A3", "intensity": 10.3251, "register": "medio-grave"}, {"t": 86.866, "hz": 218.73, "note": "A3", "intensity": 6.579, "register": "medio-grave"}, {"t": 86.982, "hz": 217.47, "note": "A3", "intensity": 1.6009, "register": "medio-grave"}, {"t": 87.098, "hz": 197.13, "note": "G3", "intensity": 11.1408, "register": "medio-grave"}, {"t": 87.214, "hz": 194.87, "note": "G3", "intensity": 15.9962, "register": "medio-grave"}, {"t": 87.33, "hz": 197.13, "note": "G3", "intensity": 14.9065, "register": "medio-grave"}, {"t": 87.446, "hz": 196.0, "note": "G3", "intensity": 15.2628, "register": "medio-grave"}, {"t": 87.562, "hz": 196.0, "note": "G3", "intensity": 16.4629, "register": "medio-grave"}, {"t": 87.679, "hz": 197.13, "note": "G3", "intensity": 16.3952, "register": "medio-grave"}, {"t": 87.795, "hz": 196.0, "note": "G3", "intensity": 16.3732, "register": "medio-grave"}, {"t": 87.911, "hz": 196.0, "note": "G3", "intensity": 16.4646, "register": "medio-grave"}, {"t": 88.027, "hz": 196.0, "note": "G3", "intensity": 16.4703, "register": "medio-grave"}, {"t": 88.143, "hz": 196.0, "note": "G3", "intensity": 16.3393, "register": "medio-grave"}, {"t": 88.259, "hz": 196.0, "note": "G3", "intensity": 16.4187, "register": "medio-grave"}, {"t": 88.375, "hz": 196.0, "note": "G3", "intensity": 16.3832, "register": "medio-grave"}, {"t": 88.491, "hz": 196.0, "note": "G3", "intensity": 16.4727, "register": "medio-grave"}, {"t": 88.607, "hz": 196.0, "note": "G3", "intensity": 16.2866, "register": "medio-grave"}, {"t": 88.723, "hz": 196.0, "note": "G3", "intensity": 16.44, "register": "medio-grave"}, {"t": 88.84, "hz": 196.0, "note": "G3", "intensity": 16.3314, "register": "medio-grave"}, {"t": 88.956, "hz": 196.0, "note": "G3", "intensity": 16.453, "register": "medio-grave"}, {"t": 89.072, "hz": 196.0, "note": "G3", "intensity": 16.4439, "register": "medio-grave"}, {"t": 89.188, "hz": 196.0, "note": "G3", "intensity": 16.4618, "register": "medio-grave"}, {"t": 89.304, "hz": 197.13, "note": "G3", "intensity": 16.3141, "register": "medio-grave"}, {"t": 89.42, "hz": 194.87, "note": "G3", "intensity": 16.3967, "register": "medio-grave"}, {"t": 89.536, "hz": 197.13, "note": "G3", "intensity": 15.3785, "register": "medio-grave"}, {"t": 89.652, "hz": 197.13, "note": "G3", "intensity": 10.8412, "register": "medio-grave"}, {"t": 89.768, "hz": 194.87, "note": "G3", "intensity": 7.2275, "register": "medio-grave"}, {"t": 89.884, "hz": 198.28, "note": "G3", "intensity": 3.6697, "register": "medio-grave"}];
+const NOTE_DIST = [{"note": "G5", "count": 322}, {"note": "E4", "count": 319}, {"note": "G4", "count": 301}, {"note": "E5", "count": 278}, {"note": "A5", "count": 236}, {"note": "C6", "count": 235}, {"note": "A3", "count": 215}, {"note": "F5", "count": 194}, {"note": "C4", "count": 193}, {"note": "B4", "count": 191}, {"note": "A4", "count": 172}, {"note": "C5", "count": 172}, {"note": "F4", "count": 152}, {"note": "G3", "count": 129}, {"note": "B5", "count": 108}];
+const METRICS = {"most_common_note": "G5", "lowest_note": {"note": "A2", "hz": 109.37, "time": 50.666}, "highest_note": {"note": "C6", "hz": 1058.66, "time": 59.675}, "avg_hz": 502.59, "vocal_range_semitones": 39.3, "vocal_range_octaves": 3.27, "note_changes": 52, "total_voiced_frames": 3865, "total_frames": 3876, "register_distribution": {"medio-grave": 938, "medio-agudo": 1357, "agudo": 1122, "grave": 382, "sobreagudo": 66}, "dominant_register": "medio-agudo", "top_notes": [["G5", 322], ["E4", 319], ["G4", 301], ["E5", 278], ["A5", 236], ["C6", 235], ["A3", 215], ["F5", 194], ["C4", 193], ["B4", 191]], "max_intensity": {"value": 36.4987, "time": 67.779, "note": "C6"}, "highlight_moments": [{"time": 59.652, "note": "C6", "hz": 1052.56, "intensity": 35.0684}, {"time": 62.531, "note": "B5", "hz": 987.77, "intensity": 34.524}, {"time": 67.175, "note": "C6", "hz": 1052.56, "intensity": 35.3719}, {"time": 69.195, "note": "C6", "hz": 1046.5, "intensity": 36.4465}], "timeline_sample": [{"time": 0.0, "note": "A3", "hz": 223.85, "intensity": 2.831, "register": "medio-grave", "is_voiced": true}, {"time": 1.858, "note": "A3", "hz": 220.0, "intensity": 18.2393, "register": "medio-grave", "is_voiced": true}, {"time": 3.855, "note": "B3", "hz": 248.37, "intensity": 19.8462, "register": "medio-grave", "is_voiced": true}, {"time": 5.851, "note": "C4", "hz": 263.14, "intensity": 21.6587, "register": "medio-grave", "is_voiced": true}, {"time": 7.872, "note": "D4", "hz": 293.66, "intensity": 23.7893, "register": "medio-grave", "is_voiced": true}, {"time": 9.868, "note": "E4", "hz": 333.46, "intensity": 21.819, "register": "medio-agudo", "is_voiced": true}, {"time": 11.865, "note": "F4", "hz": 349.23, "intensity": 23.7852, "register": "medio-agudo", "is_voiced": true}, {"time": 13.862, "note": "G4", "hz": 394.27, "intensity": 25.398, "register": "medio-agudo", "is_voiced": true}, {"time": 15.859, "note": "A4", "hz": 442.55, "intensity": 26.3164, "register": "medio-agudo", "is_voiced": true}, {"time": 17.856, "note": "G4", "hz": 392.0, "intensity": 14.1007, "register": "medio-agudo", "is_voiced": true}, {"time": 19.853, "note": "E4", "hz": 333.46, "intensity": 22.6065, "register": "medio-agudo", "is_voiced": true}, {"time": 21.85, "note": "B4", "hz": 493.88, "intensity": 27.5081, "register": "medio-agudo", "is_voiced": true}, {"time": 23.87, "note": "C5", "hz": 526.28, "intensity": 28.9376, "register": "medio-agudo", "is_voiced": true}, {"time": 25.867, "note": "D5", "hz": 590.73, "intensity": 30.1161, "register": "medio-agudo", "is_voiced": true}, {"time": 27.864, "note": "E5", "hz": 659.26, "intensity": 30.936, "register": "medio-agudo", "is_voiced": true}, {"time": 29.861, "note": "F5", "hz": 706.57, "intensity": 29.232, "register": "agudo", "is_voiced": true}, {"time": 31.858, "note": "F5", "hz": 698.46, "intensity": 10.4537, "register": "agudo", "is_voiced": true}, {"time": 33.855, "note": "G5", "hz": 788.53, "intensity": 33.4677, "register": "agudo", "is_voiced": true}, {"time": 35.852, "note": "A5", "hz": 885.1, "intensity": 34.4126, "register": "agudo", "is_voiced": true}, {"time": 37.872, "note": "A5", "hz": 880.0, "intensity": 8.5057, "register": "agudo", "is_voiced": true}, {"time": 39.869, "note": "G5", "hz": 793.1, "intensity": 12.3889, "register": "agudo", "is_voiced": true}, {"time": 41.866, "note": "F5", "hz": 698.46, "intensity": 12.2495, "register": "agudo", "is_voiced": true}, {"time": 43.862, "note": "E5", "hz": 663.07, "intensity": 12.4803, "register": "agudo", "is_voiced": true}, {"time": 45.859, "note": "D3", "hz": 147.68, "intensity": 27.5522, "register": "grave", "is_voiced": true}, {"time": 47.856, "note": "C3", "hz": 130.81, "intensity": 26.6708, "register": "grave", "is_voiced": true}, {"time": 49.853, "note": "B2", "hz": 124.91, "intensity": 25.4015, "register": "grave", "is_voiced": true}, {"time": 51.85, "note": "A2", "hz": 110.0, "intensity": 23.5541, "register": "grave", "is_voiced": true}, {"time": 53.87, "note": "E4", "hz": 331.54, "intensity": 23.5722, "register": "medio-agudo", "is_voiced": true}, {"time": 55.867, "note": "G4", "hz": 394.27, "intensity": 25.9897, "register": "medio-agudo", "is_voiced": true}, {"time": 57.864, "note": "B4", "hz": 493.88, "intensity": 28.2728, "register": "medio-agudo", "is_voiced": true}, {"time": 59.861, "note": "C6", "hz": 1058.66, "intensity": 33.2903, "register": "sobreagudo", "is_voiced": true}, {"time": 61.858, "note": "C6", "hz": 1046.5, "intensity": 11.8919, "register": "agudo", "is_voiced": true}, {"time": 63.855, "note": "B5", "hz": 993.49, "intensity": 34.4531, "register": "agudo", "is_voiced": true}, {"time": 65.852, "note": "A5", "hz": 885.1, "intensity": 33.4184, "register": "agudo", "is_voiced": true}, {"time": 67.872, "note": "C6", "hz": 1052.56, "intensity": 36.417, "register": "sobreagudo", "is_voiced": true}, {"time": 69.869, "note": "C6", "hz": 1058.66, "intensity": 10.7871, "register": "sobreagudo", "is_voiced": true}, {"time": 71.866, "note": "G5", "hz": 783.99, "intensity": 31.9581, "register": "agudo", "is_voiced": true}, {"time": 73.863, "note": "E5", "hz": 663.07, "intensity": 29.603, "register": "agudo", "is_voiced": true}, {"time": 75.86, "note": "C5", "hz": 526.28, "intensity": 28.3422, "register": "medio-agudo", "is_voiced": true}, {"time": 77.857, "note": "A4", "hz": 440.0, "intensity": 26.3106, "register": "medio-agudo", "is_voiced": true}, {"time": 79.853, "note": "G4", "hz": 394.27, "intensity": 13.771, "register": "medio-agudo", "is_voiced": true}, {"time": 81.874, "note": "E4", "hz": 329.63, "intensity": 7.9762, "register": "medio-grave", "is_voiced": true}, {"time": 83.87, "note": "C4", "hz": 263.14, "intensity": 20.1685, "register": "medio-grave", "is_voiced": true}, {"time": 85.867, "note": "A3", "hz": 221.27, "intensity": 18.0246, "register": "medio-grave", "is_voiced": true}, {"time": 87.864, "note": "G3", "hz": 196.0, "intensity": 16.4461, "register": "medio-grave", "is_voiced": true}, {"time": 89.861, "note": "G3", "hz": 198.28, "intensity": 4.3876, "register": "medio-grave", "is_voiced": true}]};
+
+const REG_COLORS = {
+  'grave':       '#3a7bff',
+  'medio-grave': '#00c8ff',
+  'medio-agudo': '#00f5c4',
+  'agudo':       '#ffd166',
+  'sobreagudo':  '#ff3a6e',
+  'silencio':    '#2d3748'
+};
+
+const REG_LABELS = {
+  'grave':       'Grave (<165Hz)',
+  'medio-grave': 'Medio-grave',
+  'medio-agudo': 'Medio-agudo',
+  'agudo':       'Agudo (<1047Hz)',
+  'sobreagudo':  'Sobreagudo'
+};
+
+// ============================================================
+// WAVEFORM DECO
+// ============================================================
+const waveDeco = document.getElementById('waveDeco');
+for (let i = 0; i < 120; i++) {
+  const span = document.createElement('span');
+  const h = 10 + Math.random() * 70;
+  span.style.height = h + 'px';
+  span.style.animationDelay = (Math.random() * 2) + 's';
+  span.style.animationDuration = (1.5 + Math.random() * 1.5) + 's';
+  waveDeco.appendChild(span);
+}
+
+// ============================================================
+// CHART: TIMELINE DE PITCH
+// ============================================================
+(function() {
+  const ctx = document.getElementById('timelineChart').getContext('2d');
+  const labels = TIMELINE.map(p => p.t.toFixed(1) + 's');
+  const hz = TIMELINE.map(p => p.hz);
+  const colors = TIMELINE.map(p => REG_COLORS[p.register] || '#4a5568');
+  
+  new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [{
+        data: hz,
+        borderColor: 'rgba(0,245,196,0.7)',
+        backgroundColor: 'rgba(0,245,196,0.05)',
+        pointBackgroundColor: colors,
+        pointRadius: 2,
+        pointHoverRadius: 5,
+        borderWidth: 1.5,
+        fill: true,
+        tension: 0.3,
+        pointBorderWidth: 0
+      }]
+    },
+    options: {
+      responsive: true,
+      animation: { duration: 2000, easing: 'easeOutQuart' },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: '#0a0f1e',
+          borderColor: 'rgba(0,245,196,0.3)',
+          borderWidth: 1,
+          titleColor: '#00f5c4',
+          bodyColor: '#e8eaf6',
+          callbacks: {
+            title: (items) => TIMELINE[items[0].dataIndex].t.toFixed(2) + 's',
+            label: (item) => {
+              const p = TIMELINE[item.dataIndex];
+              return ` ${p.note} · ${p.hz.toFixed(0)} Hz · ${p.register}`;
+            }
+          }
+        }
+      },
+      scales: {
+        x: {
+          ticks: { color: '#4a5568', maxTicksLimit: 15, font: { family: 'Space Mono', size: 10 } },
+          grid: { color: 'rgba(255,255,255,0.03)' }
+        },
+        y: {
+          ticks: { color: '#4a5568', font: { family: 'Space Mono', size: 10 },
+            callback: v => v + ' Hz' },
+          grid: { color: 'rgba(255,255,255,0.03)' },
+          min: 80, max: 1200
+        }
+      }
+    }
+  });
+})();
+
+// ============================================================
+// CHART: DISTRIBUCIÓN DE NOTAS
+// ============================================================
+(function() {
+  const ctx = document.getElementById('noteDistChart').getContext('2d');
+  const labels = NOTE_DIST.map(n => n.note);
+  const counts = NOTE_DIST.map(n => n.count);
+  const palette = ['#00f5c4','#00c8ff','#3a7bff','#6e3aff','#ff3a6e',
+                   '#ffd166','#00f5c4','#00c8ff','#3a7bff','#6e3aff',
+                   '#ff3a6e','#ffd166','#00f5c4','#00c8ff','#3a7bff'];
+  
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [{
+        data: counts,
+        backgroundColor: palette.map(c => c + '99'),
+        borderColor: palette,
+        borderWidth: 1,
+        borderRadius: 2
+      }]
+    },
+    options: {
+      responsive: true,
+      animation: { duration: 1800 },
+      plugins: { legend: { display: false },
+        tooltip: {
+          backgroundColor: '#0a0f1e',
+          borderColor: 'rgba(255,255,255,0.1)',
+          borderWidth: 1,
+          titleColor: '#00f5c4',
+          bodyColor: '#e8eaf6'
+        }
+      },
+      scales: {
+        x: { ticks: { color: '#4a5568', font: { family: 'Space Mono', size: 10 } },
+               grid: { display: false } },
+        y: { ticks: { color: '#4a5568', font: { family: 'Space Mono', size: 10 } },
+               grid: { color: 'rgba(255,255,255,0.03)' } }
+      }
+    }
+  });
+})();
+
+// ============================================================
+// REGISTRO BARS + PIE
+// ============================================================
+(function() {
+  const regDist = METRICS.register_distribution;
+  const total = Object.values(regDist).reduce((a,b)=>a+b,0);
+  const container = document.getElementById('registerBars');
+  
+  const order = ['sobreagudo','agudo','medio-agudo','medio-grave','grave'];
+  order.forEach(reg => {
+    if (!regDist[reg]) return;
+    const count = regDist[reg];
+    const pct = (count / total * 100).toFixed(1);
+    const row = document.createElement('div');
+    row.className = 'reg-bar-row';
+    row.innerHTML = `
+      <span class="reg-bar-label" style="color:${REG_COLORS[reg]}">${reg}</span>
+      <div class="reg-bar-track">
+        <div class="reg-bar-fill" data-pct="${pct}" style="width:0%;background:${REG_COLORS[reg]}"></div>
+      </div>
+      <span class="reg-bar-count">${pct}%</span>
+    `;
+    container.appendChild(row);
+  });
+  
+  // Animate bars
+  setTimeout(() => {
+    document.querySelectorAll('.reg-bar-fill').forEach(el => {
+      el.style.width = el.dataset.pct + '%';
+    });
+  }, 300);
+
+  // Pie chart
+  const ctx2 = document.getElementById('registerPieChart').getContext('2d');
+  const pieLabels = order.filter(r => regDist[r]);
+  const pieData = pieLabels.map(r => regDist[r]);
+  const pieColors = pieLabels.map(r => REG_COLORS[r]);
+  
+  new Chart(ctx2, {
+    type: 'doughnut',
+    data: {
+      labels: pieLabels,
+      datasets: [{ data: pieData, backgroundColor: pieColors.map(c=>c+'cc'),
+                   borderColor: pieColors, borderWidth: 2 }]
+    },
+    options: {
+      responsive: true,
+      animation: { duration: 1500 },
+      plugins: {
+        legend: { labels: { color: '#4a5568', font: { family: 'Space Mono', size: 10 },
+                              padding: 12 }, position: 'bottom' },
+        tooltip: { backgroundColor: '#0a0f1e', borderColor: 'rgba(255,255,255,0.1)',
+                    borderWidth: 1, titleColor: '#00f5c4', bodyColor: '#e8eaf6' }
+      }
+    }
+  });
+})();
+
+// ============================================================
+// CHART: INTENSIDAD
+// ============================================================
+(function() {
+  const ctx = document.getElementById('intensityChart').getContext('2d');
+  const step = 4;
+  const labels = TIMELINE.filter((_,i)=>i%step===0).map(p => p.t.toFixed(0)+'s');
+  const intensities = TIMELINE.filter((_,i)=>i%step===0).map(p => p.intensity);
+  
+  new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [{
+        data: intensities,
+        borderColor: '#ff3a6e',
+        backgroundColor: 'rgba(255,58,110,0.1)',
+        fill: true,
+        borderWidth: 1.5,
+        pointRadius: 0,
+        tension: 0.4
+      }]
+    },
+    options: {
+      responsive: true,
+      animation: { duration: 2000 },
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { ticks: { color: '#4a5568', maxTicksLimit: 20,
+                        font: { family: 'Space Mono', size: 9 } },
+               grid: { color: 'rgba(255,255,255,0.02)' } },
+        y: { ticks: { color: '#4a5568', font: { family: 'Space Mono', size: 9 } },
+               grid: { color: 'rgba(255,255,255,0.02)' } }
+      }
+    }
+  });
+})();
+
+// ============================================================
+// HIGHLIGHTS TABLE
+// ============================================================
+(function() {
+  const tbody = document.getElementById('highlightsBody');
+  const highlights = METRICS.highlight_moments;
+  const observations = [
+    'Clímax vocal — sobreagudo máximo detectado',
+    'Sostenido brillante con vibrato pronunciado',
+    'Segunda aparición del registro sobreagudo',
+    'Pico de intensidad absoluto de la canción',
+    'Transición agudo→sobreagudo con gran energía',
+    'Nota sostenida de alta tensión emocional',
+    'Fragmento con mayor proyección vocal',
+    'Resolución del clímax — descenso dramático'
+  ];
+  
+  highlights.forEach((h, i) => {
+    const maxInt = Math.max(...highlights.map(x=>x.intensity));
+    const barWidth = Math.round(h.intensity / maxInt * 120);
+    const regColor = REG_COLORS[h.register] || '#4a5568';
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td style="color:var(--muted)">${String(i+1).padStart(2,'0')}</td>
+      <td style="color:var(--accent3)">${h.time.toFixed(2)}s</td>
+      <td><span class="note-pill">${h.note}</span></td>
+      <td style="color:var(--muted)">${h.hz.toFixed(0)} Hz</td>
+      <td>
+        <span style="color:var(--accent2)">${h.intensity.toFixed(2)}</span>
+        <span class="intensity-bar-inline" style="width:${barWidth}px"></span>
+      </td>
+      <td style="color:${regColor}">${h.register}</td>
+      <td style="color:var(--muted);font-size:0.65rem">${observations[i] || '—'}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+})();
+
+// ============================================================
+// REALTIME SIMULATION
+// ============================================================
+let rtIndex = 0;
+let rtPlaying = false;
+let rtInterval = null;
+const rtBuffer = new Array(80).fill(0);
+const canvas = document.getElementById('realtimeCanvas');
+const rtCtx = canvas.getContext('2d');
+
+// Resize canvas
+function resizeCanvas() {
+  canvas.width = canvas.offsetWidth;
+  canvas.height = canvas.offsetHeight;
+}
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+
+function drawRTBuffer() {
+  const w = canvas.width, h = canvas.height;
+  rtCtx.clearRect(0, 0, w, h);
+  const barW = w / rtBuffer.length;
+  const maxVal = Math.max(...rtBuffer, 1);
+  
+  rtBuffer.forEach((val, i) => {
+    const barH = (val / maxVal) * (h - 4);
+    const x = i * barW;
+    const alpha = 0.3 + (i / rtBuffer.length) * 0.7;
+    rtCtx.fillStyle = `rgba(0,245,196,${alpha})`;
+    rtCtx.fillRect(x + 1, h - barH, barW - 2, barH);
+  });
+}
+
+function updateRT() {
+  if (rtIndex >= TIMELINE.length) {
+    rtIndex = 0;
+  }
+  const frame = TIMELINE[rtIndex];
+  
+  document.getElementById('rt-note').textContent = frame.note || '—';
+  document.getElementById('rt-hz').textContent = (frame.hz || 0).toFixed(1) + ' Hz';
+  document.getElementById('rt-time').textContent = frame.t.toFixed(2) + 's';
+  document.getElementById('rt-intensity').textContent = frame.intensity.toFixed(3);
+  
+  const reg = frame.register;
+  const regEl = document.getElementById('rt-register');
+  regEl.textContent = reg.toUpperCase();
+  regEl.style.color = REG_COLORS[reg] || '#e8eaf6';
+  
+  // Flash on high notes
+  if (frame.hz > 900) {
+    regEl.style.textShadow = `0 0 20px ${REG_COLORS[reg]}`;
+    setTimeout(() => regEl.style.textShadow = 'none', 300);
+  }
+  
+  // Update buffer
+  rtBuffer.shift();
+  rtBuffer.push(frame.intensity);
+  drawRTBuffer();
+  
+  rtIndex += 2;
+}
+
+function togglePlay() {
+  const btn = document.getElementById('btnPlayPause');
+  if (rtPlaying) {
+    clearInterval(rtInterval);
+    rtPlaying = false;
+    btn.textContent = '▶ PLAY';
+  } else {
+    rtInterval = setInterval(updateRT, 120);
+    rtPlaying = true;
+    btn.textContent = '⏸ PAUSE';
+  }
+}
+
+// Initial draw
+drawRTBuffer();
+</script>
+
+</body>
+</html>

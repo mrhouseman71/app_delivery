@@ -1,0 +1,470 @@
+{
+  "most_common_note": "G5",
+  "lowest_note": {
+    "note": "A2",
+    "hz": 109.37,
+    "time": 50.666
+  },
+  "highest_note": {
+    "note": "C6",
+    "hz": 1058.66,
+    "time": 59.675
+  },
+  "avg_hz": 502.59,
+  "vocal_range_semitones": 39.3,
+  "vocal_range_octaves": 3.27,
+  "note_changes": 52,
+  "total_voiced_frames": 3865,
+  "total_frames": 3876,
+  "register_distribution": {
+    "medio-grave": 938,
+    "medio-agudo": 1357,
+    "agudo": 1122,
+    "grave": 382,
+    "sobreagudo": 66
+  },
+  "dominant_register": "medio-agudo",
+  "top_notes": [
+    [
+      "G5",
+      322
+    ],
+    [
+      "E4",
+      319
+    ],
+    [
+      "G4",
+      301
+    ],
+    [
+      "E5",
+      278
+    ],
+    [
+      "A5",
+      236
+    ],
+    [
+      "C6",
+      235
+    ],
+    [
+      "A3",
+      215
+    ],
+    [
+      "F5",
+      194
+    ],
+    [
+      "C4",
+      193
+    ],
+    [
+      "B4",
+      191
+    ]
+  ],
+  "max_intensity": {
+    "value": 36.4987,
+    "time": 67.779,
+    "note": "C6"
+  },
+  "highlight_moments": [
+    {
+      "time": 59.652,
+      "note": "C6",
+      "hz": 1052.56,
+      "intensity": 35.0684
+    },
+    {
+      "time": 62.531,
+      "note": "B5",
+      "hz": 987.77,
+      "intensity": 34.524
+    },
+    {
+      "time": 67.175,
+      "note": "C6",
+      "hz": 1052.56,
+      "intensity": 35.3719
+    },
+    {
+      "time": 69.195,
+      "note": "C6",
+      "hz": 1046.5,
+      "intensity": 36.4465
+    }
+  ],
+  "timeline_sample": [
+    {
+      "time": 0.0,
+      "note": "A3",
+      "hz": 223.85,
+      "intensity": 2.831,
+      "register": "medio-grave",
+      "is_voiced": true
+    },
+    {
+      "time": 1.858,
+      "note": "A3",
+      "hz": 220.0,
+      "intensity": 18.2393,
+      "register": "medio-grave",
+      "is_voiced": true
+    },
+    {
+      "time": 3.855,
+      "note": "B3",
+      "hz": 248.37,
+      "intensity": 19.8462,
+      "register": "medio-grave",
+      "is_voiced": true
+    },
+    {
+      "time": 5.851,
+      "note": "C4",
+      "hz": 263.14,
+      "intensity": 21.6587,
+      "register": "medio-grave",
+      "is_voiced": true
+    },
+    {
+      "time": 7.872,
+      "note": "D4",
+      "hz": 293.66,
+      "intensity": 23.7893,
+      "register": "medio-grave",
+      "is_voiced": true
+    },
+    {
+      "time": 9.868,
+      "note": "E4",
+      "hz": 333.46,
+      "intensity": 21.819,
+      "register": "medio-agudo",
+      "is_voiced": true
+    },
+    {
+      "time": 11.865,
+      "note": "F4",
+      "hz": 349.23,
+      "intensity": 23.7852,
+      "register": "medio-agudo",
+      "is_voiced": true
+    },
+    {
+      "time": 13.862,
+      "note": "G4",
+      "hz": 394.27,
+      "intensity": 25.398,
+      "register": "medio-agudo",
+      "is_voiced": true
+    },
+    {
+      "time": 15.859,
+      "note": "A4",
+      "hz": 442.55,
+      "intensity": 26.3164,
+      "register": "medio-agudo",
+      "is_voiced": true
+    },
+    {
+      "time": 17.856,
+      "note": "G4",
+      "hz": 392.0,
+      "intensity": 14.1007,
+      "register": "medio-agudo",
+      "is_voiced": true
+    },
+    {
+      "time": 19.853,
+      "note": "E4",
+      "hz": 333.46,
+      "intensity": 22.6065,
+      "register": "medio-agudo",
+      "is_voiced": true
+    },
+    {
+      "time": 21.85,
+      "note": "B4",
+      "hz": 493.88,
+      "intensity": 27.5081,
+      "register": "medio-agudo",
+      "is_voiced": true
+    },
+    {
+      "time": 23.87,
+      "note": "C5",
+      "hz": 526.28,
+      "intensity": 28.9376,
+      "register": "medio-agudo",
+      "is_voiced": true
+    },
+    {
+      "time": 25.867,
+      "note": "D5",
+      "hz": 590.73,
+      "intensity": 30.1161,
+      "register": "medio-agudo",
+      "is_voiced": true
+    },
+    {
+      "time": 27.864,
+      "note": "E5",
+      "hz": 659.26,
+      "intensity": 30.936,
+      "register": "medio-agudo",
+      "is_voiced": true
+    },
+    {
+      "time": 29.861,
+      "note": "F5",
+      "hz": 706.57,
+      "intensity": 29.232,
+      "register": "agudo",
+      "is_voiced": true
+    },
+    {
+      "time": 31.858,
+      "note": "F5",
+      "hz": 698.46,
+      "intensity": 10.4537,
+      "register": "agudo",
+      "is_voiced": true
+    },
+    {
+      "time": 33.855,
+      "note": "G5",
+      "hz": 788.53,
+      "intensity": 33.4677,
+      "register": "agudo",
+      "is_voiced": true
+    },
+    {
+      "time": 35.852,
+      "note": "A5",
+      "hz": 885.1,
+      "intensity": 34.4126,
+      "register": "agudo",
+      "is_voiced": true
+    },
+    {
+      "time": 37.872,
+      "note": "A5",
+      "hz": 880.0,
+      "intensity": 8.5057,
+      "register": "agudo",
+      "is_voiced": true
+    },
+    {
+      "time": 39.869,
+      "note": "G5",
+      "hz": 793.1,
+      "intensity": 12.3889,
+      "register": "agudo",
+      "is_voiced": true
+    },
+    {
+      "time": 41.866,
+      "note": "F5",
+      "hz": 698.46,
+      "intensity": 12.2495,
+      "register": "agudo",
+      "is_voiced": true
+    },
+    {
+      "time": 43.862,
+      "note": "E5",
+      "hz": 663.07,
+      "intensity": 12.4803,
+      "register": "agudo",
+      "is_voiced": true
+    },
+    {
+      "time": 45.859,
+      "note": "D3",
+      "hz": 147.68,
+      "intensity": 27.5522,
+      "register": "grave",
+      "is_voiced": true
+    },
+    {
+      "time": 47.856,
+      "note": "C3",
+      "hz": 130.81,
+      "intensity": 26.6708,
+      "register": "grave",
+      "is_voiced": true
+    },
+    {
+      "time": 49.853,
+      "note": "B2",
+      "hz": 124.91,
+      "intensity": 25.4015,
+      "register": "grave",
+      "is_voiced": true
+    },
+    {
+      "time": 51.85,
+      "note": "A2",
+      "hz": 110.0,
+      "intensity": 23.5541,
+      "register": "grave",
+      "is_voiced": true
+    },
+    {
+      "time": 53.87,
+      "note": "E4",
+      "hz": 331.54,
+      "intensity": 23.5722,
+      "register": "medio-agudo",
+      "is_voiced": true
+    },
+    {
+      "time": 55.867,
+      "note": "G4",
+      "hz": 394.27,
+      "intensity": 25.9897,
+      "register": "medio-agudo",
+      "is_voiced": true
+    },
+    {
+      "time": 57.864,
+      "note": "B4",
+      "hz": 493.88,
+      "intensity": 28.2728,
+      "register": "medio-agudo",
+      "is_voiced": true
+    },
+    {
+      "time": 59.861,
+      "note": "C6",
+      "hz": 1058.66,
+      "intensity": 33.2903,
+      "register": "sobreagudo",
+      "is_voiced": true
+    },
+    {
+      "time": 61.858,
+      "note": "C6",
+      "hz": 1046.5,
+      "intensity": 11.8919,
+      "register": "agudo",
+      "is_voiced": true
+    },
+    {
+      "time": 63.855,
+      "note": "B5",
+      "hz": 993.49,
+      "intensity": 34.4531,
+      "register": "agudo",
+      "is_voiced": true
+    },
+    {
+      "time": 65.852,
+      "note": "A5",
+      "hz": 885.1,
+      "intensity": 33.4184,
+      "register": "agudo",
+      "is_voiced": true
+    },
+    {
+      "time": 67.872,
+      "note": "C6",
+      "hz": 1052.56,
+      "intensity": 36.417,
+      "register": "sobreagudo",
+      "is_voiced": true
+    },
+    {
+      "time": 69.869,
+      "note": "C6",
+      "hz": 1058.66,
+      "intensity": 10.7871,
+      "register": "sobreagudo",
+      "is_voiced": true
+    },
+    {
+      "time": 71.866,
+      "note": "G5",
+      "hz": 783.99,
+      "intensity": 31.9581,
+      "register": "agudo",
+      "is_voiced": true
+    },
+    {
+      "time": 73.863,
+      "note": "E5",
+      "hz": 663.07,
+      "intensity": 29.603,
+      "register": "agudo",
+      "is_voiced": true
+    },
+    {
+      "time": 75.86,
+      "note": "C5",
+      "hz": 526.28,
+      "intensity": 28.3422,
+      "register": "medio-agudo",
+      "is_voiced": true
+    },
+    {
+      "time": 77.857,
+      "note": "A4",
+      "hz": 440.0,
+      "intensity": 26.3106,
+      "register": "medio-agudo",
+      "is_voiced": true
+    },
+    {
+      "time": 79.853,
+      "note": "G4",
+      "hz": 394.27,
+      "intensity": 13.771,
+      "register": "medio-agudo",
+      "is_voiced": true
+    },
+    {
+      "time": 81.874,
+      "note": "E4",
+      "hz": 329.63,
+      "intensity": 7.9762,
+      "register": "medio-grave",
+      "is_voiced": true
+    },
+    {
+      "time": 83.87,
+      "note": "C4",
+      "hz": 263.14,
+      "intensity": 20.1685,
+      "register": "medio-grave",
+      "is_voiced": true
+    },
+    {
+      "time": 85.867,
+      "note": "A3",
+      "hz": 221.27,
+      "intensity": 18.0246,
+      "register": "medio-grave",
+      "is_voiced": true
+    },
+    {
+      "time": 87.864,
+      "note": "G3",
+      "hz": 196.0,
+      "intensity": 16.4461,
+      "register": "medio-grave",
+      "is_voiced": true
+    },
+    {
+      "time": 89.861,
+      "note": "G3",
+      "hz": 198.28,
+      "intensity": 4.3876,
+      "register": "medio-grave",
+      "is_voiced": true
+    }
+  ]
+}
