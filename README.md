@@ -150,6 +150,40 @@ xdg-open results/dashboard.html      # Linux
 start results/dashboard.html         # Windows
 ```
 
+### 6. Usar YouTube desde el dashboard
+
+Si quieres cargar directamente una URL de YouTube en el dashboard, ejecuta el servidor local:
+
+```bash
+python src/dashboard_server.py
+```
+
+Luego abre en el navegador:
+
+```bash
+http://localhost:8000/results/dashboard.html
+```
+
+En la sección de tiempo real del dashboard, usa el campo "YouTube URL" y pulsa "📥 YouTube".
+
+#### Autorización para descargas de YouTube
+
+Si YouTube pide verificación de cookies, necesitas crear un archivo local `.cookies.txt` con tus cookies (que **nunca será commiteado** al repositorio, está en `.gitignore`):
+
+**Opción A: Usar navegador instalado en el sistema** (más simple)
+1. Asegúrate de tener Firefox o Chrome instalado en la máquina donde corre `src/dashboard_server.py`
+2. El servidor usará automáticamente tus cookies del navegador
+
+**Opción B: Exportar cookies a archivo** (para contenedores o máquinas remotas)
+1. Usa una extensión como **"Open With" → "Cookie Editor"** en Chrome/Firefox
+2. Exporta las cookies a formato Netscape (`.txt`)
+3. Guarda el archivo como `.cookies.txt` en la raíz del proyecto:
+   ```bash
+   # Ejemplo: el archivo queda aquí (no será commiteado)
+   /workspaces/challenge_streaming/.cookies.txt
+   ```
+4. El servidor lo detectará automáticamente y lo usará para descargas
+
 ### Flags adicionales
 
 ```

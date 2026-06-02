@@ -270,8 +270,14 @@ footer .ft-team a:hover{color:var(--accent)}
         <button class="rt-speed-btn" onclick="setSpeed(2,this)">2×</button>
         <button class="rt-speed-btn" onclick="setSpeed(4,this)">4×</button>
       </div>
-      <button class="btn-play" id="btnPlay" onclick="togglePlay()">▶ REPRODUCIR</button>
+      <div style="display:flex;align-items:center;gap:8px;margin-left:auto;flex-wrap:wrap">
+        <input id="audioFile" type="file" accept=".wav,.mp3,.ogg,.flac" style="display:none" onchange="loadLocalFile(this.files)">
+        <button class="btn btn-ghost" onclick="document.getElementById('audioFile').click()">📂 Cargar WAV</button>
+        <span id="audioStatus" style="font-size:.58rem;color:var(--muted);"></span>
+        <button class="btn-play" id="btnPlay" onclick="togglePlay()">▶ REPRODUCIR</button>
+      </div>
     </div>
+    <div id="audioLoadStatus" style="font-size:.58rem;color:var(--muted);margin-top:8px;min-height:18px"></div>
     <div class="rt-progress"><div class="rt-progress-fill" id="rtProgress"></div></div>
     <div class="rt-kpis">
       <div class="rt-kpi"><span class="rt-kpi-v" id="rt-note">—</span><div class="rt-kpi-l">🎵 Nota</div></div>
@@ -286,11 +292,12 @@ footer .ft-team a:hover{color:var(--accent)}
 </div>
 
 <div class="page" style="padding-top:0" id="metricas">
-  <div class="sec-head"><div class="eyebrow">Resultados</div><h2>Tablero de Métricas</h2></div>
-  <div class="metrics-grid" id="metricsGrid"></div>
-  <div class="chart-grid">
-    <div class="cbox wide"><h3>Timeline de Pitch <em>· Hz por segundo</em></h3><canvas id="tlChart" height="82"></canvas></div>
-    <div class="cbox"><h3>Distribución de Notas <em>· Top 15</em></h3><canvas id="ndChart" height="185"></canvas></div>
+  <div class="sec-head"><div class="eyebrow">Resultados</div><h2 id="metricsTitle">Carga un archivo para ver métricas</h2></div>
+  <div id="metricsContainer" style="display:none">
+    <div class="metrics-grid" id="metricsGrid"></div>
+    <div class="chart-grid">
+      <div class="cbox wide"><h3>Timeline de Pitch <em>· Hz por segundo</em></h3><canvas id="tlChart" height="82"></canvas></div>
+      <div class="cbox"><h3>Distribución de Notas <em>· Top 15</em></h3><canvas id="ndChart" height="185"></canvas></div>
     <div class="cbox"><h3>Registro Vocal <em>· por categoría</em></h3><div class="reg-bars" id="regBars"></div><canvas id="regPie" height="150"></canvas></div>
     <div class="cbox wide"><h3>Intensidad Vocal (RMS) <em>· a lo largo del tiempo</em></h3><canvas id="intChart" height="72"></canvas></div>
   </div>
@@ -376,8 +383,133 @@ const rtBuf=new Array(90).fill(0);const rtCanvas=document.getElementById('rtCanv
 function resizeRt(){rtCanvas.width=rtCanvas.offsetWidth;rtCanvas.height=rtCanvas.offsetHeight;}resizeRt();window.addEventListener('resize',resizeRt);
 function drawRt(){const w=rtCanvas.width,h=rtCanvas.height;rtCtx.clearRect(0,0,w,h);const bw=w/rtBuf.length,mx=Math.max(...rtBuf,1);rtBuf.forEach((v,i)=>{const bh=(v/mx)*(h-4),al=.2+(i/rtBuf.length)*.8;rtCtx.fillStyle=`rgba(0,232,176,${al})`;rtCtx.fillRect(i*bw+1,h-bh,bw-2,bh);});}
 function flash(el){el.classList.add('flash');setTimeout(()=>el.classList.remove('flash'),200);}
-function stepRt(){if(rtIdx>=TL.length)rtIdx=0;const f=TL[rtIdx];['rt-note','rt-hz','rt-time','rt-intensity'].forEach(id=>flash(document.getElementById(id)));document.getElementById('rt-note').textContent=f.note||'—';document.getElementById('rt-hz').textContent=(f.hz||0).toFixed(1)+' Hz';document.getElementById('rt-time').textContent=f.t.toFixed(2)+'s';document.getElementById('rt-intensity').textContent=f.intensity.toFixed(3);const re=document.getElementById('rt-register');const reg=f.register;re.textContent=(RI[reg]||'')+' '+reg.toUpperCase();re.style.color=RC[reg]||'var(--txt)';if(f.hz>900){re.style.textShadow=`0 0 18px ${RC[reg]}`;setTimeout(()=>re.style.textShadow='none',300);}document.getElementById('rtProgress').style.width=(f.t/90*100)+'%';rtBuf.shift();rtBuf.push(f.intensity);drawRt();rtIdx+=Math.max(1,rtSpeed*2);}
-function togglePlay(){const btn=document.getElementById('btnPlay');if(rtPlay){clearInterval(rtTimer);rtPlay=false;btn.textContent='▶ REPRODUCIR';}else{rtTimer=setInterval(stepRt,110);rtPlay=true;btn.textContent='⏸ PAUSAR';}}
+
+// Estado global de audio cargado
+let currentAudioFile = null;
+let currentMetrics = null;
+let currentTimeline = null;
+
+const audioEl = document.createElement('audio'); audioEl.id = 'rtAudio'; audioEl.preload = 'auto'; audioEl.crossOrigin = 'anonymous'; audioEl.controls = false; document.body.appendChild(audioEl);
+
+// Cargar archivo WAV local
+async function loadLocalFile(files) {
+  if(!files || files.length === 0) return;
+  const file = files[0];
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    currentAudioFile = {
+      name: file.name,
+      size: file.size,
+      data: e.target.result
+    };
+    audioEl.src = URL.createObjectURL(file);
+    audioEl.load();
+    
+    // Intentar cargar métricas si existen
+    const baseName = file.name.replace(/\.[^.]+$/, '');
+    tryLoadMetrics(baseName);
+    
+    document.getElementById('audioStatus').textContent = `✓ ${file.name}`;
+    document.getElementById('audioLoadStatus').textContent = `Archivo cargado: ${file.name}`;
+  };
+  reader.readAsArrayBuffer(file);
+}
+
+// Intentar cargar métricas guardadas para este archivo
+async function tryLoadMetrics(baseName) {
+  // Por ahora solo mostramos que se intenta cargar
+  // En futuro, esto conectaría con un servidor que tenga métricas almacenadas
+  currentMetrics = null;
+  currentTimeline = null;
+  
+  // Ocultar sección de métricas si no hay datos precalculados
+  document.getElementById('metricsContainer').style.display = 'none';
+  document.getElementById('metricsTitle').textContent = 'Cargando: ' + baseName + ' — análisis en vivo';
+}
+
+function renderFrame(f){['rt-note','rt-hz','rt-time','rt-intensity'].forEach(id=>flash(document.getElementById(id)));document.getElementById('rt-note').textContent=f.note||'—';document.getElementById('rt-hz').textContent=(f.hz||0).toFixed(1)+' Hz';document.getElementById('rt-time').textContent=f.t.toFixed(2)+'s';document.getElementById('rt-intensity').textContent=f.intensity.toFixed(3);const re=document.getElementById('rt-register');const reg=f.register;re.textContent=(RI[reg]||'')+' '+reg.toUpperCase();re.style.color=RC[reg]||'var(--txt)';if(f.hz>900){re.style.textShadow=`0 0 18px ${RC[reg]}`;setTimeout(()=>re.style.textShadow='none',300);}document.getElementById('rtProgress').style.width=(f.t/90*100)+'%';}
+
+function stepRt(){if(rtIdx>=TL.length)rtIdx=0;const f=TL[rtIdx];rtBuf.shift();rtBuf.push(f.intensity);renderFrame(f);drawRt();rtIdx+=Math.max(1,rtSpeed*2);}
+
+// Sincronización con elemento <audio>
+audioEl.addEventListener('timeupdate', ()=>{const t = audioEl.currentTime; // encontrar índice más cercano en TL
+  let idx = 0; // fallback
+  // búsqueda lineal es suficiente para datos pequeños; usar while para eficiencia
+  while(idx < TL.length && TL[idx].t < t) idx++;
+  if(idx >= TL.length) idx = TL.length - 1;
+  // rellenar buffer y renderizar el frame actual
+  rtBuf.shift(); rtBuf.push(TL[idx].intensity); renderFrame(TL[idx]); drawRt(); rtIdx = idx; });
+
+function togglePlay(){const btn=document.getElementById('btnPlay');if(rtPlay){if(!audioEl.paused) audioEl.pause(); clearInterval(rtTimer); rtPlay=false; btn.textContent='▶ REPRODUCIR';}else{ // intentar reproducir audio; si falla, usar fallback setInterval
+    audioEl.play().then(()=>{ rtPlay=true; btn.textContent='⏸ PAUSAR'; }).catch(()=>{ rtTimer=setInterval(stepRt,110); rtPlay=true; btn.textContent='⏸ PAUSAR'; });}}
+
+// -----------------------
+// WebAudio: análisis en vivo
+// -----------------------
+let audioCtx = null; let analyser = null; let sourceNode = null; let dataBuf = null; let rafId = null;
+
+function ensureAudioContext(){
+  if(audioCtx) return;
+  audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  analyser = audioCtx.createAnalyser(); analyser.fftSize = 2048; analyser.smoothingTimeConstant = 0.2;
+  dataBuf = new Float32Array(analyser.fftSize);
+}
+
+function connectMediaElement(){
+  ensureAudioContext();
+  if(sourceNode) sourceNode.disconnect();
+  sourceNode = audioCtx.createMediaElementSource(audioEl);
+  sourceNode.connect(analyser);
+  analyser.connect(audioCtx.destination);
+}
+
+function loadLocalFile(files){
+  if(!files || !files[0]) return;
+  const file = files[0];
+  audioEl.src = URL.createObjectURL(file);
+  audioEl.load();
+  // reiniciar índice y buffer
+  rtIdx = 0; rtBuf.fill(0);
+  // conectar WebAudio cuando el usuario interactúe
+  audioEl.addEventListener('play', ()=>{ try{connectMediaElement(); startAnalyzing();}catch(e){console.warn(e);} }, {once:true});
+}
+
+function computeRMS(buf){ let s=0; for(let i=0;i<buf.length;i++){ s += buf[i]*buf[i]; } return Math.sqrt(s/buf.length); }
+
+// Autocorrelation pitch detection (returns freq in Hz or -1)
+function autoCorrelate(buf, sampleRate){
+  // Buffer should be Float32Array
+  let SIZE = buf.length; let rms = 0; for (let i=0;i<SIZE;i++){ let val=buf[i]; rms += val*val; } rms = Math.sqrt(rms/SIZE);
+  if (rms<0.001) return -1;
+  let r1=0, r2=SIZE-1, th=0.2; for (let i=0;i<SIZE/2;i++) if (Math.abs(buf[i])<th){ r1=i; break; } for (let i=1;i<SIZE/2;i++) if (Math.abs(buf[SIZE-i])<th){ r2=SIZE-i; break; }
+  buf = buf.slice(r1, r2); SIZE = buf.length;
+  let c = new Array(SIZE).fill(0); for (let i=0;i<SIZE;i++) for (let j=0;j<SIZE-i;j++) c[i] = c[i] + buf[j]*buf[j+i];
+  let d=0; while (c[d]>c[d+1]) d++; let maxval=-1, maxpos=-1; for (let i=d;i<SIZE;i++){ if (c[i]>maxval){ maxval=c[i]; maxpos=i; } }
+  let T0 = maxpos; if (T0==0) return -1; return sampleRate/T0;
+}
+
+function freqToNoteName(freq){ if(freq<=0) return null; const midi = 69 + 12*Math.log2(freq/440); const m = Math.round(midi); const noteNames=['C','C#','D','D#','E','F','F#','G','G#','A','A#','B']; const name = noteNames[(m%12+12)%12] + String(Math.floor(m/12)-1); return name; }
+
+function classifyRegisterHz(hz){ if(!hz || hz<=0) return 'silencio'; if(hz<165) return 'grave'; else if(hz<330) return 'medio-grave'; else if(hz<660) return 'medio-agudo'; else if(hz<1047) return 'agudo'; else return 'sobreagudo'; }
+
+function analyzeOnce(){
+  if(!analyser) return;
+  analyser.getFloatTimeDomainData(dataBuf);
+  const rms = computeRMS(dataBuf) * 100;
+  const freq = autoCorrelate(dataBuf, audioCtx.sampleRate);
+  let note = null, hz = null, register='silencio', is_voiced=false;
+  if(freq && freq>0){ note = freqToNoteName(freq); hz = Number(freq.toFixed(2)); register = classifyRegisterHz(hz); is_voiced = true; }
+  const now = audioEl.currentTime || 0;
+  const frame = { t: now, note: note, hz: hz, intensity: Number(rms.toFixed(4)), register: register };
+  // push to buffer and render
+  rtBuf.shift(); rtBuf.push(frame.intensity || 0); renderFrame(frame); drawRt();
+}
+
+function startAnalyzing(){ if(rafId) cancelAnimationFrame(rafId); function loop(){ analyzeOnce(); rafId = requestAnimationFrame(loop); } loop(); }
+
+// Si el audio se pausa, detener RAF
+audioEl.addEventListener('pause', ()=>{ if(rafId) cancelAnimationFrame(rafId); });
+
 drawRt();
 (()=>{const cards=[{ico:'🎯',val:M.most_common_note,lbl:'Nota más frecuente',sub:'mayor presencia temporal',c:'var(--accent)'},{ico:'⬇️',val:M.lowest_note.note,lbl:'Nota más grave',sub:`${M.lowest_note.hz}Hz·@${M.lowest_note.time}s`,c:'var(--grave)'},{ico:'⬆️',val:M.highest_note.note,lbl:'Nota más aguda',sub:`${M.highest_note.hz}Hz·@${M.highest_note.time}s`,c:'var(--sagudo)'},{ico:'📏',val:M.vocal_range_semitones,lbl:'Semitonos',sub:`${M.vocal_range_octaves} oct`,c:'var(--a3)'},{ico:'〰️',val:M.avg_hz+' Hz',lbl:'Freq. promedio',sub:'media frames con voz',c:'var(--a5)'},{ico:'⚡',val:M.note_changes,lbl:'Cambios de nota',sub:'transiciones',c:'var(--a2)'},{ico:'🎚️',val:M.dominant_register.toUpperCase(),lbl:'Reg. predominante',sub:'más frames',c:'var(--magudo)'},{ico:'🔊',val:M.max_intensity.note,lbl:'Mayor intensidad',sub:`RMS ${M.max_intensity.value}·@${M.max_intensity.time}s`,c:'var(--a3)'},{ico:'🎙️',val:'1747',lbl:'Frames con voz',sub:'97% del total',c:'var(--a4)'},{ico:'🧠',val:'torchcrepe',lbl:'Algoritmo principal',sub:'CNN·conf>0.87',c:'var(--a4)'}];const g=document.getElementById('metricsGrid');cards.forEach(c=>{g.innerHTML+=`<div class="mc" style="--mc-c:${c.c}"><span class="mc-ico">${c.ico}</span><div class="mc-v">${c.val}</div><div class="mc-l">${c.lbl}</div><div class="mc-s">${c.sub}</div></div>`;}); })();
 (()=>{const ctx=document.getElementById('tlChart').getContext('2d');const clrs=TL.map(p=>RC[p.register]||'#4a6072');new Chart(ctx,{type:'line',data:{labels:TL.map(p=>p.t.toFixed(1)+'s'),datasets:[{data:TL.map(p=>p.hz),borderColor:'rgba(0,232,176,.65)',backgroundColor:'rgba(0,232,176,.04)',pointBackgroundColor:clrs,pointRadius:1.5,pointHoverRadius:5,borderWidth:1.5,fill:true,tension:.3,pointBorderWidth:0}]},options:{responsive:true,animation:{duration:2000},plugins:{legend:{display:false},tooltip:{backgroundColor:'#0c1220',borderColor:'rgba(0,232,176,.25)',borderWidth:1,titleColor:'#00e8b0',bodyColor:'#d6e4f0',callbacks:{title:i=>'⏱ '+TL[i[0].dataIndex].t.toFixed(2)+'s',label:i=>{const p=TL[i.dataIndex];return ` ${p.note} · ${p.hz.toFixed(0)}Hz · ${p.register}`}}}},scales:{x:{ticks:{color:'#4a6072',maxTicksLimit:16,font:{family:'JetBrains Mono',size:9}},grid:{color:'rgba(255,255,255,.025)'}},y:{ticks:{color:'#4a6072',font:{family:'JetBrains Mono',size:9},callback:v=>v+'Hz'},grid:{color:'rgba(255,255,255,.025)'},min:80,max:1200}}}}); })();
