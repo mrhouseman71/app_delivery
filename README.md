@@ -71,20 +71,20 @@ vocal-intelligence-pipeline/
 │   │   └── dashboard.html        # dashboard original
 │   └── requirements.txt
 │
-├── idea_a/                       ← Clasificador ML
+├── clasificador_ml/                       ← Clasificador ML
 │   ├── vocal_classifier.py       # extracción de features + Random Forest
 │   ├── vocal_rf.pkl              # modelo entrenado
 │   ├── experiment_metrics.json   # accuracy 68.9%, F1 macro 66.8%
 │   └── Clasificador_Tipo_Vocal_ML_Balda_Caracoix_Casas.ipynb
 │
-├── idea_b/                       ← Pipeline Kafka
+├── kafka_streaming/                       ← Pipeline Kafka
 │   ├── vocal_producer.py         # emite frames a vocal.frames
 │   ├── vocal_consumer.py         # clasifica + detecta anomalías
 │   ├── kafka_dashboard.html      # dashboard en vivo
 │   ├── stream_output_demo.json   # resultado pre-generado (demo)
 │   └── Pipeline_Kafka_Vocal_Streaming_Balda_Caracoix_Casas.ipynb
 │
-├── idea_c/                       ← Comparador multi-artista
+├── comparador_multiartista/                       ← Comparador multi-artista
 │   ├── artist_profiles.py        # 6 perfiles vocales sintéticos
 │   ├── vocal_comparador.py       # extracción de 16 métricas
 │   ├── artist_dataset.json       # dataset completo con timelines
@@ -92,7 +92,7 @@ vocal-intelligence-pipeline/
 │   ├── comparador_dashboard.html # dashboard interactivo de comparación
 │   └── Comparador_Vocal_Multi_Artista_Balda_Caracoix_Casas.ipynb
 │
-├── idea_d/                       ← Detección de anomalías
+├── anomalias/                       ← Detección de anomalías
 │   ├── anomaly_detector.py       # 6 tipos de anomalías con severidad
 │   ├── pipeline_with_anomaly.py  # pipeline original + detector integrado
 │   ├── anomalies.json            # 212 eventos detectados en S.O.S
@@ -145,12 +145,10 @@ python src/pipeline.py --demo            # audio sintético, ~2 min
 # → genera results/realtime_frames.csv
 
 # Paso 2 — Detectar anomalías sobre los frames
-cd ../idea_d/
 python anomalias/anomaly_detector.py --csv ../challenge_streaming/results/realtime_frames.csv --out anomalies.json
 # → imprime 212 eventos, guarda anomalies.json
 
 # Paso 3 — Generar el dataset multi-artista
-cd ../idea_c/
 python comparador_multiartista/vocal_comparador.py --out results/
 # → genera artist_dataset.json, artist_metrics.csv
 
