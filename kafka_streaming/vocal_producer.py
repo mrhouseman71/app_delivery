@@ -144,8 +144,7 @@ def frames_desde_csv(csv_path: str, artist_id: str = "bogdan_sos",
         for row in reader:
             voiced = row.get("is_voiced", "").lower() == "true"
             yield {
-                "time_s":     float(row["time_s"]),
-                "note":       row.get("note") or None,
+                "time_s":     float(row["time_s"]),                "time":       float(row["time_s"]),                "note":       row.get("note") or None,
                 "hz":         float(row["hz"])         if row.get("hz")         and voiced else None,
                 "confidence": float(row["confidence"]) if row.get("confidence") and voiced else None,
                 "intensity":  float(row["intensity"])  if row.get("intensity")  else 0.0,
@@ -191,6 +190,7 @@ def frames_desde_perfil(artist_id: str = "soprano"):
             hz      = max(50.0, hz_base + jitter)
             yield {
                 "time_s":     round(ts + i / fps, 3),
+                "time":       round(ts + i / fps, 3),
                 "note":       note,
                 "hz":         round(hz, 2),
                 "confidence": round(0.85 + np.random.normal(0, 0.03), 3),
@@ -214,7 +214,7 @@ def _frames_demo_minimo():
         octave_factor = 2 ** (int(nota[-1]) - 4)
         hz = base * octave_factor
         yield {
-            "time_s": round(i * 0.5, 2), "note": nota,
+            "time_s": round(i * 0.5, 2), "time": round(i * 0.5, 2), "note": nota,
             "hz": round(hz, 1), "confidence": 0.87,
             "intensity": round(15 + 5 * math.sin(i * 0.3), 2),
             "register": "medio-agudo", "is_voiced": True,

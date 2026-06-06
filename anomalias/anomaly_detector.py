@@ -178,6 +178,9 @@ class VocalAnomalyDetector:
                 }
             ))
 
+    def _frame_time(self, frame: dict):
+        return frame.get("time", frame.get("time_s"))
+
     def _detect_climax_vocal(self, window: list) -> Optional[AnomalyEvent]:
         """Sostenimiento de nota aguda durante N frames consecutivos."""
         if len(window) < CLIMAX_MIN_FRAMES:
@@ -195,7 +198,7 @@ class VocalAnomalyDetector:
                 )
                 sev = severity_by_climax(n_frames)
                 return AnomalyEvent(
-                    time=last["time"],
+                    time=self._frame_time(last),
                     tipo="CLIMAX_VOCAL",
                     severidad=sev,
                     descripcion=f"Clímax: {last['note']} sostenida {n_frames} frames ({n_frames*0.05:.1f}s)",
@@ -223,7 +226,7 @@ class VocalAnomalyDetector:
             last = window[-1]
             sev = severity_by_drop(drop_ratio)
             return AnomalyEvent(
-                time=last["time"],
+                time=self._frame_time(last),
                 tipo="CAIDA_INTENS",
                 severidad=sev,
                 descripcion=f"Caída de intensidad {drop_ratio*100:.0f}% (pico {peak:.1f} → actual {current:.1f})",
@@ -240,7 +243,7 @@ class VocalAnomalyDetector:
         if silence_streak == SILENCE_MIN_FRAMES and self._can_fire("SILENCIO_LARGO"):
             sev = "media" if silence_streak < 30 else "alta"
             self._fire("SILENCIO_LARGO", AnomalyEvent(
-                time=frame["time"],
+                time=self._frame_time(frame),
                 tipo="SILENCIO_LARGO",
                 severidad=sev,
                 descripcion=f"Silencio de {silence_streak*0.05:.1f}s detectado",
@@ -255,7 +258,7 @@ class VocalAnomalyDetector:
             and frame.get("is_voiced")
         ):
             self._fire("AGUDO_EXTREMO", AnomalyEvent(
-                time=frame["time"],
+                time=self._frame_time(frame),
                 tipo="AGUDO_EXTREMO",
                 severidad="alta",
                 descripcion=f"Primera nota sobreaguda: {frame['note']} ({frame.get('hz',0):.0f} Hz)",
@@ -284,7 +287,7 @@ class VocalAnomalyDetector:
         if cv >= INSTABILITY_CV_THRESH and self._can_fire("INESTABILIDAD"):
             last = window[-1]
             return AnomalyEvent(
-                time=last["time"],
+                time=self._frame_time(last),
                 tipo="INESTABILIDAD",
                 severidad="baja" if cv < 0.04 else "media",
                 descripcion=f"Inestabilidad de pitch (CV={cv:.3f}) en zona {last.get('note','?')}",

@@ -155,16 +155,17 @@ python comparador_multiartista/vocal_comparador.py --out results/
 # → genera artist_dataset.json, artist_metrics.csv
 
 # Paso 4 — Entrenar el clasificador ML
-cd ../idea_a/
-python clasificador_ml/vocal_classifier.py \
+cd ../clasificador_ml/
+python vocal_classifier.py \
   --train ..results/artist_dataset.json \
   --csv-real ..results/realtime_frames.csv "Tenor dramático" \
   --out results/
 # → entrena RF, guarda vocal_rf.pkl, imprime accuracy 68.9%
 
 # Paso 5 — Predecir tipo vocal de una canción
-python vocal_classifier.py \
-  --predict ../challenge_streaming/results/realtime_frames.csv \
+cd /workspaces/challenge_streaming
+python clasificador_ml/vocal_classifier.py \
+  --predict results/realtime_frames.csv \
   --model results/vocal_rf.pkl
 # → Predicción: Tenor dramático (98.5% confianza)
 ```
@@ -175,23 +176,26 @@ Requiere Java 17 instalado. En Google Colab, usar el notebook `idea_b/Pipeline_K
 
 ```bash
 # Terminal 1 — iniciar Kafka KRaft
-export KAFKA_DIR=/ruta/a/kafka
+wget https://archive.apache.org/dist/kafka/3.9.1/kafka_2.13-3.9.1.tgz
+tar -xzf kafka_2.13-3.9.1.tgz
+
+export KAFKA_DIR=/workspaces/challenge_streaming/kafka_2.13-3.9.1
 $KAFKA_DIR/bin/kafka-storage.sh random-uuid | xargs -I{} \
   $KAFKA_DIR/bin/kafka-storage.sh format -t {} \
   -c $KAFKA_DIR/config/kraft/server.properties
 $KAFKA_DIR/bin/kafka-server-start.sh \
   $KAFKA_DIR/config/kraft/server.properties &
 
-# Terminal 2 — iniciar consumer (espera al producer)
+# Terminal 2 — iniciar producer (emite a 50ms/frame)
+cd /workspaces/challenge_streaming
+python kafka_streaming/vocal_producer.py --csv results/realtime_frames.csv
+# opción turbo (sin espera): agregar --fast
+
+# Terminal 3 — iniciar consumer (espera al producer)
 cd idea_b/
 python kafka_streaming/vocal_consumer.py \
   --model ../clasificador_ml/vocal_rf.pkl \
   --out results/stream_output.json
-
-# Terminal 3 — iniciar producer (emite a 50ms/frame)
-python kafka_streaming/vocal_producer.py \
-  --csv ../results/realtime_frames.csv
-# opción turbo (sin espera): agregar --fast
 ```
 
 ### 5. Ver los dashboards
@@ -200,13 +204,13 @@ Todos los dashboards son archivos HTML standalone. Abrir directamente en el nave
 
 ```bash
 # Dashboard de anomalías
-open idea_d/anomaly_dashboard.html
+open anomalias/anomaly_dashboard.html
 
 # Comparador multi-artista (interactivo, seleccionar artista)
-open idea_c/comparador_dashboard.html
+open comparador_multiartista/comparador_dashboard.html
 
 # Dashboard Kafka en vivo (simula el stream con los datos del demo)
-open idea_b/kafka_dashboard.html
+open kafka_streaming/kafka_dashboard.html
 ```
 
 ---

@@ -1,0 +1,1802 @@
+[
+  {
+    "id": "bogdan_style",
+    "name": "Tenor Dramático (estilo Bogdan)",
+    "tipo": "Tenor dramático",
+    "genero": "Pop / Rock dramático",
+    "ref": "Bogdan Shuvalov — S.O.S",
+    "color": "#38bdf8",
+    "nota_grave": "A2",
+    "nota_aguda": "C6",
+    "hz_grave": 110.0,
+    "hz_aguda": 1046.5,
+    "rango_semitonos": 39.0,
+    "rango_octavas": 3.25,
+    "hz_medio": 501.8,
+    "nota_modal": "E4",
+    "pct_grave": 10.0,
+    "pct_medio_grave": 26.7,
+    "pct_medio_agudo": 35.0,
+    "pct_agudo": 28.3,
+    "pct_sobreagudo": 0.0,
+    "intensidad_media": 0.739,
+    "intensidad_max": 1.0,
+    "intensidad_variacion": 0.153,
+    "pct_alta_intensidad": 26.1,
+    "n_notas_distintas": 22,
+    "n_cambios_nota": 40,
+    "densidad_melodica": 0.444,
+    "duracion_media_nota_s": 2.2,
+    "ratio_agudo_grave": 0.773,
+    "timeline": [
+      {
+        "note": "A3",
+        "hz": 220.0,
+        "ts": 0,
+        "te": 2.5,
+        "intensity": 0.5,
+        "register": "medio-grave"
+      },
+      {
+        "note": "B3",
+        "hz": 246.9,
+        "ts": 2.5,
+        "te": 4.5,
+        "intensity": 0.55,
+        "register": "medio-grave"
+      },
+      {
+        "note": "C4",
+        "hz": 261.6,
+        "ts": 4.5,
+        "te": 6.5,
+        "intensity": 0.6,
+        "register": "medio-grave"
+      },
+      {
+        "note": "D4",
+        "hz": 293.7,
+        "ts": 6.5,
+        "te": 8.5,
+        "intensity": 0.65,
+        "register": "medio-grave"
+      },
+      {
+        "note": "E4",
+        "hz": 329.6,
+        "ts": 8.5,
+        "te": 10.5,
+        "intensity": 0.6,
+        "register": "medio-grave"
+      },
+      {
+        "note": "F4",
+        "hz": 349.2,
+        "ts": 10.5,
+        "te": 12.5,
+        "intensity": 0.65,
+        "register": "medio-agudo"
+      },
+      {
+        "note": "G4",
+        "hz": 392.0,
+        "ts": 12.5,
+        "te": 14.5,
+        "intensity": 0.7,
+        "register": "medio-agudo"
+      },
+      {
+        "note": "A4",
+        "hz": 440.0,
+        "ts": 14.5,
+        "te": 16.5,
+        "intensity": 0.72,
+        "register": "medio-agudo"
+      },
+      {
+        "note": "G4",
+        "hz": 392.0,
+        "ts": 16.5,
+        "te": 18,
+        "intensity": 0.68,
+        "register": "medio-agudo"
+      },
+      {
+        "note": "F4",
+        "hz": 349.2,
+        "ts": 18,
+        "te": 19.5,
+        "intensity": 0.65,
+        "register": "medio-agudo"
+      },
+      {
+        "note": "E4",
+        "hz": 329.6,
+        "ts": 19.5,
+        "te": 21,
+        "intensity": 0.62,
+        "register": "medio-grave"
+      },
+      {
+        "note": "B4",
+        "hz": 493.9,
+        "ts": 21,
+        "te": 23,
+        "intensity": 0.75,
+        "register": "medio-agudo"
+      },
+      {
+        "note": "C5",
+        "hz": 523.3,
+        "ts": 23,
+        "te": 25,
+        "intensity": 0.8,
+        "register": "medio-agudo"
+      },
+      {
+        "note": "D5",
+        "hz": 587.3,
+        "ts": 25,
+        "te": 27,
+        "intensity": 0.82,
+        "register": "medio-agudo"
+      },
+      {
+        "note": "E5",
+        "hz": 659.3,
+        "ts": 27,
+        "te": 29.5,
+        "intensity": 0.85,
+        "register": "medio-agudo"
+      },
+      {
+        "note": "F5",
+        "hz": 698.5,
+        "ts": 29.5,
+        "te": 32,
+        "intensity": 0.88,
+        "register": "agudo"
+      },
+      {
+        "note": "G5",
+        "hz": 784.0,
+        "ts": 32,
+        "te": 35,
+        "intensity": 0.92,
+        "register": "agudo"
+      },
+      {
+        "note": "A5",
+        "hz": 880.0,
+        "ts": 35,
+        "te": 38,
+        "intensity": 0.95,
+        "register": "agudo"
+      },
+      {
+        "note": "G5",
+        "hz": 784.0,
+        "ts": 38,
+        "te": 40,
+        "intensity": 0.9,
+        "register": "agudo"
+      },
+      {
+        "note": "F5",
+        "hz": 698.5,
+        "ts": 40,
+        "te": 42,
+        "intensity": 0.87,
+        "register": "agudo"
+      },
+      {
+        "note": "E5",
+        "hz": 659.3,
+        "ts": 42,
+        "te": 44,
+        "intensity": 0.85,
+        "register": "medio-agudo"
+      },
+      {
+        "note": "D3",
+        "hz": 146.8,
+        "ts": 44,
+        "te": 46.5,
+        "intensity": 0.7,
+        "register": "grave"
+      },
+      {
+        "note": "C3",
+        "hz": 130.8,
+        "ts": 46.5,
+        "te": 48.5,
+        "intensity": 0.65,
+        "register": "grave"
+      },
+      {
+        "note": "B2",
+        "hz": 123.5,
+        "ts": 48.5,
+        "te": 50.5,
+        "intensity": 0.6,
+        "register": "grave"
+      },
+      {
+        "note": "A2",
+        "hz": 110.0,
+        "ts": 50.5,
+        "te": 53,
+        "intensity": 0.55,
+        "register": "grave"
+      },
+      {
+        "note": "E4",
+        "hz": 329.6,
+        "ts": 53,
+        "te": 55,
+        "intensity": 0.65,
+        "register": "medio-grave"
+      },
+      {
+        "note": "G4",
+        "hz": 392.0,
+        "ts": 55,
+        "te": 57,
+        "intensity": 0.7,
+        "register": "medio-agudo"
+      },
+      {
+        "note": "B4",
+        "hz": 493.9,
+        "ts": 57,
+        "te": 59.5,
+        "intensity": 0.78,
+        "register": "medio-agudo"
+      },
+      {
+        "note": "C6",
+        "hz": 1046.5,
+        "ts": 59.5,
+        "te": 62,
+        "intensity": 0.98,
+        "register": "agudo"
+      },
+      {
+        "note": "B5",
+        "hz": 987.8,
+        "ts": 62,
+        "te": 64.5,
+        "intensity": 0.95,
+        "register": "agudo"
+      },
+      {
+        "note": "A5",
+        "hz": 880.0,
+        "ts": 64.5,
+        "te": 67,
+        "intensity": 0.92,
+        "register": "agudo"
+      },
+      {
+        "note": "C6",
+        "hz": 1046.5,
+        "ts": 67,
+        "te": 70,
+        "intensity": 1.0,
+        "register": "agudo"
+      },
+      {
+        "note": "G5",
+        "hz": 784.0,
+        "ts": 70,
+        "te": 72.5,
+        "intensity": 0.88,
+        "register": "agudo"
+      },
+      {
+        "note": "E5",
+        "hz": 659.3,
+        "ts": 72.5,
+        "te": 74.5,
+        "intensity": 0.82,
+        "register": "medio-agudo"
+      },
+      {
+        "note": "C5",
+        "hz": 523.3,
+        "ts": 74.5,
+        "te": 76.5,
+        "intensity": 0.78,
+        "register": "medio-agudo"
+      },
+      {
+        "note": "A4",
+        "hz": 440.0,
+        "ts": 76.5,
+        "te": 78.5,
+        "intensity": 0.72,
+        "register": "medio-agudo"
+      },
+      {
+        "note": "G4",
+        "hz": 392.0,
+        "ts": 78.5,
+        "te": 80,
+        "intensity": 0.68,
+        "register": "medio-agudo"
+      },
+      {
+        "note": "E4",
+        "hz": 329.6,
+        "ts": 80,
+        "te": 82,
+        "intensity": 0.6,
+        "register": "medio-grave"
+      },
+      {
+        "note": "C4",
+        "hz": 261.6,
+        "ts": 82,
+        "te": 84.5,
+        "intensity": 0.55,
+        "register": "medio-grave"
+      },
+      {
+        "note": "A3",
+        "hz": 220.0,
+        "ts": 84.5,
+        "te": 87,
+        "intensity": 0.5,
+        "register": "medio-grave"
+      },
+      {
+        "note": "G3",
+        "hz": 196.0,
+        "ts": 87,
+        "te": 90,
+        "intensity": 0.45,
+        "register": "medio-grave"
+      }
+    ]
+  },
+  {
+    "id": "baritono",
+    "name": "Barítono Lírico",
+    "tipo": "Barítono",
+    "genero": "Ópera / Balada",
+    "ref": "Estilo Sinatra / Barrientos",
+    "color": "#a78bfa",
+    "nota_grave": "F2",
+    "nota_aguda": "A4",
+    "hz_grave": 87.3,
+    "hz_aguda": 440.0,
+    "rango_semitonos": 28.0,
+    "rango_octavas": 2.33,
+    "hz_medio": 212.8,
+    "nota_modal": "G2",
+    "pct_grave": 43.3,
+    "pct_medio_grave": 42.2,
+    "pct_medio_agudo": 14.4,
+    "pct_agudo": 0.0,
+    "pct_sobreagudo": 0.0,
+    "intensidad_media": 0.665,
+    "intensidad_max": 0.9,
+    "intensidad_variacion": 0.13,
+    "pct_alta_intensidad": 30.0,
+    "n_notas_distintas": 17,
+    "n_cambios_nota": 31,
+    "densidad_melodica": 0.344,
+    "duracion_media_nota_s": 2.81,
+    "ratio_agudo_grave": 0.0,
+    "timeline": [
+      {
+        "note": "G2",
+        "hz": 98.0,
+        "ts": 0,
+        "te": 3,
+        "intensity": 0.55,
+        "register": "grave"
+      },
+      {
+        "note": "A2",
+        "hz": 110.0,
+        "ts": 3,
+        "te": 6,
+        "intensity": 0.6,
+        "register": "grave"
+      },
+      {
+        "note": "B2",
+        "hz": 123.5,
+        "ts": 6,
+        "te": 9,
+        "intensity": 0.62,
+        "register": "grave"
+      },
+      {
+        "note": "C3",
+        "hz": 130.8,
+        "ts": 9,
+        "te": 12,
+        "intensity": 0.65,
+        "register": "grave"
+      },
+      {
+        "note": "D3",
+        "hz": 146.8,
+        "ts": 12,
+        "te": 15,
+        "intensity": 0.68,
+        "register": "grave"
+      },
+      {
+        "note": "E3",
+        "hz": 164.8,
+        "ts": 15,
+        "te": 17,
+        "intensity": 0.65,
+        "register": "grave"
+      },
+      {
+        "note": "F3",
+        "hz": 174.6,
+        "ts": 17,
+        "te": 19,
+        "intensity": 0.7,
+        "register": "medio-grave"
+      },
+      {
+        "note": "G3",
+        "hz": 196.0,
+        "ts": 19,
+        "te": 22,
+        "intensity": 0.72,
+        "register": "medio-grave"
+      },
+      {
+        "note": "A3",
+        "hz": 220.0,
+        "ts": 22,
+        "te": 25,
+        "intensity": 0.75,
+        "register": "medio-grave"
+      },
+      {
+        "note": "B3",
+        "hz": 246.9,
+        "ts": 25,
+        "te": 27,
+        "intensity": 0.72,
+        "register": "medio-grave"
+      },
+      {
+        "note": "C4",
+        "hz": 261.6,
+        "ts": 27,
+        "te": 30,
+        "intensity": 0.78,
+        "register": "medio-grave"
+      },
+      {
+        "note": "D4",
+        "hz": 293.7,
+        "ts": 30,
+        "te": 33,
+        "intensity": 0.8,
+        "register": "medio-grave"
+      },
+      {
+        "note": "E4",
+        "hz": 329.6,
+        "ts": 33,
+        "te": 36,
+        "intensity": 0.82,
+        "register": "medio-grave"
+      },
+      {
+        "note": "F4",
+        "hz": 349.2,
+        "ts": 36,
+        "te": 39,
+        "intensity": 0.85,
+        "register": "medio-agudo"
+      },
+      {
+        "note": "G4",
+        "hz": 392.0,
+        "ts": 39,
+        "te": 42,
+        "intensity": 0.88,
+        "register": "medio-agudo"
+      },
+      {
+        "note": "A4",
+        "hz": 440.0,
+        "ts": 42,
+        "te": 45,
+        "intensity": 0.9,
+        "register": "medio-agudo"
+      },
+      {
+        "note": "G4",
+        "hz": 392.0,
+        "ts": 45,
+        "te": 47,
+        "intensity": 0.85,
+        "register": "medio-agudo"
+      },
+      {
+        "note": "F4",
+        "hz": 349.2,
+        "ts": 47,
+        "te": 49,
+        "intensity": 0.8,
+        "register": "medio-agudo"
+      },
+      {
+        "note": "E4",
+        "hz": 329.6,
+        "ts": 49,
+        "te": 51,
+        "intensity": 0.75,
+        "register": "medio-grave"
+      },
+      {
+        "note": "D4",
+        "hz": 293.7,
+        "ts": 51,
+        "te": 53,
+        "intensity": 0.72,
+        "register": "medio-grave"
+      },
+      {
+        "note": "C4",
+        "hz": 261.6,
+        "ts": 53,
+        "te": 56,
+        "intensity": 0.7,
+        "register": "medio-grave"
+      },
+      {
+        "note": "B3",
+        "hz": 246.9,
+        "ts": 56,
+        "te": 59,
+        "intensity": 0.68,
+        "register": "medio-grave"
+      },
+      {
+        "note": "A3",
+        "hz": 220.0,
+        "ts": 59,
+        "te": 62,
+        "intensity": 0.65,
+        "register": "medio-grave"
+      },
+      {
+        "note": "G3",
+        "hz": 196.0,
+        "ts": 62,
+        "te": 65,
+        "intensity": 0.62,
+        "register": "medio-grave"
+      },
+      {
+        "note": "F3",
+        "hz": 174.6,
+        "ts": 65,
+        "te": 68,
+        "intensity": 0.6,
+        "register": "medio-grave"
+      },
+      {
+        "note": "E3",
+        "hz": 164.8,
+        "ts": 68,
+        "te": 71,
+        "intensity": 0.58,
+        "register": "grave"
+      },
+      {
+        "note": "D3",
+        "hz": 146.8,
+        "ts": 71,
+        "te": 74,
+        "intensity": 0.55,
+        "register": "grave"
+      },
+      {
+        "note": "C3",
+        "hz": 130.8,
+        "ts": 74,
+        "te": 77,
+        "intensity": 0.52,
+        "register": "grave"
+      },
+      {
+        "note": "B2",
+        "hz": 123.5,
+        "ts": 77,
+        "te": 80,
+        "intensity": 0.5,
+        "register": "grave"
+      },
+      {
+        "note": "A2",
+        "hz": 110.0,
+        "ts": 80,
+        "te": 83,
+        "intensity": 0.48,
+        "register": "grave"
+      },
+      {
+        "note": "G2",
+        "hz": 98.0,
+        "ts": 83,
+        "te": 87,
+        "intensity": 0.45,
+        "register": "grave"
+      },
+      {
+        "note": "F2",
+        "hz": 87.3,
+        "ts": 87,
+        "te": 90,
+        "intensity": 0.4,
+        "register": "grave"
+      }
+    ]
+  },
+  {
+    "id": "soprano",
+    "name": "Soprano Lírica",
+    "tipo": "Soprano",
+    "genero": "Ópera / Música clásica",
+    "ref": "Estilo Callas / Netrebko",
+    "color": "#f472b6",
+    "nota_grave": "C4",
+    "nota_aguda": "F6",
+    "hz_grave": 261.6,
+    "hz_aguda": 1396.9,
+    "rango_semitonos": 29.0,
+    "rango_octavas": 2.42,
+    "hz_medio": 692.7,
+    "nota_modal": "A5",
+    "pct_grave": 0.0,
+    "pct_medio_grave": 13.9,
+    "pct_medio_agudo": 40.6,
+    "pct_agudo": 32.2,
+    "pct_sobreagudo": 13.3,
+    "intensidad_media": 0.764,
+    "intensidad_max": 1.0,
+    "intensidad_variacion": 0.143,
+    "pct_alta_intensidad": 26.7,
+    "n_notas_distintas": 18,
+    "n_cambios_nota": 32,
+    "densidad_melodica": 0.356,
+    "duracion_media_nota_s": 2.73,
+    "ratio_agudo_grave": 3.28,
+    "timeline": [
+      {
+        "note": "E4",
+        "hz": 329.6,
+        "ts": 0,
+        "te": 2.5,
+        "intensity": 0.6,
+        "register": "medio-grave"
+      },
+      {
+        "note": "F4",
+        "hz": 349.2,
+        "ts": 2.5,
+        "te": 5,
+        "intensity": 0.62,
+        "register": "medio-agudo"
+      },
+      {
+        "note": "G4",
+        "hz": 392.0,
+        "ts": 5,
+        "te": 7.5,
+        "intensity": 0.65,
+        "register": "medio-agudo"
+      },
+      {
+        "note": "A4",
+        "hz": 440.0,
+        "ts": 7.5,
+        "te": 10,
+        "intensity": 0.68,
+        "register": "medio-agudo"
+      },
+      {
+        "note": "B4",
+        "hz": 493.9,
+        "ts": 10,
+        "te": 12.5,
+        "intensity": 0.7,
+        "register": "medio-agudo"
+      },
+      {
+        "note": "C5",
+        "hz": 523.3,
+        "ts": 12.5,
+        "te": 15,
+        "intensity": 0.75,
+        "register": "medio-agudo"
+      },
+      {
+        "note": "D5",
+        "hz": 587.3,
+        "ts": 15,
+        "te": 17.5,
+        "intensity": 0.78,
+        "register": "medio-agudo"
+      },
+      {
+        "note": "E5",
+        "hz": 659.3,
+        "ts": 17.5,
+        "te": 20,
+        "intensity": 0.8,
+        "register": "medio-agudo"
+      },
+      {
+        "note": "F5",
+        "hz": 698.5,
+        "ts": 20,
+        "te": 22.5,
+        "intensity": 0.83,
+        "register": "agudo"
+      },
+      {
+        "note": "G5",
+        "hz": 784.0,
+        "ts": 22.5,
+        "te": 25,
+        "intensity": 0.87,
+        "register": "agudo"
+      },
+      {
+        "note": "A5",
+        "hz": 880.0,
+        "ts": 25,
+        "te": 28,
+        "intensity": 0.9,
+        "register": "agudo"
+      },
+      {
+        "note": "B5",
+        "hz": 987.8,
+        "ts": 28,
+        "te": 31,
+        "intensity": 0.93,
+        "register": "agudo"
+      },
+      {
+        "note": "C6",
+        "hz": 1046.5,
+        "ts": 31,
+        "te": 34,
+        "intensity": 0.96,
+        "register": "agudo"
+      },
+      {
+        "note": "D6",
+        "hz": 1174.7,
+        "ts": 34,
+        "te": 37,
+        "intensity": 0.98,
+        "register": "sobreagudo"
+      },
+      {
+        "note": "E6",
+        "hz": 1318.5,
+        "ts": 37,
+        "te": 40,
+        "intensity": 1.0,
+        "register": "sobreagudo"
+      },
+      {
+        "note": "F6",
+        "hz": 1396.9,
+        "ts": 40,
+        "te": 42,
+        "intensity": 0.98,
+        "register": "sobreagudo"
+      },
+      {
+        "note": "E6",
+        "hz": 1318.5,
+        "ts": 42,
+        "te": 44,
+        "intensity": 0.95,
+        "register": "sobreagudo"
+      },
+      {
+        "note": "D6",
+        "hz": 1174.7,
+        "ts": 44,
+        "te": 46,
+        "intensity": 0.92,
+        "register": "sobreagudo"
+      },
+      {
+        "note": "C6",
+        "hz": 1046.5,
+        "ts": 46,
+        "te": 49,
+        "intensity": 0.9,
+        "register": "agudo"
+      },
+      {
+        "note": "B5",
+        "hz": 987.8,
+        "ts": 49,
+        "te": 52,
+        "intensity": 0.87,
+        "register": "agudo"
+      },
+      {
+        "note": "A5",
+        "hz": 880.0,
+        "ts": 52,
+        "te": 55,
+        "intensity": 0.83,
+        "register": "agudo"
+      },
+      {
+        "note": "G5",
+        "hz": 784.0,
+        "ts": 55,
+        "te": 58,
+        "intensity": 0.8,
+        "register": "agudo"
+      },
+      {
+        "note": "F5",
+        "hz": 698.5,
+        "ts": 58,
+        "te": 61,
+        "intensity": 0.78,
+        "register": "agudo"
+      },
+      {
+        "note": "E5",
+        "hz": 659.3,
+        "ts": 61,
+        "te": 63,
+        "intensity": 0.75,
+        "register": "medio-agudo"
+      },
+      {
+        "note": "D5",
+        "hz": 587.3,
+        "ts": 63,
+        "te": 65,
+        "intensity": 0.72,
+        "register": "medio-agudo"
+      },
+      {
+        "note": "C5",
+        "hz": 523.3,
+        "ts": 65,
+        "te": 68,
+        "intensity": 0.7,
+        "register": "medio-agudo"
+      },
+      {
+        "note": "B4",
+        "hz": 493.9,
+        "ts": 68,
+        "te": 71,
+        "intensity": 0.67,
+        "register": "medio-agudo"
+      },
+      {
+        "note": "A4",
+        "hz": 440.0,
+        "ts": 71,
+        "te": 74,
+        "intensity": 0.65,
+        "register": "medio-agudo"
+      },
+      {
+        "note": "G4",
+        "hz": 392.0,
+        "ts": 74,
+        "te": 77,
+        "intensity": 0.62,
+        "register": "medio-agudo"
+      },
+      {
+        "note": "F4",
+        "hz": 349.2,
+        "ts": 77,
+        "te": 80,
+        "intensity": 0.6,
+        "register": "medio-agudo"
+      },
+      {
+        "note": "E4",
+        "hz": 329.6,
+        "ts": 80,
+        "te": 83,
+        "intensity": 0.58,
+        "register": "medio-grave"
+      },
+      {
+        "note": "D4",
+        "hz": 293.7,
+        "ts": 83,
+        "te": 86,
+        "intensity": 0.55,
+        "register": "medio-grave"
+      },
+      {
+        "note": "C4",
+        "hz": 261.6,
+        "ts": 86,
+        "te": 90,
+        "intensity": 0.5,
+        "register": "medio-grave"
+      }
+    ]
+  },
+  {
+    "id": "tenor_pop",
+    "name": "Tenor Pop / Belting",
+    "tipo": "Tenor lírico-pop",
+    "genero": "Pop / Rock",
+    "ref": "Estilo Freddie Mercury / Adam Lambert",
+    "color": "#fb923c",
+    "nota_grave": "B2",
+    "nota_aguda": "E5",
+    "hz_grave": 123.5,
+    "hz_aguda": 659.3,
+    "rango_semitonos": 29.0,
+    "rango_octavas": 2.42,
+    "hz_medio": 312.6,
+    "nota_modal": "A3",
+    "pct_grave": 17.8,
+    "pct_medio_grave": 44.4,
+    "pct_medio_agudo": 37.8,
+    "pct_agudo": 0.0,
+    "pct_sobreagudo": 0.0,
+    "intensidad_media": 0.716,
+    "intensidad_max": 0.99,
+    "intensidad_variacion": 0.164,
+    "pct_alta_intensidad": 25.6,
+    "n_notas_distintas": 18,
+    "n_cambios_nota": 33,
+    "densidad_melodica": 0.367,
+    "duracion_media_nota_s": 2.65,
+    "ratio_agudo_grave": 0.0,
+    "timeline": [
+      {
+        "note": "B2",
+        "hz": 123.5,
+        "ts": 0,
+        "te": 2,
+        "intensity": 0.55,
+        "register": "grave"
+      },
+      {
+        "note": "C3",
+        "hz": 130.8,
+        "ts": 2,
+        "te": 4,
+        "intensity": 0.58,
+        "register": "grave"
+      },
+      {
+        "note": "D3",
+        "hz": 146.8,
+        "ts": 4,
+        "te": 6,
+        "intensity": 0.6,
+        "register": "grave"
+      },
+      {
+        "note": "E3",
+        "hz": 164.8,
+        "ts": 6,
+        "te": 8,
+        "intensity": 0.62,
+        "register": "grave"
+      },
+      {
+        "note": "F3",
+        "hz": 174.6,
+        "ts": 8,
+        "te": 10,
+        "intensity": 0.65,
+        "register": "medio-grave"
+      },
+      {
+        "note": "G3",
+        "hz": 196.0,
+        "ts": 10,
+        "te": 12,
+        "intensity": 0.68,
+        "register": "medio-grave"
+      },
+      {
+        "note": "A3",
+        "hz": 220.0,
+        "ts": 12,
+        "te": 15,
+        "intensity": 0.72,
+        "register": "medio-grave"
+      },
+      {
+        "note": "B3",
+        "hz": 246.9,
+        "ts": 15,
+        "te": 18,
+        "intensity": 0.75,
+        "register": "medio-grave"
+      },
+      {
+        "note": "C4",
+        "hz": 261.6,
+        "ts": 18,
+        "te": 21,
+        "intensity": 0.78,
+        "register": "medio-grave"
+      },
+      {
+        "note": "D4",
+        "hz": 293.7,
+        "ts": 21,
+        "te": 24,
+        "intensity": 0.8,
+        "register": "medio-grave"
+      },
+      {
+        "note": "E4",
+        "hz": 329.6,
+        "ts": 24,
+        "te": 27,
+        "intensity": 0.83,
+        "register": "medio-grave"
+      },
+      {
+        "note": "F4",
+        "hz": 349.2,
+        "ts": 27,
+        "te": 30,
+        "intensity": 0.88,
+        "register": "medio-agudo"
+      },
+      {
+        "note": "G4",
+        "hz": 392.0,
+        "ts": 30,
+        "te": 33,
+        "intensity": 0.92,
+        "register": "medio-agudo"
+      },
+      {
+        "note": "A4",
+        "hz": 440.0,
+        "ts": 33,
+        "te": 36,
+        "intensity": 0.95,
+        "register": "medio-agudo"
+      },
+      {
+        "note": "B4",
+        "hz": 493.9,
+        "ts": 36,
+        "te": 39,
+        "intensity": 0.97,
+        "register": "medio-agudo"
+      },
+      {
+        "note": "C5",
+        "hz": 523.3,
+        "ts": 39,
+        "te": 42,
+        "intensity": 0.99,
+        "register": "medio-agudo"
+      },
+      {
+        "note": "D5",
+        "hz": 587.3,
+        "ts": 42,
+        "te": 44,
+        "intensity": 0.95,
+        "register": "medio-agudo"
+      },
+      {
+        "note": "E5",
+        "hz": 659.3,
+        "ts": 44,
+        "te": 46,
+        "intensity": 0.92,
+        "register": "medio-agudo"
+      },
+      {
+        "note": "D5",
+        "hz": 587.3,
+        "ts": 46,
+        "te": 48,
+        "intensity": 0.9,
+        "register": "medio-agudo"
+      },
+      {
+        "note": "C5",
+        "hz": 523.3,
+        "ts": 48,
+        "te": 50,
+        "intensity": 0.87,
+        "register": "medio-agudo"
+      },
+      {
+        "note": "B4",
+        "hz": 493.9,
+        "ts": 50,
+        "te": 52,
+        "intensity": 0.83,
+        "register": "medio-agudo"
+      },
+      {
+        "note": "A4",
+        "hz": 440.0,
+        "ts": 52,
+        "te": 55,
+        "intensity": 0.8,
+        "register": "medio-agudo"
+      },
+      {
+        "note": "G4",
+        "hz": 392.0,
+        "ts": 55,
+        "te": 58,
+        "intensity": 0.75,
+        "register": "medio-agudo"
+      },
+      {
+        "note": "F4",
+        "hz": 349.2,
+        "ts": 58,
+        "te": 61,
+        "intensity": 0.7,
+        "register": "medio-agudo"
+      },
+      {
+        "note": "E4",
+        "hz": 329.6,
+        "ts": 61,
+        "te": 64,
+        "intensity": 0.65,
+        "register": "medio-grave"
+      },
+      {
+        "note": "D4",
+        "hz": 293.7,
+        "ts": 64,
+        "te": 67,
+        "intensity": 0.62,
+        "register": "medio-grave"
+      },
+      {
+        "note": "C4",
+        "hz": 261.6,
+        "ts": 67,
+        "te": 70,
+        "intensity": 0.6,
+        "register": "medio-grave"
+      },
+      {
+        "note": "B3",
+        "hz": 246.9,
+        "ts": 70,
+        "te": 73,
+        "intensity": 0.57,
+        "register": "medio-grave"
+      },
+      {
+        "note": "A3",
+        "hz": 220.0,
+        "ts": 73,
+        "te": 76,
+        "intensity": 0.55,
+        "register": "medio-grave"
+      },
+      {
+        "note": "G3",
+        "hz": 196.0,
+        "ts": 76,
+        "te": 79,
+        "intensity": 0.52,
+        "register": "medio-grave"
+      },
+      {
+        "note": "F3",
+        "hz": 174.6,
+        "ts": 79,
+        "te": 82,
+        "intensity": 0.5,
+        "register": "medio-grave"
+      },
+      {
+        "note": "E3",
+        "hz": 164.8,
+        "ts": 82,
+        "te": 85,
+        "intensity": 0.48,
+        "register": "grave"
+      },
+      {
+        "note": "D3",
+        "hz": 146.8,
+        "ts": 85,
+        "te": 88,
+        "intensity": 0.45,
+        "register": "grave"
+      },
+      {
+        "note": "C3",
+        "hz": 130.8,
+        "ts": 88,
+        "te": 90,
+        "intensity": 0.42,
+        "register": "grave"
+      }
+    ]
+  },
+  {
+    "id": "contratenor",
+    "name": "Contratenor (falsete cultivado)",
+    "tipo": "Contratenor",
+    "genero": "Música barroca / Ópera antigua",
+    "ref": "Estilo Philippe Jaroussky / Andreas Scholl",
+    "color": "#34d399",
+    "nota_grave": "G3",
+    "nota_aguda": "C6",
+    "hz_grave": 196.0,
+    "hz_aguda": 1046.5,
+    "rango_semitonos": 29.0,
+    "rango_octavas": 2.42,
+    "hz_medio": 550.5,
+    "nota_modal": "E4",
+    "pct_grave": 0.0,
+    "pct_medio_grave": 23.3,
+    "pct_medio_agudo": 46.7,
+    "pct_agudo": 30.0,
+    "pct_sobreagudo": 0.0,
+    "intensidad_media": 0.772,
+    "intensidad_max": 1.0,
+    "intensidad_variacion": 0.147,
+    "pct_alta_intensidad": 26.7,
+    "n_notas_distintas": 18,
+    "n_cambios_nota": 29,
+    "densidad_melodica": 0.322,
+    "duracion_media_nota_s": 3.0,
+    "ratio_agudo_grave": 1.286,
+    "timeline": [
+      {
+        "note": "G3",
+        "hz": 196.0,
+        "ts": 0,
+        "te": 3,
+        "intensity": 0.55,
+        "register": "medio-grave"
+      },
+      {
+        "note": "A3",
+        "hz": 220.0,
+        "ts": 3,
+        "te": 6,
+        "intensity": 0.58,
+        "register": "medio-grave"
+      },
+      {
+        "note": "B3",
+        "hz": 246.9,
+        "ts": 6,
+        "te": 9,
+        "intensity": 0.6,
+        "register": "medio-grave"
+      },
+      {
+        "note": "C4",
+        "hz": 261.6,
+        "ts": 9,
+        "te": 12,
+        "intensity": 0.62,
+        "register": "medio-grave"
+      },
+      {
+        "note": "D4",
+        "hz": 293.7,
+        "ts": 12,
+        "te": 15,
+        "intensity": 0.65,
+        "register": "medio-grave"
+      },
+      {
+        "note": "E4",
+        "hz": 329.6,
+        "ts": 15,
+        "te": 18,
+        "intensity": 0.68,
+        "register": "medio-grave"
+      },
+      {
+        "note": "F4",
+        "hz": 349.2,
+        "ts": 18,
+        "te": 21,
+        "intensity": 0.72,
+        "register": "medio-agudo"
+      },
+      {
+        "note": "G4",
+        "hz": 392.0,
+        "ts": 21,
+        "te": 24,
+        "intensity": 0.75,
+        "register": "medio-agudo"
+      },
+      {
+        "note": "A4",
+        "hz": 440.0,
+        "ts": 24,
+        "te": 27,
+        "intensity": 0.78,
+        "register": "medio-agudo"
+      },
+      {
+        "note": "B4",
+        "hz": 493.9,
+        "ts": 27,
+        "te": 30,
+        "intensity": 0.8,
+        "register": "medio-agudo"
+      },
+      {
+        "note": "C5",
+        "hz": 523.3,
+        "ts": 30,
+        "te": 33,
+        "intensity": 0.83,
+        "register": "medio-agudo"
+      },
+      {
+        "note": "D5",
+        "hz": 587.3,
+        "ts": 33,
+        "te": 36,
+        "intensity": 0.86,
+        "register": "medio-agudo"
+      },
+      {
+        "note": "E5",
+        "hz": 659.3,
+        "ts": 36,
+        "te": 39,
+        "intensity": 0.89,
+        "register": "medio-agudo"
+      },
+      {
+        "note": "F5",
+        "hz": 698.5,
+        "ts": 39,
+        "te": 42,
+        "intensity": 0.92,
+        "register": "agudo"
+      },
+      {
+        "note": "G5",
+        "hz": 784.0,
+        "ts": 42,
+        "te": 45,
+        "intensity": 0.95,
+        "register": "agudo"
+      },
+      {
+        "note": "A5",
+        "hz": 880.0,
+        "ts": 45,
+        "te": 48,
+        "intensity": 0.97,
+        "register": "agudo"
+      },
+      {
+        "note": "B5",
+        "hz": 987.8,
+        "ts": 48,
+        "te": 51,
+        "intensity": 0.99,
+        "register": "agudo"
+      },
+      {
+        "note": "C6",
+        "hz": 1046.5,
+        "ts": 51,
+        "te": 54,
+        "intensity": 1.0,
+        "register": "agudo"
+      },
+      {
+        "note": "B5",
+        "hz": 987.8,
+        "ts": 54,
+        "te": 57,
+        "intensity": 0.97,
+        "register": "agudo"
+      },
+      {
+        "note": "A5",
+        "hz": 880.0,
+        "ts": 57,
+        "te": 60,
+        "intensity": 0.94,
+        "register": "agudo"
+      },
+      {
+        "note": "G5",
+        "hz": 784.0,
+        "ts": 60,
+        "te": 63,
+        "intensity": 0.9,
+        "register": "agudo"
+      },
+      {
+        "note": "F5",
+        "hz": 698.5,
+        "ts": 63,
+        "te": 66,
+        "intensity": 0.86,
+        "register": "agudo"
+      },
+      {
+        "note": "E5",
+        "hz": 659.3,
+        "ts": 66,
+        "te": 69,
+        "intensity": 0.82,
+        "register": "medio-agudo"
+      },
+      {
+        "note": "D5",
+        "hz": 587.3,
+        "ts": 69,
+        "te": 72,
+        "intensity": 0.78,
+        "register": "medio-agudo"
+      },
+      {
+        "note": "C5",
+        "hz": 523.3,
+        "ts": 72,
+        "te": 75,
+        "intensity": 0.74,
+        "register": "medio-agudo"
+      },
+      {
+        "note": "B4",
+        "hz": 493.9,
+        "ts": 75,
+        "te": 78,
+        "intensity": 0.7,
+        "register": "medio-agudo"
+      },
+      {
+        "note": "A4",
+        "hz": 440.0,
+        "ts": 78,
+        "te": 81,
+        "intensity": 0.65,
+        "register": "medio-agudo"
+      },
+      {
+        "note": "G4",
+        "hz": 392.0,
+        "ts": 81,
+        "te": 84,
+        "intensity": 0.6,
+        "register": "medio-agudo"
+      },
+      {
+        "note": "F4",
+        "hz": 349.2,
+        "ts": 84,
+        "te": 87,
+        "intensity": 0.55,
+        "register": "medio-agudo"
+      },
+      {
+        "note": "E4",
+        "hz": 329.6,
+        "ts": 87,
+        "te": 90,
+        "intensity": 0.5,
+        "register": "medio-grave"
+      }
+    ]
+  },
+  {
+    "id": "mezzo",
+    "name": "Mezzo-Soprano",
+    "tipo": "Mezzo-soprano",
+    "genero": "Ópera / Lieder",
+    "ref": "Estilo Cecilia Bartoli / Joyce DiDonato",
+    "color": "#fbbf24",
+    "nota_grave": "F3",
+    "nota_aguda": "A5",
+    "hz_grave": 174.6,
+    "hz_aguda": 880.0,
+    "rango_semitonos": 28.0,
+    "rango_octavas": 2.33,
+    "hz_medio": 431.9,
+    "nota_modal": "A3",
+    "pct_grave": 0.0,
+    "pct_medio_grave": 41.1,
+    "pct_medio_agudo": 44.4,
+    "pct_agudo": 14.4,
+    "pct_sobreagudo": 0.0,
+    "intensidad_media": 0.726,
+    "intensidad_max": 0.95,
+    "intensidad_variacion": 0.131,
+    "pct_alta_intensidad": 26.7,
+    "n_notas_distintas": 17,
+    "n_cambios_nota": 30,
+    "densidad_melodica": 0.333,
+    "duracion_media_nota_s": 2.9,
+    "ratio_agudo_grave": 0.351,
+    "timeline": [
+      {
+        "note": "A3",
+        "hz": 220.0,
+        "ts": 0,
+        "te": 3,
+        "intensity": 0.58,
+        "register": "medio-grave"
+      },
+      {
+        "note": "B3",
+        "hz": 246.9,
+        "ts": 3,
+        "te": 6,
+        "intensity": 0.62,
+        "register": "medio-grave"
+      },
+      {
+        "note": "C4",
+        "hz": 261.6,
+        "ts": 6,
+        "te": 9,
+        "intensity": 0.65,
+        "register": "medio-grave"
+      },
+      {
+        "note": "D4",
+        "hz": 293.7,
+        "ts": 9,
+        "te": 12,
+        "intensity": 0.68,
+        "register": "medio-grave"
+      },
+      {
+        "note": "E4",
+        "hz": 329.6,
+        "ts": 12,
+        "te": 15,
+        "intensity": 0.7,
+        "register": "medio-grave"
+      },
+      {
+        "note": "F4",
+        "hz": 349.2,
+        "ts": 15,
+        "te": 18,
+        "intensity": 0.73,
+        "register": "medio-agudo"
+      },
+      {
+        "note": "G4",
+        "hz": 392.0,
+        "ts": 18,
+        "te": 21,
+        "intensity": 0.76,
+        "register": "medio-agudo"
+      },
+      {
+        "note": "A4",
+        "hz": 440.0,
+        "ts": 21,
+        "te": 24,
+        "intensity": 0.8,
+        "register": "medio-agudo"
+      },
+      {
+        "note": "B4",
+        "hz": 493.9,
+        "ts": 24,
+        "te": 27,
+        "intensity": 0.82,
+        "register": "medio-agudo"
+      },
+      {
+        "note": "C5",
+        "hz": 523.3,
+        "ts": 27,
+        "te": 30,
+        "intensity": 0.85,
+        "register": "medio-agudo"
+      },
+      {
+        "note": "D5",
+        "hz": 587.3,
+        "ts": 30,
+        "te": 33,
+        "intensity": 0.87,
+        "register": "medio-agudo"
+      },
+      {
+        "note": "E5",
+        "hz": 659.3,
+        "ts": 33,
+        "te": 36,
+        "intensity": 0.9,
+        "register": "medio-agudo"
+      },
+      {
+        "note": "F5",
+        "hz": 698.5,
+        "ts": 36,
+        "te": 39,
+        "intensity": 0.92,
+        "register": "agudo"
+      },
+      {
+        "note": "G5",
+        "hz": 784.0,
+        "ts": 39,
+        "te": 42,
+        "intensity": 0.95,
+        "register": "agudo"
+      },
+      {
+        "note": "A5",
+        "hz": 880.0,
+        "ts": 42,
+        "te": 45,
+        "intensity": 0.93,
+        "register": "agudo"
+      },
+      {
+        "note": "G5",
+        "hz": 784.0,
+        "ts": 45,
+        "te": 47,
+        "intensity": 0.9,
+        "register": "agudo"
+      },
+      {
+        "note": "F5",
+        "hz": 698.5,
+        "ts": 47,
+        "te": 49,
+        "intensity": 0.87,
+        "register": "agudo"
+      },
+      {
+        "note": "E5",
+        "hz": 659.3,
+        "ts": 49,
+        "te": 51,
+        "intensity": 0.83,
+        "register": "medio-agudo"
+      },
+      {
+        "note": "D5",
+        "hz": 587.3,
+        "ts": 51,
+        "te": 53,
+        "intensity": 0.8,
+        "register": "medio-agudo"
+      },
+      {
+        "note": "C5",
+        "hz": 523.3,
+        "ts": 53,
+        "te": 56,
+        "intensity": 0.77,
+        "register": "medio-agudo"
+      },
+      {
+        "note": "B4",
+        "hz": 493.9,
+        "ts": 56,
+        "te": 59,
+        "intensity": 0.74,
+        "register": "medio-agudo"
+      },
+      {
+        "note": "A4",
+        "hz": 440.0,
+        "ts": 59,
+        "te": 62,
+        "intensity": 0.72,
+        "register": "medio-agudo"
+      },
+      {
+        "note": "G4",
+        "hz": 392.0,
+        "ts": 62,
+        "te": 65,
+        "intensity": 0.7,
+        "register": "medio-agudo"
+      },
+      {
+        "note": "F4",
+        "hz": 349.2,
+        "ts": 65,
+        "te": 68,
+        "intensity": 0.68,
+        "register": "medio-agudo"
+      },
+      {
+        "note": "E4",
+        "hz": 329.6,
+        "ts": 68,
+        "te": 71,
+        "intensity": 0.65,
+        "register": "medio-grave"
+      },
+      {
+        "note": "D4",
+        "hz": 293.7,
+        "ts": 71,
+        "te": 74,
+        "intensity": 0.62,
+        "register": "medio-grave"
+      },
+      {
+        "note": "C4",
+        "hz": 261.6,
+        "ts": 74,
+        "te": 77,
+        "intensity": 0.6,
+        "register": "medio-grave"
+      },
+      {
+        "note": "B3",
+        "hz": 246.9,
+        "ts": 77,
+        "te": 80,
+        "intensity": 0.57,
+        "register": "medio-grave"
+      },
+      {
+        "note": "A3",
+        "hz": 220.0,
+        "ts": 80,
+        "te": 83,
+        "intensity": 0.55,
+        "register": "medio-grave"
+      },
+      {
+        "note": "G3",
+        "hz": 196.0,
+        "ts": 83,
+        "te": 86,
+        "intensity": 0.52,
+        "register": "medio-grave"
+      },
+      {
+        "note": "F3",
+        "hz": 174.6,
+        "ts": 86,
+        "te": 90,
+        "intensity": 0.48,
+        "register": "medio-grave"
+      }
+    ]
+  }
+]

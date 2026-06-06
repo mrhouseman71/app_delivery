@@ -86,7 +86,7 @@ POLL_TIMEOUT     = 1.0    # segundos por poll
 def _load_classifier(model_path: str):
     """Carga el VocalClassifier (Idea A). Retorna None si falla."""
     try:
-        sys.path.insert(0, str(Path(__file__).parent.parent / "vocal_clasificador"))
+        sys.path.insert(0, str(Path(__file__).parent.parent / "clasificador_ml"))
         from vocal_classifier import VocalClassifier, extract_features, FEATURE_NAMES
         clf = VocalClassifier.load(model_path)
         print(f"  [CLASSIFIER] Modelo cargado: {model_path}")
@@ -100,7 +100,7 @@ def _load_classifier(model_path: str):
 def _load_anomaly_detector():
     """Carga VocalAnomalyDetector (Idea D). Retorna None si falla."""
     try:
-        sys.path.insert(0, str(Path(__file__).parent.parent / "vocal_anomaly"))
+        sys.path.insert(0, str(Path(__file__).parent.parent / "anomalias"))
         from anomaly_detector import VocalAnomalyDetector
         print("  [ANOMALY] VocalAnomalyDetector cargado.")
         return VocalAnomalyDetector
@@ -288,6 +288,11 @@ def consumir(
             except Exception as e:
                 print(f"  [CONSUMER] Error deserialización: {e}")
                 continue
+
+            if "time" not in frame and "time_s" in frame:
+                frame["time"] = frame["time_s"]
+            elif "time_s" not in frame and "time" in frame:
+                frame["time_s"] = frame["time"]
 
             total_frames += 1
             frame_buffer.append(frame)

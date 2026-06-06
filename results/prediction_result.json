@@ -1,0 +1,2316 @@
+{
+  "pred": "Tenor dramático",
+  "conf": 0.985,
+  "votes": {
+    "Barítono": 0.003,
+    "Contratenor": 0.005,
+    "Mezzo-soprano": 0.001,
+    "Soprano": 0.003,
+    "Tenor dramático": 0.985,
+    "Tenor lírico-pop": 0.003
+  },
+  "n_windows": 177,
+  "window_preds": [
+    {
+      "t_start": 0.0,
+      "pred": "Tenor dramático",
+      "conf": 0.994,
+      "proba": {
+        "Barítono": 0.004,
+        "Contratenor": 0.0,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.0,
+        "Tenor dramático": 0.994,
+        "Tenor lírico-pop": 0.002
+      }
+    },
+    {
+      "t_start": 0.5,
+      "pred": "Tenor dramático",
+      "conf": 0.994,
+      "proba": {
+        "Barítono": 0.004,
+        "Contratenor": 0.0,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.0,
+        "Tenor dramático": 0.994,
+        "Tenor lírico-pop": 0.002
+      }
+    },
+    {
+      "t_start": 1.0,
+      "pred": "Tenor dramático",
+      "conf": 0.997,
+      "proba": {
+        "Barítono": 0.001,
+        "Contratenor": 0.0,
+        "Mezzo-soprano": 0.002,
+        "Soprano": 0.0,
+        "Tenor dramático": 0.997,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 1.5,
+      "pred": "Tenor dramático",
+      "conf": 0.996,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.0,
+        "Mezzo-soprano": 0.002,
+        "Soprano": 0.0,
+        "Tenor dramático": 0.996,
+        "Tenor lírico-pop": 0.002
+      }
+    },
+    {
+      "t_start": 2.0,
+      "pred": "Tenor dramático",
+      "conf": 0.998,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.0,
+        "Mezzo-soprano": 0.002,
+        "Soprano": 0.0,
+        "Tenor dramático": 0.998,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 2.5,
+      "pred": "Tenor dramático",
+      "conf": 0.995,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.001,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.0,
+        "Tenor dramático": 0.995,
+        "Tenor lírico-pop": 0.004
+      }
+    },
+    {
+      "t_start": 3.0,
+      "pred": "Tenor dramático",
+      "conf": 0.988,
+      "proba": {
+        "Barítono": 0.005,
+        "Contratenor": 0.0,
+        "Mezzo-soprano": 0.003,
+        "Soprano": 0.002,
+        "Tenor dramático": 0.988,
+        "Tenor lírico-pop": 0.002
+      }
+    },
+    {
+      "t_start": 3.5,
+      "pred": "Tenor dramático",
+      "conf": 0.994,
+      "proba": {
+        "Barítono": 0.005,
+        "Contratenor": 0.001,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.0,
+        "Tenor dramático": 0.994,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 4.0,
+      "pred": "Tenor dramático",
+      "conf": 1.0,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.0,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.0,
+        "Tenor dramático": 1.0,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 4.5,
+      "pred": "Tenor dramático",
+      "conf": 0.991,
+      "proba": {
+        "Barítono": 0.003,
+        "Contratenor": 0.001,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.003,
+        "Tenor dramático": 0.991,
+        "Tenor lírico-pop": 0.002
+      }
+    },
+    {
+      "t_start": 5.0,
+      "pred": "Tenor dramático",
+      "conf": 0.988,
+      "proba": {
+        "Barítono": 0.003,
+        "Contratenor": 0.0,
+        "Mezzo-soprano": 0.003,
+        "Soprano": 0.005,
+        "Tenor dramático": 0.988,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 5.5,
+      "pred": "Tenor dramático",
+      "conf": 0.988,
+      "proba": {
+        "Barítono": 0.005,
+        "Contratenor": 0.003,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.005,
+        "Tenor dramático": 0.988,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 6.0,
+      "pred": "Tenor dramático",
+      "conf": 0.983,
+      "proba": {
+        "Barítono": 0.005,
+        "Contratenor": 0.0,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.012,
+        "Tenor dramático": 0.983,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 6.5,
+      "pred": "Tenor dramático",
+      "conf": 0.972,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.003,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.018,
+        "Tenor dramático": 0.972,
+        "Tenor lírico-pop": 0.007
+      }
+    },
+    {
+      "t_start": 7.0,
+      "pred": "Tenor dramático",
+      "conf": 0.991,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.0,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.009,
+        "Tenor dramático": 0.991,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 7.5,
+      "pred": "Tenor dramático",
+      "conf": 0.998,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.0,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.002,
+        "Tenor dramático": 0.998,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 8.0,
+      "pred": "Tenor dramático",
+      "conf": 0.998,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.0,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.002,
+        "Tenor dramático": 0.998,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 8.5,
+      "pred": "Tenor dramático",
+      "conf": 1.0,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.0,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.0,
+        "Tenor dramático": 1.0,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 9.0,
+      "pred": "Tenor dramático",
+      "conf": 0.999,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.001,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.0,
+        "Tenor dramático": 0.999,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 9.5,
+      "pred": "Tenor dramático",
+      "conf": 0.992,
+      "proba": {
+        "Barítono": 0.002,
+        "Contratenor": 0.005,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.0,
+        "Tenor dramático": 0.992,
+        "Tenor lírico-pop": 0.001
+      }
+    },
+    {
+      "t_start": 10.0,
+      "pred": "Tenor dramático",
+      "conf": 0.99,
+      "proba": {
+        "Barítono": 0.009,
+        "Contratenor": 0.0,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.0,
+        "Tenor dramático": 0.99,
+        "Tenor lírico-pop": 0.001
+      }
+    },
+    {
+      "t_start": 10.5,
+      "pred": "Tenor dramático",
+      "conf": 0.961,
+      "proba": {
+        "Barítono": 0.008,
+        "Contratenor": 0.019,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.002,
+        "Tenor dramático": 0.961,
+        "Tenor lírico-pop": 0.01
+      }
+    },
+    {
+      "t_start": 11.0,
+      "pred": "Tenor dramático",
+      "conf": 0.986,
+      "proba": {
+        "Barítono": 0.005,
+        "Contratenor": 0.008,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.0,
+        "Tenor dramático": 0.986,
+        "Tenor lírico-pop": 0.001
+      }
+    },
+    {
+      "t_start": 11.5,
+      "pred": "Tenor dramático",
+      "conf": 0.991,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.004,
+        "Mezzo-soprano": 0.003,
+        "Soprano": 0.001,
+        "Tenor dramático": 0.991,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 12.0,
+      "pred": "Tenor dramático",
+      "conf": 0.988,
+      "proba": {
+        "Barítono": 0.001,
+        "Contratenor": 0.002,
+        "Mezzo-soprano": 0.009,
+        "Soprano": 0.0,
+        "Tenor dramático": 0.988,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 12.5,
+      "pred": "Tenor dramático",
+      "conf": 0.992,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.008,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.0,
+        "Tenor dramático": 0.992,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 13.0,
+      "pred": "Tenor dramático",
+      "conf": 0.997,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.003,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.0,
+        "Tenor dramático": 0.997,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 13.5,
+      "pred": "Tenor dramático",
+      "conf": 0.992,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.004,
+        "Mezzo-soprano": 0.001,
+        "Soprano": 0.0,
+        "Tenor dramático": 0.992,
+        "Tenor lírico-pop": 0.004
+      }
+    },
+    {
+      "t_start": 14.0,
+      "pred": "Tenor dramático",
+      "conf": 1.0,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.0,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.0,
+        "Tenor dramático": 1.0,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 14.5,
+      "pred": "Tenor dramático",
+      "conf": 0.991,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.002,
+        "Mezzo-soprano": 0.004,
+        "Soprano": 0.003,
+        "Tenor dramático": 0.991,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 15.0,
+      "pred": "Tenor dramático",
+      "conf": 0.995,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.005,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.0,
+        "Tenor dramático": 0.995,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 15.5,
+      "pred": "Tenor dramático",
+      "conf": 0.992,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.005,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.0,
+        "Tenor dramático": 0.992,
+        "Tenor lírico-pop": 0.003
+      }
+    },
+    {
+      "t_start": 16.0,
+      "pred": "Tenor dramático",
+      "conf": 0.984,
+      "proba": {
+        "Barítono": 0.003,
+        "Contratenor": 0.006,
+        "Mezzo-soprano": 0.003,
+        "Soprano": 0.0,
+        "Tenor dramático": 0.984,
+        "Tenor lírico-pop": 0.004
+      }
+    },
+    {
+      "t_start": 16.5,
+      "pred": "Tenor dramático",
+      "conf": 0.998,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.002,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.0,
+        "Tenor dramático": 0.998,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 17.0,
+      "pred": "Tenor dramático",
+      "conf": 0.985,
+      "proba": {
+        "Barítono": 0.002,
+        "Contratenor": 0.013,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.0,
+        "Tenor dramático": 0.985,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 17.5,
+      "pred": "Tenor dramático",
+      "conf": 0.984,
+      "proba": {
+        "Barítono": 0.003,
+        "Contratenor": 0.013,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.0,
+        "Tenor dramático": 0.984,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 18.0,
+      "pred": "Tenor dramático",
+      "conf": 0.987,
+      "proba": {
+        "Barítono": 0.005,
+        "Contratenor": 0.0,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.007,
+        "Tenor dramático": 0.987,
+        "Tenor lírico-pop": 0.001
+      }
+    },
+    {
+      "t_start": 18.5,
+      "pred": "Tenor dramático",
+      "conf": 0.993,
+      "proba": {
+        "Barítono": 0.005,
+        "Contratenor": 0.003,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.0,
+        "Tenor dramático": 0.993,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 19.0,
+      "pred": "Tenor dramático",
+      "conf": 0.998,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.003,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.0,
+        "Tenor dramático": 0.998,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 19.5,
+      "pred": "Tenor dramático",
+      "conf": 1.0,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.0,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.0,
+        "Tenor dramático": 1.0,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 20.0,
+      "pred": "Tenor dramático",
+      "conf": 0.998,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.002,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.0,
+        "Tenor dramático": 0.998,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 20.5,
+      "pred": "Tenor dramático",
+      "conf": 1.0,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.0,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.0,
+        "Tenor dramático": 1.0,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 21.0,
+      "pred": "Tenor dramático",
+      "conf": 0.993,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.006,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.0,
+        "Tenor dramático": 0.993,
+        "Tenor lírico-pop": 0.001
+      }
+    },
+    {
+      "t_start": 21.5,
+      "pred": "Tenor dramático",
+      "conf": 1.0,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.0,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.0,
+        "Tenor dramático": 1.0,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 22.0,
+      "pred": "Tenor dramático",
+      "conf": 1.0,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.0,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.0,
+        "Tenor dramático": 1.0,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 22.5,
+      "pred": "Tenor dramático",
+      "conf": 1.0,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.0,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.0,
+        "Tenor dramático": 1.0,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 23.0,
+      "pred": "Tenor dramático",
+      "conf": 0.999,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.0,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.0,
+        "Tenor dramático": 0.999,
+        "Tenor lírico-pop": 0.001
+      }
+    },
+    {
+      "t_start": 23.5,
+      "pred": "Tenor dramático",
+      "conf": 0.994,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.003,
+        "Mezzo-soprano": 0.001,
+        "Soprano": 0.003,
+        "Tenor dramático": 0.994,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 24.0,
+      "pred": "Tenor dramático",
+      "conf": 0.992,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.003,
+        "Mezzo-soprano": 0.003,
+        "Soprano": 0.002,
+        "Tenor dramático": 0.992,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 24.5,
+      "pred": "Tenor dramático",
+      "conf": 0.996,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.004,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.0,
+        "Tenor dramático": 0.996,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 25.0,
+      "pred": "Tenor dramático",
+      "conf": 1.0,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.0,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.0,
+        "Tenor dramático": 1.0,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 25.5,
+      "pred": "Tenor dramático",
+      "conf": 0.998,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.002,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.0,
+        "Tenor dramático": 0.998,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 26.0,
+      "pred": "Tenor dramático",
+      "conf": 0.998,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.002,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.0,
+        "Tenor dramático": 0.998,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 26.5,
+      "pred": "Tenor dramático",
+      "conf": 0.996,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.002,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.002,
+        "Tenor dramático": 0.996,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 27.0,
+      "pred": "Tenor dramático",
+      "conf": 1.0,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.0,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.0,
+        "Tenor dramático": 1.0,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 27.5,
+      "pred": "Tenor dramático",
+      "conf": 1.0,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.0,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.0,
+        "Tenor dramático": 1.0,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 28.0,
+      "pred": "Tenor dramático",
+      "conf": 0.995,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.0,
+        "Mezzo-soprano": 0.005,
+        "Soprano": 0.0,
+        "Tenor dramático": 0.995,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 28.5,
+      "pred": "Tenor dramático",
+      "conf": 0.991,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.0,
+        "Mezzo-soprano": 0.005,
+        "Soprano": 0.004,
+        "Tenor dramático": 0.991,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 29.0,
+      "pred": "Tenor dramático",
+      "conf": 0.997,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.0,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.003,
+        "Tenor dramático": 0.997,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 29.5,
+      "pred": "Tenor dramático",
+      "conf": 0.997,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.001,
+        "Mezzo-soprano": 0.002,
+        "Soprano": 0.0,
+        "Tenor dramático": 0.997,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 30.0,
+      "pred": "Tenor dramático",
+      "conf": 0.99,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.007,
+        "Mezzo-soprano": 0.002,
+        "Soprano": 0.001,
+        "Tenor dramático": 0.99,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 30.5,
+      "pred": "Tenor dramático",
+      "conf": 0.998,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.002,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.001,
+        "Tenor dramático": 0.998,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 31.0,
+      "pred": "Tenor dramático",
+      "conf": 0.995,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.002,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.003,
+        "Tenor dramático": 0.995,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 31.5,
+      "pred": "Tenor dramático",
+      "conf": 0.999,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.0,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.001,
+        "Tenor dramático": 0.999,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 32.0,
+      "pred": "Tenor dramático",
+      "conf": 0.998,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.0,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.002,
+        "Tenor dramático": 0.998,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 32.5,
+      "pred": "Tenor dramático",
+      "conf": 0.597,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.243,
+        "Mezzo-soprano": 0.093,
+        "Soprano": 0.058,
+        "Tenor dramático": 0.597,
+        "Tenor lírico-pop": 0.008
+      }
+    },
+    {
+      "t_start": 33.0,
+      "pred": "Tenor dramático",
+      "conf": 0.998,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.0,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.002,
+        "Tenor dramático": 0.998,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 33.5,
+      "pred": "Tenor dramático",
+      "conf": 0.999,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.0,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.001,
+        "Tenor dramático": 0.999,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 34.0,
+      "pred": "Tenor dramático",
+      "conf": 1.0,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.0,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.0,
+        "Tenor dramático": 1.0,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 34.5,
+      "pred": "Tenor dramático",
+      "conf": 1.0,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.0,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.0,
+        "Tenor dramático": 1.0,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 35.0,
+      "pred": "Tenor dramático",
+      "conf": 0.998,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.0,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.002,
+        "Tenor dramático": 0.998,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 35.5,
+      "pred": "Tenor dramático",
+      "conf": 0.739,
+      "proba": {
+        "Barítono": 0.001,
+        "Contratenor": 0.21,
+        "Mezzo-soprano": 0.005,
+        "Soprano": 0.038,
+        "Tenor dramático": 0.739,
+        "Tenor lírico-pop": 0.007
+      }
+    },
+    {
+      "t_start": 36.0,
+      "pred": "Tenor dramático",
+      "conf": 1.0,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.0,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.0,
+        "Tenor dramático": 1.0,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 36.5,
+      "pred": "Tenor dramático",
+      "conf": 1.0,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.0,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.0,
+        "Tenor dramático": 1.0,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 37.0,
+      "pred": "Tenor dramático",
+      "conf": 1.0,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.0,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.0,
+        "Tenor dramático": 1.0,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 37.5,
+      "pred": "Tenor dramático",
+      "conf": 1.0,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.0,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.0,
+        "Tenor dramático": 1.0,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 38.0,
+      "pred": "Tenor dramático",
+      "conf": 0.998,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.0,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.002,
+        "Tenor dramático": 0.998,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 38.5,
+      "pred": "Tenor dramático",
+      "conf": 0.999,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.0,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.001,
+        "Tenor dramático": 0.999,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 39.0,
+      "pred": "Tenor dramático",
+      "conf": 0.998,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.002,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.001,
+        "Tenor dramático": 0.998,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 39.5,
+      "pred": "Tenor dramático",
+      "conf": 0.998,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.002,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.001,
+        "Tenor dramático": 0.998,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 40.0,
+      "pred": "Tenor dramático",
+      "conf": 0.996,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.001,
+        "Mezzo-soprano": 0.002,
+        "Soprano": 0.001,
+        "Tenor dramático": 0.996,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 40.5,
+      "pred": "Tenor dramático",
+      "conf": 0.999,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.001,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.0,
+        "Tenor dramático": 0.999,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 41.0,
+      "pred": "Tenor dramático",
+      "conf": 0.997,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.0,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.003,
+        "Tenor dramático": 0.997,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 41.5,
+      "pred": "Tenor dramático",
+      "conf": 1.0,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.0,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.0,
+        "Tenor dramático": 1.0,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 42.0,
+      "pred": "Tenor dramático",
+      "conf": 1.0,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.0,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.0,
+        "Tenor dramático": 1.0,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 42.5,
+      "pred": "Tenor dramático",
+      "conf": 0.994,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.002,
+        "Mezzo-soprano": 0.004,
+        "Soprano": 0.0,
+        "Tenor dramático": 0.994,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 43.0,
+      "pred": "Tenor dramático",
+      "conf": 0.987,
+      "proba": {
+        "Barítono": 0.005,
+        "Contratenor": 0.0,
+        "Mezzo-soprano": 0.004,
+        "Soprano": 0.002,
+        "Tenor dramático": 0.987,
+        "Tenor lírico-pop": 0.003
+      }
+    },
+    {
+      "t_start": 43.5,
+      "pred": "Tenor dramático",
+      "conf": 0.975,
+      "proba": {
+        "Barítono": 0.019,
+        "Contratenor": 0.0,
+        "Mezzo-soprano": 0.003,
+        "Soprano": 0.0,
+        "Tenor dramático": 0.975,
+        "Tenor lírico-pop": 0.003
+      }
+    },
+    {
+      "t_start": 44.0,
+      "pred": "Tenor dramático",
+      "conf": 0.972,
+      "proba": {
+        "Barítono": 0.02,
+        "Contratenor": 0.0,
+        "Mezzo-soprano": 0.006,
+        "Soprano": 0.0,
+        "Tenor dramático": 0.972,
+        "Tenor lírico-pop": 0.003
+      }
+    },
+    {
+      "t_start": 44.5,
+      "pred": "Tenor dramático",
+      "conf": 0.979,
+      "proba": {
+        "Barítono": 0.015,
+        "Contratenor": 0.0,
+        "Mezzo-soprano": 0.003,
+        "Soprano": 0.0,
+        "Tenor dramático": 0.979,
+        "Tenor lírico-pop": 0.003
+      }
+    },
+    {
+      "t_start": 45.0,
+      "pred": "Tenor dramático",
+      "conf": 0.973,
+      "proba": {
+        "Barítono": 0.015,
+        "Contratenor": 0.0,
+        "Mezzo-soprano": 0.002,
+        "Soprano": 0.0,
+        "Tenor dramático": 0.973,
+        "Tenor lírico-pop": 0.01
+      }
+    },
+    {
+      "t_start": 45.5,
+      "pred": "Tenor dramático",
+      "conf": 0.962,
+      "proba": {
+        "Barítono": 0.017,
+        "Contratenor": 0.0,
+        "Mezzo-soprano": 0.004,
+        "Soprano": 0.005,
+        "Tenor dramático": 0.962,
+        "Tenor lírico-pop": 0.012
+      }
+    },
+    {
+      "t_start": 46.0,
+      "pred": "Tenor dramático",
+      "conf": 0.977,
+      "proba": {
+        "Barítono": 0.014,
+        "Contratenor": 0.0,
+        "Mezzo-soprano": 0.002,
+        "Soprano": 0.0,
+        "Tenor dramático": 0.977,
+        "Tenor lírico-pop": 0.008
+      }
+    },
+    {
+      "t_start": 46.5,
+      "pred": "Tenor dramático",
+      "conf": 0.968,
+      "proba": {
+        "Barítono": 0.018,
+        "Contratenor": 0.0,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.0,
+        "Tenor dramático": 0.968,
+        "Tenor lírico-pop": 0.014
+      }
+    },
+    {
+      "t_start": 47.0,
+      "pred": "Tenor dramático",
+      "conf": 0.983,
+      "proba": {
+        "Barítono": 0.007,
+        "Contratenor": 0.0,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.0,
+        "Tenor dramático": 0.983,
+        "Tenor lírico-pop": 0.01
+      }
+    },
+    {
+      "t_start": 47.5,
+      "pred": "Tenor dramático",
+      "conf": 0.987,
+      "proba": {
+        "Barítono": 0.008,
+        "Contratenor": 0.0,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.0,
+        "Tenor dramático": 0.987,
+        "Tenor lírico-pop": 0.005
+      }
+    },
+    {
+      "t_start": 48.0,
+      "pred": "Tenor dramático",
+      "conf": 0.989,
+      "proba": {
+        "Barítono": 0.011,
+        "Contratenor": 0.0,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.0,
+        "Tenor dramático": 0.989,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 48.5,
+      "pred": "Tenor dramático",
+      "conf": 0.996,
+      "proba": {
+        "Barítono": 0.004,
+        "Contratenor": 0.0,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.0,
+        "Tenor dramático": 0.996,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 49.0,
+      "pred": "Tenor dramático",
+      "conf": 0.99,
+      "proba": {
+        "Barítono": 0.01,
+        "Contratenor": 0.0,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.0,
+        "Tenor dramático": 0.99,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 49.5,
+      "pred": "Tenor dramático",
+      "conf": 0.983,
+      "proba": {
+        "Barítono": 0.015,
+        "Contratenor": 0.0,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.0,
+        "Tenor dramático": 0.983,
+        "Tenor lírico-pop": 0.003
+      }
+    },
+    {
+      "t_start": 50.0,
+      "pred": "Tenor dramático",
+      "conf": 0.988,
+      "proba": {
+        "Barítono": 0.012,
+        "Contratenor": 0.0,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.0,
+        "Tenor dramático": 0.988,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 50.5,
+      "pred": "Tenor dramático",
+      "conf": 0.962,
+      "proba": {
+        "Barítono": 0.036,
+        "Contratenor": 0.0,
+        "Mezzo-soprano": 0.001,
+        "Soprano": 0.0,
+        "Tenor dramático": 0.962,
+        "Tenor lírico-pop": 0.001
+      }
+    },
+    {
+      "t_start": 51.0,
+      "pred": "Tenor dramático",
+      "conf": 0.954,
+      "proba": {
+        "Barítono": 0.046,
+        "Contratenor": 0.0,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.0,
+        "Tenor dramático": 0.954,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 51.5,
+      "pred": "Tenor dramático",
+      "conf": 0.987,
+      "proba": {
+        "Barítono": 0.009,
+        "Contratenor": 0.0,
+        "Mezzo-soprano": 0.001,
+        "Soprano": 0.002,
+        "Tenor dramático": 0.987,
+        "Tenor lírico-pop": 0.002
+      }
+    },
+    {
+      "t_start": 52.0,
+      "pred": "Tenor dramático",
+      "conf": 0.994,
+      "proba": {
+        "Barítono": 0.001,
+        "Contratenor": 0.0,
+        "Mezzo-soprano": 0.004,
+        "Soprano": 0.002,
+        "Tenor dramático": 0.994,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 52.5,
+      "pred": "Tenor dramático",
+      "conf": 0.996,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.004,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.0,
+        "Tenor dramático": 0.996,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 53.0,
+      "pred": "Tenor dramático",
+      "conf": 1.0,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.0,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.0,
+        "Tenor dramático": 1.0,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 53.5,
+      "pred": "Tenor dramático",
+      "conf": 0.998,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.002,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.0,
+        "Tenor dramático": 0.998,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 54.0,
+      "pred": "Tenor dramático",
+      "conf": 0.995,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.002,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.003,
+        "Tenor dramático": 0.995,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 54.5,
+      "pred": "Tenor dramático",
+      "conf": 1.0,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.0,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.0,
+        "Tenor dramático": 1.0,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 55.0,
+      "pred": "Tenor dramático",
+      "conf": 0.989,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.008,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.002,
+        "Tenor dramático": 0.989,
+        "Tenor lírico-pop": 0.002
+      }
+    },
+    {
+      "t_start": 55.5,
+      "pred": "Tenor dramático",
+      "conf": 1.0,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.0,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.0,
+        "Tenor dramático": 1.0,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 56.0,
+      "pred": "Tenor dramático",
+      "conf": 1.0,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.0,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.0,
+        "Tenor dramático": 1.0,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 56.5,
+      "pred": "Tenor dramático",
+      "conf": 1.0,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.0,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.0,
+        "Tenor dramático": 1.0,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 57.0,
+      "pred": "Tenor dramático",
+      "conf": 0.977,
+      "proba": {
+        "Barítono": 0.003,
+        "Contratenor": 0.004,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.009,
+        "Tenor dramático": 0.977,
+        "Tenor lírico-pop": 0.007
+      }
+    },
+    {
+      "t_start": 57.5,
+      "pred": "Tenor dramático",
+      "conf": 0.743,
+      "proba": {
+        "Barítono": 0.015,
+        "Contratenor": 0.031,
+        "Mezzo-soprano": 0.012,
+        "Soprano": 0.017,
+        "Tenor dramático": 0.743,
+        "Tenor lírico-pop": 0.182
+      }
+    },
+    {
+      "t_start": 58.0,
+      "pred": "Tenor dramático",
+      "conf": 1.0,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.0,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.0,
+        "Tenor dramático": 1.0,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 58.5,
+      "pred": "Tenor dramático",
+      "conf": 1.0,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.0,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.0,
+        "Tenor dramático": 1.0,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 59.0,
+      "pred": "Tenor dramático",
+      "conf": 0.994,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.0,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.006,
+        "Tenor dramático": 0.994,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 59.5,
+      "pred": "Tenor dramático",
+      "conf": 0.984,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.011,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.005,
+        "Tenor dramático": 0.984,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 60.0,
+      "pred": "Tenor dramático",
+      "conf": 0.986,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.007,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.007,
+        "Tenor dramático": 0.986,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 60.5,
+      "pred": "Tenor dramático",
+      "conf": 0.997,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.003,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.0,
+        "Tenor dramático": 0.997,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 61.0,
+      "pred": "Tenor dramático",
+      "conf": 0.984,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.013,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.003,
+        "Tenor dramático": 0.984,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 61.5,
+      "pred": "Tenor dramático",
+      "conf": 0.992,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.004,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.003,
+        "Tenor dramático": 0.992,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 62.0,
+      "pred": "Tenor dramático",
+      "conf": 0.992,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.004,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.003,
+        "Tenor dramático": 0.992,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 62.5,
+      "pred": "Tenor dramático",
+      "conf": 0.99,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.01,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.0,
+        "Tenor dramático": 0.99,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 63.0,
+      "pred": "Tenor dramático",
+      "conf": 0.998,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.002,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.0,
+        "Tenor dramático": 0.998,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 63.5,
+      "pred": "Tenor dramático",
+      "conf": 0.995,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.002,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.003,
+        "Tenor dramático": 0.995,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 64.0,
+      "pred": "Tenor dramático",
+      "conf": 0.998,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.002,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.0,
+        "Tenor dramático": 0.998,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 64.5,
+      "pred": "Tenor dramático",
+      "conf": 0.996,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.002,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.002,
+        "Tenor dramático": 0.996,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 65.0,
+      "pred": "Tenor dramático",
+      "conf": 0.995,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.0,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.005,
+        "Tenor dramático": 0.995,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 65.5,
+      "pred": "Tenor dramático",
+      "conf": 0.999,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.0,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.001,
+        "Tenor dramático": 0.999,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 66.0,
+      "pred": "Tenor dramático",
+      "conf": 0.999,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.0,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.001,
+        "Tenor dramático": 0.999,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 66.5,
+      "pred": "Tenor dramático",
+      "conf": 0.999,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.0,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.001,
+        "Tenor dramático": 0.999,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 67.0,
+      "pred": "Tenor dramático",
+      "conf": 0.998,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.002,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.0,
+        "Tenor dramático": 0.998,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 67.5,
+      "pred": "Tenor dramático",
+      "conf": 0.711,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.096,
+        "Mezzo-soprano": 0.001,
+        "Soprano": 0.192,
+        "Tenor dramático": 0.711,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 68.0,
+      "pred": "Tenor dramático",
+      "conf": 0.997,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.003,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.0,
+        "Tenor dramático": 0.997,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 68.5,
+      "pred": "Tenor dramático",
+      "conf": 0.999,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.0,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.001,
+        "Tenor dramático": 0.999,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 69.0,
+      "pred": "Tenor dramático",
+      "conf": 1.0,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.0,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.0,
+        "Tenor dramático": 1.0,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 69.5,
+      "pred": "Tenor dramático",
+      "conf": 1.0,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.0,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.0,
+        "Tenor dramático": 1.0,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 70.0,
+      "pred": "Tenor dramático",
+      "conf": 0.997,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.001,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.002,
+        "Tenor dramático": 0.997,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 70.5,
+      "pred": "Tenor dramático",
+      "conf": 0.998,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.0,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.002,
+        "Tenor dramático": 0.998,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 71.0,
+      "pred": "Tenor dramático",
+      "conf": 0.999,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.0,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.001,
+        "Tenor dramático": 0.999,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 71.5,
+      "pred": "Tenor dramático",
+      "conf": 1.0,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.0,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.0,
+        "Tenor dramático": 1.0,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 72.0,
+      "pred": "Tenor dramático",
+      "conf": 1.0,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.0,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.0,
+        "Tenor dramático": 1.0,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 72.5,
+      "pred": "Tenor dramático",
+      "conf": 1.0,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.0,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.0,
+        "Tenor dramático": 1.0,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 73.0,
+      "pred": "Tenor dramático",
+      "conf": 1.0,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.0,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.0,
+        "Tenor dramático": 1.0,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 73.5,
+      "pred": "Tenor dramático",
+      "conf": 1.0,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.0,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.0,
+        "Tenor dramático": 1.0,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 74.0,
+      "pred": "Tenor dramático",
+      "conf": 1.0,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.0,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.0,
+        "Tenor dramático": 1.0,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 74.5,
+      "pred": "Tenor dramático",
+      "conf": 0.978,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.01,
+        "Mezzo-soprano": 0.009,
+        "Soprano": 0.001,
+        "Tenor dramático": 0.978,
+        "Tenor lírico-pop": 0.003
+      }
+    },
+    {
+      "t_start": 75.0,
+      "pred": "Tenor dramático",
+      "conf": 1.0,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.0,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.0,
+        "Tenor dramático": 1.0,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 75.5,
+      "pred": "Tenor dramático",
+      "conf": 1.0,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.0,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.0,
+        "Tenor dramático": 1.0,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 76.0,
+      "pred": "Tenor dramático",
+      "conf": 1.0,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.0,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.0,
+        "Tenor dramático": 1.0,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 76.5,
+      "pred": "Tenor dramático",
+      "conf": 0.991,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.002,
+        "Mezzo-soprano": 0.004,
+        "Soprano": 0.003,
+        "Tenor dramático": 0.991,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 77.0,
+      "pred": "Tenor dramático",
+      "conf": 0.999,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.001,
+        "Mezzo-soprano": 0.001,
+        "Soprano": 0.0,
+        "Tenor dramático": 0.999,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 77.5,
+      "pred": "Tenor dramático",
+      "conf": 0.992,
+      "proba": {
+        "Barítono": 0.004,
+        "Contratenor": 0.002,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.001,
+        "Tenor dramático": 0.992,
+        "Tenor lírico-pop": 0.001
+      }
+    },
+    {
+      "t_start": 78.0,
+      "pred": "Tenor dramático",
+      "conf": 0.989,
+      "proba": {
+        "Barítono": 0.004,
+        "Contratenor": 0.006,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.0,
+        "Tenor dramático": 0.989,
+        "Tenor lírico-pop": 0.001
+      }
+    },
+    {
+      "t_start": 78.5,
+      "pred": "Tenor dramático",
+      "conf": 1.0,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.0,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.0,
+        "Tenor dramático": 1.0,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 79.0,
+      "pred": "Tenor dramático",
+      "conf": 0.989,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.007,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.003,
+        "Tenor dramático": 0.989,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 79.5,
+      "pred": "Tenor dramático",
+      "conf": 0.998,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.002,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.0,
+        "Tenor dramático": 0.998,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 80.0,
+      "pred": "Tenor dramático",
+      "conf": 0.996,
+      "proba": {
+        "Barítono": 0.001,
+        "Contratenor": 0.0,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.0,
+        "Tenor dramático": 0.996,
+        "Tenor lírico-pop": 0.003
+      }
+    },
+    {
+      "t_start": 80.5,
+      "pred": "Tenor dramático",
+      "conf": 0.997,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.003,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.0,
+        "Tenor dramático": 0.997,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 81.0,
+      "pred": "Tenor dramático",
+      "conf": 0.995,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.002,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.003,
+        "Tenor dramático": 0.995,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 81.5,
+      "pred": "Tenor dramático",
+      "conf": 0.996,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.0,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.004,
+        "Tenor dramático": 0.996,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 82.0,
+      "pred": "Tenor dramático",
+      "conf": 0.987,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.001,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.005,
+        "Tenor dramático": 0.987,
+        "Tenor lírico-pop": 0.007
+      }
+    },
+    {
+      "t_start": 82.5,
+      "pred": "Tenor dramático",
+      "conf": 0.998,
+      "proba": {
+        "Barítono": 0.0,
+        "Contratenor": 0.0,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.002,
+        "Tenor dramático": 0.998,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 83.0,
+      "pred": "Tenor dramático",
+      "conf": 0.998,
+      "proba": {
+        "Barítono": 0.001,
+        "Contratenor": 0.0,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.001,
+        "Tenor dramático": 0.998,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 83.5,
+      "pred": "Tenor dramático",
+      "conf": 0.989,
+      "proba": {
+        "Barítono": 0.001,
+        "Contratenor": 0.003,
+        "Mezzo-soprano": 0.004,
+        "Soprano": 0.004,
+        "Tenor dramático": 0.989,
+        "Tenor lírico-pop": 0.0
+      }
+    },
+    {
+      "t_start": 84.0,
+      "pred": "Tenor dramático",
+      "conf": 0.986,
+      "proba": {
+        "Barítono": 0.002,
+        "Contratenor": 0.0,
+        "Mezzo-soprano": 0.004,
+        "Soprano": 0.006,
+        "Tenor dramático": 0.986,
+        "Tenor lírico-pop": 0.002
+      }
+    },
+    {
+      "t_start": 84.5,
+      "pred": "Tenor dramático",
+      "conf": 0.994,
+      "proba": {
+        "Barítono": 0.004,
+        "Contratenor": 0.0,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.001,
+        "Tenor dramático": 0.994,
+        "Tenor lírico-pop": 0.002
+      }
+    },
+    {
+      "t_start": 85.0,
+      "pred": "Tenor dramático",
+      "conf": 0.993,
+      "proba": {
+        "Barítono": 0.004,
+        "Contratenor": 0.001,
+        "Mezzo-soprano": 0.0,
+        "Soprano": 0.0,
+        "Tenor dramático": 0.993,
+        "Tenor lírico-pop": 0.002
+      }
+    },
+    {
+      "t_start": 85.5,
+      "pred": "Tenor dramático",
+      "conf": 0.985,
+      "proba": {
+        "Barítono": 0.006,
+        "Contratenor": 0.002,
+        "Mezzo-soprano": 0.004,
+        "Soprano": 0.0,
+        "Tenor dramático": 0.985,
+        "Tenor lírico-pop": 0.003
+      }
+    },
+    {
+      "t_start": 86.0,
+      "pred": "Tenor dramático",
+      "conf": 0.989,
+      "proba": {
+        "Barítono": 0.003,
+        "Contratenor": 0.002,
+        "Mezzo-soprano": 0.001,
+        "Soprano": 0.0,
+        "Tenor dramático": 0.989,
+        "Tenor lírico-pop": 0.005
+      }
+    },
+    {
+      "t_start": 86.5,
+      "pred": "Tenor dramático",
+      "conf": 0.971,
+      "proba": {
+        "Barítono": 0.012,
+        "Contratenor": 0.003,
+        "Mezzo-soprano": 0.004,
+        "Soprano": 0.0,
+        "Tenor dramático": 0.971,
+        "Tenor lírico-pop": 0.011
+      }
+    },
+    {
+      "t_start": 87.0,
+      "pred": "Tenor dramático",
+      "conf": 0.977,
+      "proba": {
+        "Barítono": 0.009,
+        "Contratenor": 0.001,
+        "Mezzo-soprano": 0.005,
+        "Soprano": 0.0,
+        "Tenor dramático": 0.977,
+        "Tenor lírico-pop": 0.009
+      }
+    },
+    {
+      "t_start": 87.5,
+      "pred": "Tenor dramático",
+      "conf": 0.724,
+      "proba": {
+        "Barítono": 0.157,
+        "Contratenor": 0.024,
+        "Mezzo-soprano": 0.01,
+        "Soprano": 0.002,
+        "Tenor dramático": 0.724,
+        "Tenor lírico-pop": 0.084
+      }
+    },
+    {
+      "t_start": 88.0,
+      "pred": "Tenor dramático",
+      "conf": 0.977,
+      "proba": {
+        "Barítono": 0.009,
+        "Contratenor": 0.001,
+        "Mezzo-soprano": 0.004,
+        "Soprano": 0.0,
+        "Tenor dramático": 0.977,
+        "Tenor lírico-pop": 0.009
+      }
+    }
+  ]
+}
