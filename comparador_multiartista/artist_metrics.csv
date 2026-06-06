@@ -1,0 +1,7 @@
+id,name,tipo,genero,color,nota_grave,nota_aguda,hz_grave,hz_aguda,rango_semitonos,rango_octavas,hz_medio,nota_modal,pct_grave,pct_medio_grave,pct_medio_agudo,pct_agudo,pct_sobreagudo,intensidad_media,intensidad_max,intensidad_variacion,pct_alta_intensidad,n_notas_distintas,n_cambios_nota,densidad_melodica,duracion_media_nota_s,ratio_agudo_grave
+bogdan_style,Tenor Dramático (estilo Bogdan),Tenor dramático,Pop / Rock dramático,#38bdf8,A2,C6,110.0,1046.5,39.0,3.25,501.8,E4,10.0,26.7,35.0,28.3,0.0,0.739,1.0,0.153,26.1,22,40,0.444,2.2,0.773
+baritono,Barítono Lírico,Barítono,Ópera / Balada,#a78bfa,F2,A4,87.3,440.0,28.0,2.33,212.8,G2,43.3,42.2,14.4,0.0,0.0,0.665,0.9,0.13,30.0,17,31,0.344,2.81,0.0
+soprano,Soprano Lírica,Soprano,Ópera / Música clásica,#f472b6,C4,F6,261.6,1396.9,29.0,2.42,692.7,A5,0.0,13.9,40.6,32.2,13.3,0.764,1.0,0.143,26.7,18,32,0.356,2.73,3.28
+tenor_pop,Tenor Pop / Belting,Tenor lírico-pop,Pop / Rock,#fb923c,B2,E5,123.5,659.3,29.0,2.42,312.6,A3,17.8,44.4,37.8,0.0,0.0,0.716,0.99,0.164,25.6,18,33,0.367,2.65,0.0
+contratenor,Contratenor (falsete cultivado),Contratenor,Música barroca / Ópera antigua,#34d399,G3,C6,196.0,1046.5,29.0,2.42,550.5,E4,0.0,23.3,46.7,30.0,0.0,0.772,1.0,0.147,26.7,18,29,0.322,3.0,1.286
+mezzo,Mezzo-Soprano,Mezzo-soprano,Ópera / Lieder,#fbbf24,F3,A5,174.6,880.0,28.0,2.33,431.9,A3,0.0,41.1,44.4,14.4,0.0,0.726,0.95,0.131,26.7,17,30,0.333,2.9,0.351

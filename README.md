@@ -1,279 +1,296 @@
-<div align="center">
+# 🎤 Vocal Intelligence Pipeline
 
-```
- ██████╗  ██████╗ ███████╗
-██╔════╝ ██╔═══██╗██╔════╝
-╚█████╗  ██║   ██║███████╗
- ╚═══██╗ ██║   ██║╚════██║
-██████╔╝ ╚██████╔╝███████║
-╚═════╝   ╚═════╝ ╚══════╝
-```
+**Análisis vocal en tiempo real con IA, streaming y Machine Learning**
 
-# Vocal Pitch Analysis Pipeline
-### *Análisis de Notas Musicales de Voz en Tiempo Real*
-
-**Canción analizada:** S.O.S — Bogdan Shuvalov  
-**Rango detectado:** A2 → C6 · 3.28 octavas · 39.3 semitonos
-
-[![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?style=flat-square&logo=python&logoColor=white)](https://python.org)
-[![librosa](https://img.shields.io/badge/librosa-0.10-orange?style=flat-square)](https://librosa.org)
-[![torchcrepe](https://img.shields.io/badge/torchcrepe-0.0.20-EE4C2C?style=flat-square&logo=pytorch&logoColor=white)](https://github.com/maxrmorrison/torchcrepe)
-[![Demucs](https://img.shields.io/badge/Demucs-htdemucs-blueviolet?style=flat-square)](https://github.com/facebookresearch/demucs)
-[![License: MIT](https://img.shields.io/badge/License-MIT-green?style=flat-square)](LICENSE)
-
-</div>
+> *Balda Javier · Caracoix Juan · Casas Facundo*  
+> Universidad Católica Argentina — Análisis y Procesamiento de Datos Streaming — 2026
 
 ---
 
-## 🎯 Objetivo del Proyecto
+## ¿Qué hace este proyecto?
 
-Construir un sistema de **análisis vocal en tiempo real** capaz de detectar, frame a frame:
+Toma el audio de una canción, lo analiza nota por nota a 20 frames por segundo, y produce en tiempo real tres tipos de output: una predicción del tipo de voz del intérprete, alertas sobre eventos técnicos vocales (clímax, breaks, caídas de intensidad), y métricas comparativas contra un catálogo de seis perfiles vocales de referencia.
 
-| Campo | Descripción | Archivo de evidencia |
-|---|---|---|
-| 🎵 **Nota vocal** | Nombre de nota MIDI (ej: A3, C6) | `results/realtime_frames.csv` col. `note` |
-| 〰️ **Frecuencia Hz** | Pitch estimado en Hz | `results/realtime_frames.csv` col. `hz` |
-| ⏱️ **Momento** | Timestamp en segundos | `results/realtime_frames.csv` col. `time_s` |
-| 🔊 **Intensidad** | Energía RMS × 100 | `results/realtime_frames.csv` col. `intensity` |
-| 🎚️ **Registro** | grave / medio-grave / medio-agudo / agudo / sobreagudo | `results/realtime_frames.csv` col. `register` |
-
-El caso elegido es **S.O.S de Bogdan Shuvalov**: una canción de altísima exigencia vocal con rango A2–C6, ideal para demostrar la capacidad del sistema de seguir cambios de registro extremos.
+Todo el sistema corre sobre Apache Kafka. El audio entra como un stream de frames y sale como mensajes clasificados en dos tópicos distintos.
 
 ---
 
-## 🔄 Pipeline
+## Arquitectura
 
 ```
-┌─────────────┐    ┌──────────────┐    ┌─────────────────┐    ┌────────────────┐    ┌─────────────┐
-│  Video/URL  │ →  │   yt-dlp     │ →  │  Demucs         │ →  │  torchcrepe    │ →  │   librosa   │
-│  o archivo  │    │  WAV 44.1kHz │    │  htdemucs       │    │  CNN pitch     │    │   RMS+pYIN  │
-│  local WAV  │    │  descarga    │    │  voz/instrumento│    │  50ms/frame    │    │  energía    │
-└─────────────┘    └──────────────┘    └─────────────────┘    └────────────────┘    └─────────────┘
-                                                                        ↓
-                                                               ┌────────────────┐
-                                                               │  JSON frames   │
-                                                               │  + CSV export  │
-                                                               └───────┬────────┘
-                                                                       ↓
-                                                               ┌────────────────┐
-                                                               │  Métricas      │
-                                                               │  musicales     │
-                                                               └───────┬────────┘
-                                                                       ↓
-                                                               ┌────────────────┐
-                                                               │  Dashboard     │
-                                                               │  HTML interac. │
-                                                               └────────────────┘
+Audio (WAV / CSV de frames pYIN)
+          │
+          ▼
+  vocal_producer.py          ← 1 mensaje cada 50ms
+          │
+          ▼  vocal.frames
+  ┌───────────────────────────────────┐
+  │         Kafka KRaft               │
+  │  vocal.frames  (entrada)          │
+  │  vocal.analyzed  (clasificado)    │
+  │  vocal.alerts  (anomalías)        │
+  └───────────────┬───────────────────┘
+                  │
+                  ▼
+  vocal_consumer.py
+    ├── extract_features()  ──►  VocalClassifier (RF, 69% acc.)  ──►  vocal.analyzed
+    └── VocalAnomalyDetector  ──────────────────────────────────►  vocal.alerts
+                  │
+                  ▼
+  kafka_dashboard.html     ← dashboard en vivo
 ```
 
-### Herramientas utilizadas
+### Cómo se conectan las 4 ideas
 
-| Herramienta | Rol en el pipeline | Por qué |
-|---|---|---|
-| **yt-dlp** | Descarga de audio desde YouTube | Acceso académico al audio original |
-| **Demucs htdemucs** | Separación vocal / instrumental | Mejora drásticamente la precisión del pitch |
-| **torchcrepe** | Detección de pitch (red neuronal CNN) | Más robusto que métodos clásicos en voz real |
-| **librosa pYIN** | Verificación cruzada + RMS | Extrae energía frame a frame con precisión |
-| **pandas** | Procesamiento y exportación CSV | Trazabilidad de cada frame |
-| **Chart.js** | Visualización interactiva | Dashboard HTML standalone sin servidor |
+| Módulo | Idea | Rol |
+|--------|------|-----|
+| `challenge_streaming/` | Base | Pipeline pYIN → `realtime_frames.csv` |
+| `idea_c/artist_profiles.py` | Idea C | 6 perfiles vocales + generación de audio sintético |
+| `idea_c/vocal_comparador.py` | Idea C | 16 métricas comparativas por artista |
+| `idea_d/anomaly_detector.py` | Idea D | 6 tipos de anomalías vocales con severidad |
+| `idea_a/vocal_classifier.py` | Idea A | Random Forest sobre ventanas de 2s, 20 features |
+| `idea_a/vocal_rf.pkl` | Idea A | Modelo entrenado (accuracy 69%, 1233 muestras) |
+| `idea_b/vocal_producer.py` | Idea B | Producer Kafka (50ms/frame) |
+| `idea_b/vocal_consumer.py` | Idea B | Consumer con buffer deslizante 2s/stride 0.5s |
 
 ---
 
-## 📁 Estructura del Repositorio
+## Estructura del repositorio
 
 ```
-vocal-pitch-analysis/
+vocal-intelligence-pipeline/
 │
-├── src/
-│   ├── pipeline.py          # Pipeline principal (CLI completo)
-│   ├── generate_demo.py     # Generador de audio sintético demo
-│   └── metrics.py           # Módulo de cálculo de métricas
+├── challenge_streaming/          ← pipeline original (base del proyecto)
+│   ├── src/
+│   │   ├── pipeline.py           # análisis pYIN + torchcrepe
+│   │   ├── generate_demo.py      # audio sintético (S.O.S — Bogdan)
+│   │   └── metrics.py            # métricas musicales
+│   ├── results/
+│   │   ├── realtime_frames.csv   # 1801 frames del análisis real
+│   │   ├── metrics.json          # métricas de la canción
+│   │   └── dashboard.html        # dashboard original
+│   └── requirements.txt
 │
-├── results/
-│   ├── dashboard.html       # 📊 Tablero final interactivo ← ABRIR AQUÍ
-│   ├── realtime_frames.csv  # Evidencia frame a frame (1801 filas)
-│   ├── metrics.json         # Todas las métricas calculadas
-│   └── detection_log.txt    # Log de consola del análisis
+├── idea_a/                       ← Clasificador ML
+│   ├── vocal_classifier.py       # extracción de features + Random Forest
+│   ├── vocal_rf.pkl              # modelo entrenado
+│   ├── experiment_metrics.json   # accuracy 68.9%, F1 macro 66.8%
+│   └── Clasificador_Tipo_Vocal_ML_Balda_Caracoix_Casas.ipynb
 │
-├── data/
-│   └── samples/             # Audio de muestra (.gitignored por tamaño)
+├── idea_b/                       ← Pipeline Kafka
+│   ├── vocal_producer.py         # emite frames a vocal.frames
+│   ├── vocal_consumer.py         # clasifica + detecta anomalías
+│   ├── kafka_dashboard.html      # dashboard en vivo
+│   ├── stream_output_demo.json   # resultado pre-generado (demo)
+│   └── Pipeline_Kafka_Vocal_Streaming_Balda_Caracoix_Casas.ipynb
 │
-├── docs/
-│   └── index.html           # GitHub Pages — presentación del proyecto
+├── idea_c/                       ← Comparador multi-artista
+│   ├── artist_profiles.py        # 6 perfiles vocales sintéticos
+│   ├── vocal_comparador.py       # extracción de 16 métricas
+│   ├── artist_dataset.json       # dataset completo con timelines
+│   ├── artist_metrics.csv        # tabla comparativa (6×16)
+│   ├── comparador_dashboard.html # dashboard interactivo de comparación
+│   └── Comparador_Vocal_Multi_Artista_Balda_Caracoix_Casas.ipynb
 │
-├── requirements.txt
-├── .gitignore
+├── idea_d/                       ← Detección de anomalías
+│   ├── anomaly_detector.py       # 6 tipos de anomalías con severidad
+│   ├── pipeline_with_anomaly.py  # pipeline original + detector integrado
+│   ├── anomalies.json            # 212 eventos detectados en S.O.S
+│   ├── anomaly_dashboard.html    # dashboard de anomalías
+│   └── Deteccion_Anomalias_Vocales_Balda_Caracoix_Casas.ipynb
+│
+├── requirements.txt              ← todas las dependencias
 └── README.md
 ```
 
 ---
 
-## 🚀 Reproducir el Análisis
+## Instalación y ejecución
 
-### 1. Clonar e instalar
+### Requisitos previos
 
-```bash
-git clone https://github.com/TU_USUARIO/vocal-pitch-analysis.git
-cd vocal-pitch-analysis
+- Python 3.10+
+- Java 17 (para Kafka)
+- Google Colab o entorno local con GPU opcional
 
-python -m venv venv
-source venv/bin/activate        # Windows: venv\Scripts\activate
-pip install -r requirements.txt
-```
-
-### 2. Opción A — Demo instantáneo (sin descargar nada)
-
-Genera un audio sintético con el rango vocal de S.O.S y ejecuta el análisis completo:
+### 1. Clonar el repositorio
 
 ```bash
-python src/pipeline.py --demo
+git clone https://github.com/TU_USUARIO/vocal-intelligence-pipeline.git
+cd vocal-intelligence-pipeline
 ```
 
-### 3. Opción B — Con archivo de audio local
+### 2. Instalar dependencias Python
 
 ```bash
-python src/pipeline.py --audio ruta/al/audio.wav
+# Dependencias del pipeline de audio
+pip install librosa numpy scipy pandas matplotlib scikit-learn
+
+# Para análisis real con torchcrepe (GPU opcional)
+pip install torchcrepe torch
+pip install demucs  # separación vocal
+
+# Para Kafka
+pip install confluent-kafka
 ```
 
-### 4. Opción C — Descarga desde YouTube (requiere red)
+### 3. Ejecutar en orden (sin Kafka)
+
+Cada idea puede ejecutarse de forma independiente. El orden recomendado respeta las dependencias:
 
 ```bash
-python src/pipeline.py --youtube "https://youtu.be/c5t6-KPZygg"
+# Paso 1 — Generar los frames del audio (base de todo)
+cd challenge_streaming/
+python src/pipeline.py --demo            # audio sintético, ~2 min
+# → genera results/realtime_frames.csv
+
+# Paso 2 — Detectar anomalías sobre los frames
+cd ../idea_d/
+python anomalias/anomaly_detector.py --csv ../challenge_streaming/results/realtime_frames.csv --out anomalies.json
+# → imprime 212 eventos, guarda anomalies.json
+
+# Paso 3 — Generar el dataset multi-artista
+cd ../idea_c/
+python comparador_multiartista/vocal_comparador.py --out results/
+# → genera artist_dataset.json, artist_metrics.csv
+
+# Paso 4 — Entrenar el clasificador ML
+cd ../idea_a/
+python clasificador_ml/vocal_classifier.py \
+  --train ..results/artist_dataset.json \
+  --csv-real ..results/realtime_frames.csv "Tenor dramático" \
+  --out results/
+# → entrena RF, guarda vocal_rf.pkl, imprime accuracy 68.9%
+
+# Paso 5 — Predecir tipo vocal de una canción
+python vocal_classifier.py \
+  --predict ../challenge_streaming/results/realtime_frames.csv \
+  --model results/vocal_rf.pkl
+# → Predicción: Tenor dramático (98.5% confianza)
 ```
 
-### 5. Ver el dashboard
+### 4. Ejecutar el pipeline Kafka completo
+
+Requiere Java 17 instalado. En Google Colab, usar el notebook `idea_b/Pipeline_Kafka_Vocal_Streaming_Balda_Caracoix_Casas.ipynb` que automatiza todo.
 
 ```bash
-# Abrir en navegador (no requiere servidor)
-open results/dashboard.html          # macOS
-xdg-open results/dashboard.html      # Linux
-start results/dashboard.html         # Windows
+# Terminal 1 — iniciar Kafka KRaft
+export KAFKA_DIR=/ruta/a/kafka
+$KAFKA_DIR/bin/kafka-storage.sh random-uuid | xargs -I{} \
+  $KAFKA_DIR/bin/kafka-storage.sh format -t {} \
+  -c $KAFKA_DIR/config/kraft/server.properties
+$KAFKA_DIR/bin/kafka-server-start.sh \
+  $KAFKA_DIR/config/kraft/server.properties &
+
+# Terminal 2 — iniciar consumer (espera al producer)
+cd idea_b/
+python kafka_streaming/vocal_consumer.py \
+  --model ../clasificador_ml/vocal_rf.pkl \
+  --out results/stream_output.json
+
+# Terminal 3 — iniciar producer (emite a 50ms/frame)
+python kafka_streaming/vocal_producer.py \
+  --csv ../results/realtime_frames.csv
+# opción turbo (sin espera): agregar --fast
 ```
 
-### 6. Usar YouTube desde el dashboard
+### 5. Ver los dashboards
 
-Si quieres cargar directamente una URL de YouTube en el dashboard, ejecuta el servidor local:
+Todos los dashboards son archivos HTML standalone. Abrir directamente en el navegador:
 
 ```bash
-python src/dashboard_server.py
-```
+# Dashboard de anomalías
+open idea_d/anomaly_dashboard.html
 
-Luego abre en el navegador:
+# Comparador multi-artista (interactivo, seleccionar artista)
+open idea_c/comparador_dashboard.html
 
-```bash
-http://localhost:8000/results/dashboard.html
-```
-
-En la sección de tiempo real del dashboard, usa el campo "YouTube URL" y pulsa "📥 YouTube".
-
-#### Autorización para descargas de YouTube
-
-Si YouTube pide verificación de cookies, necesitas crear un archivo local `.cookies.txt` con tus cookies (que **nunca será commiteado** al repositorio, está en `.gitignore`):
-
-**Opción A: Usar navegador instalado en el sistema** (más simple)
-1. Asegúrate de tener Firefox o Chrome instalado en la máquina donde corre `src/dashboard_server.py`
-2. El servidor usará automáticamente tus cookies del navegador
-
-**Opción B: Exportar cookies a archivo** (para contenedores o máquinas remotas)
-1. Usa una extensión como **"Open With" → "Cookie Editor"** en Chrome/Firefox
-2. Exporta las cookies a formato Netscape (`.txt`)
-3. Guarda el archivo como `.cookies.txt` en la raíz del proyecto:
-   ```bash
-   # Ejemplo: el archivo queda aquí (no será commiteado)
-   /workspaces/challenge_streaming/.cookies.txt
-   ```
-4. El servidor lo detectará automáticamente y lo usará para descargas
-
-### Flags adicionales
-
-```
---no-demucs     Omitir separación vocal (más rápido, menos preciso)
---out CARPETA   Directorio de salida (default: results/)
+# Dashboard Kafka en vivo (simula el stream con los datos del demo)
+open idea_b/kafka_dashboard.html
 ```
 
 ---
 
-## 📊 Resultados Obtenidos
+## Datos y resultados
+
+### Canción de referencia
+
+S.O.S — Bogdan Shuvalov · 90 segundos · análisis torchcrepe + pYIN
 
 | Métrica | Valor |
-|---|---|
-| Nota más frecuente | **G5** |
-| Nota más grave | **A2** (109 Hz) @ 51.5s |
-| Nota más aguda | **C6** (1059 Hz) @ 61.2s |
-| Rango vocal | **A2 → C6** |
-| Semitonos totales | **39.3** |
-| Octavas | **3.28** |
-| Frecuencia promedio | **502.52 Hz** |
-| Cambios de nota | **43** |
-| Registro dominante | **medio-agudo** |
-| Frames analizados | **1801** (50ms/frame) |
-| Frames con voz | **1747** (97%) |
+|---------|-------|
+| Rango vocal | A2 → C6 (3.28 octavas, 39.3 semitonos) |
+| Nota más frecuente | G5 |
+| Nota más aguda | C6 (1059 Hz) @ 61.2s |
+| Nota más grave | A2 (109 Hz) @ 51.6s |
+| Frecuencia promedio | 502.5 Hz |
+| Frames analizados | 1801 (97% con voz) |
+| Pico de intensidad | C6 @ 69.35s (RMS 36.5) |
 
-### Distribución de Registros
+### Clasificador ML (Idea A)
 
-```
-sobreagudo   ████                        (73 frames)
-agudo        ██████████████████         (502 frames)
-medio-agudo  ██████████████████████     (587 frames)  ← dominante
-medio-grave  █████████████              (410 frames)
-grave        ██████                     (175 frames)
-```
+| Clase | F1 |
+|-------|----|
+| Soprano | 0.86 |
+| Tenor dramático | 0.81 |
+| Barítono | 0.74 |
+| Tenor lírico-pop | 0.55 |
+| Mezzo-soprano | 0.56 |
+| Contratenor | 0.49 |
 
-### Momentos Destacados
+Accuracy global 5-fold CV: **68.9%** (baseline aleatorio: 16.7%)  
+Feature más importante: `int_mean` (21% — nivel de proyección vocal)  
+Predicción sobre S.O.S: **Tenor dramático 98.5% confianza**
 
-| Tiempo | Nota | Hz | Observación |
-|---|---|---|---|
-| 59.5s | C6 | 1059 Hz | Primera aparición sobreagudo |
-| 67.0s | C6 | 1051 Hz | Clímax vocal — máxima intensidad |
-| 69.3s | C6 | 1051 Hz | **Pico absoluto de intensidad (RMS 36.5)** |
-| 51.5s | A2 | 109 Hz | Nota grave extrema |
+### Detección de anomalías (Idea D)
 
----
+212 eventos detectados en 90 segundos:
 
-## 🎙️ Interpretación Vocal
+| Tipo | Cantidad | Descripción |
+|------|----------|-------------|
+| CLIMAX_VOCAL | 95 | Nota aguda sostenida ≥8 frames (zona 30–70s) |
+| INESTABILIDAD | 64 | Coeficiente de variación elevado en ventana |
+| CAIDA_INTENS | 51 | Caída de intensidad ≥50% (3 caídas severas) |
+| AGUDO_EXTREMO | 1 | Primera nota sobreaguda C6 @ 59.7s |
+| SILENCIO_LARGO | 1 | Pausa estructural @ 44s |
 
-> **⚠️ Estimación orientativa** basada en datos acústicos detectados.  
-> No constituye una clasificación vocal profesional.
+### Comparador multi-artista (Idea C)
 
-El rango **A2–C6 (3.28 octavas)** es consistente con las características de un
-**tenor dramático / lírico de rango extendido**. La presencia de notas sobreagudas
-sostenidas (C6 ~1060Hz) junto a graves extremos (A2 ~109Hz) refleja la técnica
-vocal excepcional característica de Bogdan Shuvalov.
+6 perfiles · 16 métricas · dataset de 1056 ventanas
 
----
-
-## ⚠️ Limitaciones Documentadas
-
-1. **Audio sintético en el demo**: el entorno de ejecución no pudo descargar el video de YouTube (error HTTP 403 / SSL). El audio sintético replica fielmente la secuencia de notas usando armónicos, vibrato y ADSR, pero no tiene la mezcla instrumental real.
-
-2. **torchcrepe vs CREPE original**: se usó `torchcrepe` (PyTorch) en lugar de `crepe` (TensorFlow) por incompatibilidad de dependencias. Ambos comparten la misma arquitectura CNN y producen resultados equivalentes.
-
-3. **Umbral de confianza = 0.35**: frames con confianza menor se descartan como silencio. Un umbral mayor (0.5+) reduce falsos positivos en transiciones pero puede perder notas cortas.
-
-4. **Demucs en modo demo**: con audio sintético (voz pura sin mezcla) la separación es innecesaria. En audio real con instrumentación densa, es el paso más crítico.
-
-5. **RMS ≠ proyección vocal percibida**: la intensidad medida es energía acústica objetiva, no la percepción subjetiva de volumen o potencia vocal.
+| Perfil | Rango | Hz medio | Registro dominante |
+|--------|-------|----------|-------------------|
+| Tenor Dramático (Bogdan) | A2–C6 (3.25 oct) | 502 Hz | medio-agudo |
+| Barítono Lírico | F2–A4 (2.33 oct) | 213 Hz | grave |
+| Soprano Lírica | C4–F6 (2.42 oct) | 693 Hz | medio-agudo |
+| Tenor Pop / Belting | B2–E5 (2.42 oct) | 313 Hz | medio-grave |
+| Contratenor | G3–C6 (2.42 oct) | 551 Hz | medio-agudo |
+| Mezzo-Soprano | F3–A5 (2.33 oct) | 432 Hz | medio-agudo |
 
 ---
 
-## 📐 Decisiones Técnicas
+## Stack tecnológico
 
-| Decisión | Alternativa considerada | Por qué se eligió |
-|---|---|---|
-| torchcrepe | CREPE (TF), basic-pitch, pYIN | Mayor robustez en voz sola; sin TF |
-| pYIN para RMS | Espectrograma, STFT | Integrado en librosa, rápido y preciso |
-| 50ms/frame | 10ms, 100ms | Balance entre resolución y velocidad |
-| Demucs htdemucs | spleeter, open-unmix | SOTA en separación vocal 2024 |
-| HTML standalone | Streamlit, Plotly Dash | Sin servidor, abrir directo en browser |
-
----
-
-## 📄 Licencia
-
-MIT — ver [LICENSE](LICENSE)
+| Capa | Tecnología |
+|------|-----------|
+| Análisis de audio | librosa (pYIN), torchcrepe (CREPE CNN), Demucs (htdemucs) |
+| Machine Learning | scikit-learn (RandomForest, IsolationForest, PCA) |
+| Streaming | Apache Kafka 3.9 KRaft (sin Zookeeper), confluent-kafka |
+| Datos | pandas, numpy, scipy |
+| Visualización | Chart.js (dashboards HTML standalone) |
+| Síntesis audio | scipy.io.wavfile, síntesis aditiva con ADSR |
+| Entorno | Google Colab / Python 3.10+ |
 
 ---
 
-<div align="center">
-<sub>Challenge IA Streaming · Análisis Vocal en Tiempo Real · 2025</sub>
-</div>
+## Integrantes
+
+| Nombre | GitHub |
+|--------|--------|
+| Balda Javier | [@jbalda](https://github.com/) |
+| Caracoix Juan | [@jcaracoix](https://github.com/) |
+| Casas Facundo | [@fcasas](https://github.com/) |
+
+---
+
+*Universidad Católica Argentina · Materia: Análisis y Procesamiento de Datos Streaming · 2026*

@@ -1,0 +1,122 @@
+{
+  "modelo": "RandomForestClassifier",
+  "n_estimators": 200,
+  "window_sec": 2.0,
+  "stride_sec": 0.5,
+  "n_samples": 1233,
+  "n_features": 20,
+  "clases": [
+    "Bar\u00edtono",
+    "Contratenor",
+    "Mezzo-soprano",
+    "Soprano",
+    "Tenor dram\u00e1tico",
+    "Tenor l\u00edrico-pop"
+  ],
+  "accuracy_cv5": 0.6894,
+  "f1_macro_cv5": 0.6682,
+  "feature_names": [
+    "hz_mean",
+    "hz_std",
+    "hz_cv",
+    "hz_min",
+    "hz_max",
+    "hz_range_st",
+    "hz_median",
+    "hz_q25",
+    "hz_q75",
+    "hz_diff_mean",
+    "semitone_jumps_5",
+    "int_mean",
+    "int_std",
+    "int_cv",
+    "pct_grave",
+    "pct_mediograve",
+    "pct_medioagudo",
+    "pct_agudo",
+    "pct_sobreagudo",
+    "ratio_agudo_grave"
+  ],
+  "feature_importance": [
+    {
+      "feature": "int_mean",
+      "importance": 0.21006494467220974
+    },
+    {
+      "feature": "int_std",
+      "importance": 0.12471972475422957
+    },
+    {
+      "feature": "int_cv",
+      "importance": 0.11986694251992833
+    },
+    {
+      "feature": "hz_max",
+      "importance": 0.07987715391886267
+    },
+    {
+      "feature": "hz_min",
+      "importance": 0.07389732718049502
+    },
+    {
+      "feature": "hz_range_st",
+      "importance": 0.05663733351168619
+    },
+    {
+      "feature": "hz_q75",
+      "importance": 0.05427543387411129
+    },
+    {
+      "feature": "hz_median",
+      "importance": 0.052198391719499186
+    },
+    {
+      "feature": "hz_mean",
+      "importance": 0.05023762002357328
+    },
+    {
+      "feature": "hz_q25",
+      "importance": 0.048744179455090096
+    },
+    {
+      "feature": "hz_diff_mean",
+      "importance": 0.04746724151886947
+    },
+    {
+      "feature": "hz_cv",
+      "importance": 0.03482290061672536
+    },
+    {
+      "feature": "hz_std",
+      "importance": 0.03059406556813061
+    },
+    {
+      "feature": "pct_sobreagudo",
+      "importance": 0.0032957613398102775
+    },
+    {
+      "feature": "pct_grave",
+      "importance": 0.0031912807241314682
+    },
+    {
+      "feature": "pct_mediograve",
+      "importance": 0.003046405473637964
+    },
+    {
+      "feature": "ratio_agudo_grave",
+      "importance": 0.0027280081930236653
+    },
+    {
+      "feature": "pct_agudo",
+      "importance": 0.0021852023774699718
+    },
+    {
+      "feature": "pct_medioagudo",
+      "importance": 0.0020876087850665017
+    },
+    {
+      "feature": "semitone_jumps_5",
+      "importance": 6.247377344931274e-05
+    }
+  ]
+}

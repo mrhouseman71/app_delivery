@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Comparador Vocal Multi-Artista</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',Arial,sans-serif;background:#0f172a;color:#e2e8f0;min-height:100vh}
+.header{background:#1e293b;padding:24px 32px;border-bottom:1px solid #1e3a5f}
+.header h1{font-size:20px;font-weight:600;color:#f1f5f9}
+.header p{font-size:13px;color:#64748b;margin-top:4px}
+.main{padding:22px 28px;max-width:1280px;margin:0 auto}
+.section-title{font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.8px;color:#475569;margin:24px 0 12px}
+/* Artista cards */
+.artist-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin-bottom:4px}
+.artist-card{background:#1e293b;border:2px solid transparent;border-radius:10px;padding:14px 16px;cursor:pointer;transition:border-color .15s}
+.artist-card:hover{border-color:#334155}
+.artist-card.active{border-color:var(--ac)!important}
+.artist-dot{width:10px;height:10px;border-radius:50%;display:inline-block;margin-right:7px;flex-shrink:0}
+.artist-name{font-size:13px;font-weight:500;color:#f1f5f9}
+.artist-sub{font-size:11px;color:#64748b;margin-top:3px}
+.artist-range{font-size:13px;font-weight:600;margin-top:6px}
+/* KPI strip */
+.kpi-strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:20px}
+.kpi{background:#1e293b;border:1px solid #1e3a5f;border-radius:8px;padding:12px 14px}
+.kpi-label{font-size:10px;color:#64748b;text-transform:uppercase;letter-spacing:.7px}
+.kpi-value{font-size:20px;font-weight:600;margin-top:3px}
+.kpi-sub{font-size:10px;color:#64748b;margin-top:1px}
+/* Charts */
+.charts-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.charts-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:16px}
+.chart-card{background:#1e293b;border:1px solid #1e3a5f;border-radius:10px;padding:16px 18px}
+.chart-card h3{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.6px;color:#64748b;margin-bottom:12px}
+.chart-wrap{position:relative;height:200px}
+.chart-wrap-tall{position:relative;height:260px}
+.chart-wrap-short{position:relative;height:160px}
+/* Timeline */
+.timeline-wrap{position:relative;height:180px}
+/* Tabla comparativa */
+.compare-table{width:100%;border-collapse:collapse;font-size:12px}
+.compare-table th{text-align:left;padding:8px 10px;color:#475569;font-weight:600;border-bottom:1px solid #1e3a5f;text-transform:uppercase;letter-spacing:.5px;font-size:10px}
+.compare-table td{padding:8px 10px;border-bottom:1px solid #1e2d40;color:#cbd5e1}
+.compare-table tr:hover td{background:#1a2540}
+.bar-inline{display:inline-block;height:6px;border-radius:3px;vertical-align:middle;margin-left:6px}
+.reg-badge{display:inline-block;padding:2px 7px;border-radius:4px;font-size:10px;font-weight:500}
+@media(max-width:720px){.charts-2,.charts-3{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>🎤 Comparador Vocal Multi-Artista</h1>
+  <p>6 perfiles vocales · 16 métricas · Comparación interactiva · Balda · Caracoix · Casas · UCA 2026</p>
+</div>
+
+<div class="main">
+
+  <p class="section-title">Perfiles vocales</p>
+  <div class="artist-grid" id="artistGrid"></div>
+
+  <p class="section-title" style="margin-top:20px">Métricas del artista seleccionado</p>
+  <div class="kpi-strip" id="kpiStrip"></div>
+
+  <div class="charts-2">
+    <div class="chart-card">
+      <h3>Distribución de registros (%)</h3>
+      <div class="chart-wrap"><canvas id="regChart"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <h3>Timeline de pitch (notas × tiempo)</h3>
+      <div class="timeline-wrap"><canvas id="timelineChart"></canvas></div>
+    </div>
+  </div>
+
+  <p class="section-title">Comparación entre todos los artistas</p>
+
+  <div class="charts-3">
+    <div class="chart-card">
+      <h3>Rango vocal (octavas)</h3>
+      <div class="chart-wrap-short"><canvas id="rangoChart"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <h3>Frecuencia media (Hz)</h3>
+      <div class="chart-wrap-short"><canvas id="hzChart"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <h3>Densidad melódica (cambios/s)</h3>
+      <div class="chart-wrap-short"><canvas id="densChart"></canvas></div>
+    </div>
+  </div>
+
+  <div class="charts-2">
+    <div class="chart-card">
+      <h3>Radar — perfil vocal completo (todos)</h3>
+      <div class="chart-wrap-tall"><canvas id="radarChart"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <h3>Registro dominante por artista (% tiempo)</h3>
+      <div class="chart-wrap-tall"><canvas id="stackedChart"></canvas></div>
+    </div>
+  </div>
+
+  <p class="section-title">Tabla comparativa completa</p>
+  <div class="chart-card" style="overflow-x:auto">
+    <table class="compare-table" id="compareTable"></table>
+  </div>
+
+</div>
+
+<script>
+const DATASET   = [{"id": "bogdan_style", "name": "Tenor Dramático (estilo Bogdan)", "tipo": "Tenor dramático", "genero": "Pop / Rock dramático", "ref": "Bogdan Shuvalov — S.O.S", "color": "#38bdf8", "nota_grave": "A2", "nota_aguda": "C6", "hz_grave": 110.0, "hz_aguda": 1046.5, "rango_semitonos": 39.0, "rango_octavas": 3.25, "hz_medio": 501.8, "nota_modal": "E4", "pct_grave": 10.0, "pct_medio_grave": 26.7, "pct_medio_agudo": 35.0, "pct_agudo": 28.3, "pct_sobreagudo": 0.0, "intensidad_media": 0.739, "intensidad_max": 1.0, "intensidad_variacion": 0.153, "pct_alta_intensidad": 26.1, "n_notas_distintas": 22, "n_cambios_nota": 40, "densidad_melodica": 0.444, "duracion_media_nota_s": 2.2, "ratio_agudo_grave": 0.773}, {"id": "baritono", "name": "Barítono Lírico", "tipo": "Barítono", "genero": "Ópera / Balada", "ref": "Estilo Sinatra / Barrientos", "color": "#a78bfa", "nota_grave": "F2", "nota_aguda": "A4", "hz_grave": 87.3, "hz_aguda": 440.0, "rango_semitonos": 28.0, "rango_octavas": 2.33, "hz_medio": 212.8, "nota_modal": "G2", "pct_grave": 43.3, "pct_medio_grave": 42.2, "pct_medio_agudo": 14.4, "pct_agudo": 0.0, "pct_sobreagudo": 0.0, "intensidad_media": 0.665, "intensidad_max": 0.9, "intensidad_variacion": 0.13, "pct_alta_intensidad": 30.0, "n_notas_distintas": 17, "n_cambios_nota": 31, "densidad_melodica": 0.344, "duracion_media_nota_s": 2.81, "ratio_agudo_grave": 0.0}, {"id": "soprano", "name": "Soprano Lírica", "tipo": "Soprano", "genero": "Ópera / Música clásica", "ref": "Estilo Callas / Netrebko", "color": "#f472b6", "nota_grave": "C4", "nota_aguda": "F6", "hz_grave": 261.6, "hz_aguda": 1396.9, "rango_semitonos": 29.0, "rango_octavas": 2.42, "hz_medio": 692.7, "nota_modal": "A5", "pct_grave": 0.0, "pct_medio_grave": 13.9, "pct_medio_agudo": 40.6, "pct_agudo": 32.2, "pct_sobreagudo": 13.3, "intensidad_media": 0.764, "intensidad_max": 1.0, "intensidad_variacion": 0.143, "pct_alta_intensidad": 26.7, "n_notas_distintas": 18, "n_cambios_nota": 32, "densidad_melodica": 0.356, "duracion_media_nota_s": 2.73, "ratio_agudo_grave": 3.28}, {"id": "tenor_pop", "name": "Tenor Pop / Belting", "tipo": "Tenor lírico-pop", "genero": "Pop / Rock", "ref": "Estilo Freddie Mercury / Adam Lambert", "color": "#fb923c", "nota_grave": "B2", "nota_aguda": "E5", "hz_grave": 123.5, "hz_aguda": 659.3, "rango_semitonos": 29.0, "rango_octavas": 2.42, "hz_medio": 312.6, "nota_modal": "A3", "pct_grave": 17.8, "pct_medio_grave": 44.4, "pct_medio_agudo": 37.8, "pct_agudo": 0.0, "pct_sobreagudo": 0.0, "intensidad_media": 0.716, "intensidad_max": 0.99, "intensidad_variacion": 0.164, "pct_alta_intensidad": 25.6, "n_notas_distintas": 18, "n_cambios_nota": 33, "densidad_melodica": 0.367, "duracion_media_nota_s": 2.65, "ratio_agudo_grave": 0.0}, {"id": "contratenor", "name": "Contratenor (falsete cultivado)", "tipo": "Contratenor", "genero": "Música barroca / Ópera antigua", "ref": "Estilo Philippe Jaroussky / Andreas Scholl", "color": "#34d399", "nota_grave": "G3", "nota_aguda": "C6", "hz_grave": 196.0, "hz_aguda": 1046.5, "rango_semitonos": 29.0, "rango_octavas": 2.42, "hz_medio": 550.5, "nota_modal": "E4", "pct_grave": 0.0, "pct_medio_grave": 23.3, "pct_medio_agudo": 46.7, "pct_agudo": 30.0, "pct_sobreagudo": 0.0, "intensidad_media": 0.772, "intensidad_max": 1.0, "intensidad_variacion": 0.147, "pct_alta_intensidad": 26.7, "n_notas_distintas": 18, "n_cambios_nota": 29, "densidad_melodica": 0.322, "duracion_media_nota_s": 3.0, "ratio_agudo_grave": 1.286}, {"id": "mezzo", "name": "Mezzo-Soprano", "tipo": "Mezzo-soprano", "genero": "Ópera / Lieder", "ref": "Estilo Cecilia Bartoli / Joyce DiDonato", "color": "#fbbf24", "nota_grave": "F3", "nota_aguda": "A5", "hz_grave": 174.6, "hz_aguda": 880.0, "rango_semitonos": 28.0, "rango_octavas": 2.33, "hz_medio": 431.9, "nota_modal": "A3", "pct_grave": 0.0, "pct_medio_grave": 41.1, "pct_medio_agudo": 44.4, "pct_agudo": 14.4, "pct_sobreagudo": 0.0, "intensidad_media": 0.726, "intensidad_max": 0.95, "intensidad_variacion": 0.131, "pct_alta_intensidad": 26.7, "n_notas_distintas": 17, "n_cambios_nota": 30, "densidad_melodica": 0.333, "duracion_media_nota_s": 2.9, "ratio_agudo_grave": 0.351}];
+const TIMELINES = {"bogdan_style": [{"note": "A3", "hz": 220.0, "ts": 0, "te": 2.5, "intensity": 0.5, "register": "medio-grave"}, {"note": "B3", "hz": 246.9, "ts": 2.5, "te": 4.5, "intensity": 0.55, "register": "medio-grave"}, {"note": "C4", "hz": 261.6, "ts": 4.5, "te": 6.5, "intensity": 0.6, "register": "medio-grave"}, {"note": "D4", "hz": 293.7, "ts": 6.5, "te": 8.5, "intensity": 0.65, "register": "medio-grave"}, {"note": "E4", "hz": 329.6, "ts": 8.5, "te": 10.5, "intensity": 0.6, "register": "medio-grave"}, {"note": "F4", "hz": 349.2, "ts": 10.5, "te": 12.5, "intensity": 0.65, "register": "medio-agudo"}, {"note": "G4", "hz": 392.0, "ts": 12.5, "te": 14.5, "intensity": 0.7, "register": "medio-agudo"}, {"note": "A4", "hz": 440.0, "ts": 14.5, "te": 16.5, "intensity": 0.72, "register": "medio-agudo"}, {"note": "G4", "hz": 392.0, "ts": 16.5, "te": 18, "intensity": 0.68, "register": "medio-agudo"}, {"note": "F4", "hz": 349.2, "ts": 18, "te": 19.5, "intensity": 0.65, "register": "medio-agudo"}, {"note": "E4", "hz": 329.6, "ts": 19.5, "te": 21, "intensity": 0.62, "register": "medio-grave"}, {"note": "B4", "hz": 493.9, "ts": 21, "te": 23, "intensity": 0.75, "register": "medio-agudo"}, {"note": "C5", "hz": 523.3, "ts": 23, "te": 25, "intensity": 0.8, "register": "medio-agudo"}, {"note": "D5", "hz": 587.3, "ts": 25, "te": 27, "intensity": 0.82, "register": "medio-agudo"}, {"note": "E5", "hz": 659.3, "ts": 27, "te": 29.5, "intensity": 0.85, "register": "medio-agudo"}, {"note": "F5", "hz": 698.5, "ts": 29.5, "te": 32, "intensity": 0.88, "register": "agudo"}, {"note": "G5", "hz": 784.0, "ts": 32, "te": 35, "intensity": 0.92, "register": "agudo"}, {"note": "A5", "hz": 880.0, "ts": 35, "te": 38, "intensity": 0.95, "register": "agudo"}, {"note": "G5", "hz": 784.0, "ts": 38, "te": 40, "intensity": 0.9, "register": "agudo"}, {"note": "F5", "hz": 698.5, "ts": 40, "te": 42, "intensity": 0.87, "register": "agudo"}, {"note": "E5", "hz": 659.3, "ts": 42, "te": 44, "intensity": 0.85, "register": "medio-agudo"}, {"note": "D3", "hz": 146.8, "ts": 44, "te": 46.5, "intensity": 0.7, "register": "grave"}, {"note": "C3", "hz": 130.8, "ts": 46.5, "te": 48.5, "intensity": 0.65, "register": "grave"}, {"note": "B2", "hz": 123.5, "ts": 48.5, "te": 50.5, "intensity": 0.6, "register": "grave"}, {"note": "A2", "hz": 110.0, "ts": 50.5, "te": 53, "intensity": 0.55, "register": "grave"}, {"note": "E4", "hz": 329.6, "ts": 53, "te": 55, "intensity": 0.65, "register": "medio-grave"}, {"note": "G4", "hz": 392.0, "ts": 55, "te": 57, "intensity": 0.7, "register": "medio-agudo"}, {"note": "B4", "hz": 493.9, "ts": 57, "te": 59.5, "intensity": 0.78, "register": "medio-agudo"}, {"note": "C6", "hz": 1046.5, "ts": 59.5, "te": 62, "intensity": 0.98, "register": "agudo"}, {"note": "B5", "hz": 987.8, "ts": 62, "te": 64.5, "intensity": 0.95, "register": "agudo"}, {"note": "A5", "hz": 880.0, "ts": 64.5, "te": 67, "intensity": 0.92, "register": "agudo"}, {"note": "C6", "hz": 1046.5, "ts": 67, "te": 70, "intensity": 1.0, "register": "agudo"}, {"note": "G5", "hz": 784.0, "ts": 70, "te": 72.5, "intensity": 0.88, "register": "agudo"}, {"note": "E5", "hz": 659.3, "ts": 72.5, "te": 74.5, "intensity": 0.82, "register": "medio-agudo"}, {"note": "C5", "hz": 523.3, "ts": 74.5, "te": 76.5, "intensity": 0.78, "register": "medio-agudo"}, {"note": "A4", "hz": 440.0, "ts": 76.5, "te": 78.5, "intensity": 0.72, "register": "medio-agudo"}, {"note": "G4", "hz": 392.0, "ts": 78.5, "te": 80, "intensity": 0.68, "register": "medio-agudo"}, {"note": "E4", "hz": 329.6, "ts": 80, "te": 82, "intensity": 0.6, "register": "medio-grave"}, {"note": "C4", "hz": 261.6, "ts": 82, "te": 84.5, "intensity": 0.55, "register": "medio-grave"}, {"note": "A3", "hz": 220.0, "ts": 84.5, "te": 87, "intensity": 0.5, "register": "medio-grave"}, {"note": "G3", "hz": 196.0, "ts": 87, "te": 90, "intensity": 0.45, "register": "medio-grave"}], "baritono": [{"note": "G2", "hz": 98.0, "ts": 0, "te": 3, "intensity": 0.55, "register": "grave"}, {"note": "A2", "hz": 110.0, "ts": 3, "te": 6, "intensity": 0.6, "register": "grave"}, {"note": "B2", "hz": 123.5, "ts": 6, "te": 9, "intensity": 0.62, "register": "grave"}, {"note": "C3", "hz": 130.8, "ts": 9, "te": 12, "intensity": 0.65, "register": "grave"}, {"note": "D3", "hz": 146.8, "ts": 12, "te": 15, "intensity": 0.68, "register": "grave"}, {"note": "E3", "hz": 164.8, "ts": 15, "te": 17, "intensity": 0.65, "register": "grave"}, {"note": "F3", "hz": 174.6, "ts": 17, "te": 19, "intensity": 0.7, "register": "medio-grave"}, {"note": "G3", "hz": 196.0, "ts": 19, "te": 22, "intensity": 0.72, "register": "medio-grave"}, {"note": "A3", "hz": 220.0, "ts": 22, "te": 25, "intensity": 0.75, "register": "medio-grave"}, {"note": "B3", "hz": 246.9, "ts": 25, "te": 27, "intensity": 0.72, "register": "medio-grave"}, {"note": "C4", "hz": 261.6, "ts": 27, "te": 30, "intensity": 0.78, "register": "medio-grave"}, {"note": "D4", "hz": 293.7, "ts": 30, "te": 33, "intensity": 0.8, "register": "medio-grave"}, {"note": "E4", "hz": 329.6, "ts": 33, "te": 36, "intensity": 0.82, "register": "medio-grave"}, {"note": "F4", "hz": 349.2, "ts": 36, "te": 39, "intensity": 0.85, "register": "medio-agudo"}, {"note": "G4", "hz": 392.0, "ts": 39, "te": 42, "intensity": 0.88, "register": "medio-agudo"}, {"note": "A4", "hz": 440.0, "ts": 42, "te": 45, "intensity": 0.9, "register": "medio-agudo"}, {"note": "G4", "hz": 392.0, "ts": 45, "te": 47, "intensity": 0.85, "register": "medio-agudo"}, {"note": "F4", "hz": 349.2, "ts": 47, "te": 49, "intensity": 0.8, "register": "medio-agudo"}, {"note": "E4", "hz": 329.6, "ts": 49, "te": 51, "intensity": 0.75, "register": "medio-grave"}, {"note": "D4", "hz": 293.7, "ts": 51, "te": 53, "intensity": 0.72, "register": "medio-grave"}, {"note": "C4", "hz": 261.6, "ts": 53, "te": 56, "intensity": 0.7, "register": "medio-grave"}, {"note": "B3", "hz": 246.9, "ts": 56, "te": 59, "intensity": 0.68, "register": "medio-grave"}, {"note": "A3", "hz": 220.0, "ts": 59, "te": 62, "intensity": 0.65, "register": "medio-grave"}, {"note": "G3", "hz": 196.0, "ts": 62, "te": 65, "intensity": 0.62, "register": "medio-grave"}, {"note": "F3", "hz": 174.6, "ts": 65, "te": 68, "intensity": 0.6, "register": "medio-grave"}, {"note": "E3", "hz": 164.8, "ts": 68, "te": 71, "intensity": 0.58, "register": "grave"}, {"note": "D3", "hz": 146.8, "ts": 71, "te": 74, "intensity": 0.55, "register": "grave"}, {"note": "C3", "hz": 130.8, "ts": 74, "te": 77, "intensity": 0.52, "register": "grave"}, {"note": "B2", "hz": 123.5, "ts": 77, "te": 80, "intensity": 0.5, "register": "grave"}, {"note": "A2", "hz": 110.0, "ts": 80, "te": 83, "intensity": 0.48, "register": "grave"}, {"note": "G2", "hz": 98.0, "ts": 83, "te": 87, "intensity": 0.45, "register": "grave"}, {"note": "F2", "hz": 87.3, "ts": 87, "te": 90, "intensity": 0.4, "register": "grave"}], "soprano": [{"note": "E4", "hz": 329.6, "ts": 0, "te": 2.5, "intensity": 0.6, "register": "medio-grave"}, {"note": "F4", "hz": 349.2, "ts": 2.5, "te": 5, "intensity": 0.62, "register": "medio-agudo"}, {"note": "G4", "hz": 392.0, "ts": 5, "te": 7.5, "intensity": 0.65, "register": "medio-agudo"}, {"note": "A4", "hz": 440.0, "ts": 7.5, "te": 10, "intensity": 0.68, "register": "medio-agudo"}, {"note": "B4", "hz": 493.9, "ts": 10, "te": 12.5, "intensity": 0.7, "register": "medio-agudo"}, {"note": "C5", "hz": 523.3, "ts": 12.5, "te": 15, "intensity": 0.75, "register": "medio-agudo"}, {"note": "D5", "hz": 587.3, "ts": 15, "te": 17.5, "intensity": 0.78, "register": "medio-agudo"}, {"note": "E5", "hz": 659.3, "ts": 17.5, "te": 20, "intensity": 0.8, "register": "medio-agudo"}, {"note": "F5", "hz": 698.5, "ts": 20, "te": 22.5, "intensity": 0.83, "register": "agudo"}, {"note": "G5", "hz": 784.0, "ts": 22.5, "te": 25, "intensity": 0.87, "register": "agudo"}, {"note": "A5", "hz": 880.0, "ts": 25, "te": 28, "intensity": 0.9, "register": "agudo"}, {"note": "B5", "hz": 987.8, "ts": 28, "te": 31, "intensity": 0.93, "register": "agudo"}, {"note": "C6", "hz": 1046.5, "ts": 31, "te": 34, "intensity": 0.96, "register": "agudo"}, {"note": "D6", "hz": 1174.7, "ts": 34, "te": 37, "intensity": 0.98, "register": "sobreagudo"}, {"note": "E6", "hz": 1318.5, "ts": 37, "te": 40, "intensity": 1.0, "register": "sobreagudo"}, {"note": "F6", "hz": 1396.9, "ts": 40, "te": 42, "intensity": 0.98, "register": "sobreagudo"}, {"note": "E6", "hz": 1318.5, "ts": 42, "te": 44, "intensity": 0.95, "register": "sobreagudo"}, {"note": "D6", "hz": 1174.7, "ts": 44, "te": 46, "intensity": 0.92, "register": "sobreagudo"}, {"note": "C6", "hz": 1046.5, "ts": 46, "te": 49, "intensity": 0.9, "register": "agudo"}, {"note": "B5", "hz": 987.8, "ts": 49, "te": 52, "intensity": 0.87, "register": "agudo"}, {"note": "A5", "hz": 880.0, "ts": 52, "te": 55, "intensity": 0.83, "register": "agudo"}, {"note": "G5", "hz": 784.0, "ts": 55, "te": 58, "intensity": 0.8, "register": "agudo"}, {"note": "F5", "hz": 698.5, "ts": 58, "te": 61, "intensity": 0.78, "register": "agudo"}, {"note": "E5", "hz": 659.3, "ts": 61, "te": 63, "intensity": 0.75, "register": "medio-agudo"}, {"note": "D5", "hz": 587.3, "ts": 63, "te": 65, "intensity": 0.72, "register": "medio-agudo"}, {"note": "C5", "hz": 523.3, "ts": 65, "te": 68, "intensity": 0.7, "register": "medio-agudo"}, {"note": "B4", "hz": 493.9, "ts": 68, "te": 71, "intensity": 0.67, "register": "medio-agudo"}, {"note": "A4", "hz": 440.0, "ts": 71, "te": 74, "intensity": 0.65, "register": "medio-agudo"}, {"note": "G4", "hz": 392.0, "ts": 74, "te": 77, "intensity": 0.62, "register": "medio-agudo"}, {"note": "F4", "hz": 349.2, "ts": 77, "te": 80, "intensity": 0.6, "register": "medio-agudo"}, {"note": "E4", "hz": 329.6, "ts": 80, "te": 83, "intensity": 0.58, "register": "medio-grave"}, {"note": "D4", "hz": 293.7, "ts": 83, "te": 86, "intensity": 0.55, "register": "medio-grave"}, {"note": "C4", "hz": 261.6, "ts": 86, "te": 90, "intensity": 0.5, "register": "medio-grave"}], "tenor_pop": [{"note": "B2", "hz": 123.5, "ts": 0, "te": 2, "intensity": 0.55, "register": "grave"}, {"note": "C3", "hz": 130.8, "ts": 2, "te": 4, "intensity": 0.58, "register": "grave"}, {"note": "D3", "hz": 146.8, "ts": 4, "te": 6, "intensity": 0.6, "register": "grave"}, {"note": "E3", "hz": 164.8, "ts": 6, "te": 8, "intensity": 0.62, "register": "grave"}, {"note": "F3", "hz": 174.6, "ts": 8, "te": 10, "intensity": 0.65, "register": "medio-grave"}, {"note": "G3", "hz": 196.0, "ts": 10, "te": 12, "intensity": 0.68, "register": "medio-grave"}, {"note": "A3", "hz": 220.0, "ts": 12, "te": 15, "intensity": 0.72, "register": "medio-grave"}, {"note": "B3", "hz": 246.9, "ts": 15, "te": 18, "intensity": 0.75, "register": "medio-grave"}, {"note": "C4", "hz": 261.6, "ts": 18, "te": 21, "intensity": 0.78, "register": "medio-grave"}, {"note": "D4", "hz": 293.7, "ts": 21, "te": 24, "intensity": 0.8, "register": "medio-grave"}, {"note": "E4", "hz": 329.6, "ts": 24, "te": 27, "intensity": 0.83, "register": "medio-grave"}, {"note": "F4", "hz": 349.2, "ts": 27, "te": 30, "intensity": 0.88, "register": "medio-agudo"}, {"note": "G4", "hz": 392.0, "ts": 30, "te": 33, "intensity": 0.92, "register": "medio-agudo"}, {"note": "A4", "hz": 440.0, "ts": 33, "te": 36, "intensity": 0.95, "register": "medio-agudo"}, {"note": "B4", "hz": 493.9, "ts": 36, "te": 39, "intensity": 0.97, "register": "medio-agudo"}, {"note": "C5", "hz": 523.3, "ts": 39, "te": 42, "intensity": 0.99, "register": "medio-agudo"}, {"note": "D5", "hz": 587.3, "ts": 42, "te": 44, "intensity": 0.95, "register": "medio-agudo"}, {"note": "E5", "hz": 659.3, "ts": 44, "te": 46, "intensity": 0.92, "register": "medio-agudo"}, {"note": "D5", "hz": 587.3, "ts": 46, "te": 48, "intensity": 0.9, "register": "medio-agudo"}, {"note": "C5", "hz": 523.3, "ts": 48, "te": 50, "intensity": 0.87, "register": "medio-agudo"}, {"note": "B4", "hz": 493.9, "ts": 50, "te": 52, "intensity": 0.83, "register": "medio-agudo"}, {"note": "A4", "hz": 440.0, "ts": 52, "te": 55, "intensity": 0.8, "register": "medio-agudo"}, {"note": "G4", "hz": 392.0, "ts": 55, "te": 58, "intensity": 0.75, "register": "medio-agudo"}, {"note": "F4", "hz": 349.2, "ts": 58, "te": 61, "intensity": 0.7, "register": "medio-agudo"}, {"note": "E4", "hz": 329.6, "ts": 61, "te": 64, "intensity": 0.65, "register": "medio-grave"}, {"note": "D4", "hz": 293.7, "ts": 64, "te": 67, "intensity": 0.62, "register": "medio-grave"}, {"note": "C4", "hz": 261.6, "ts": 67, "te": 70, "intensity": 0.6, "register": "medio-grave"}, {"note": "B3", "hz": 246.9, "ts": 70, "te": 73, "intensity": 0.57, "register": "medio-grave"}, {"note": "A3", "hz": 220.0, "ts": 73, "te": 76, "intensity": 0.55, "register": "medio-grave"}, {"note": "G3", "hz": 196.0, "ts": 76, "te": 79, "intensity": 0.52, "register": "medio-grave"}, {"note": "F3", "hz": 174.6, "ts": 79, "te": 82, "intensity": 0.5, "register": "medio-grave"}, {"note": "E3", "hz": 164.8, "ts": 82, "te": 85, "intensity": 0.48, "register": "grave"}, {"note": "D3", "hz": 146.8, "ts": 85, "te": 88, "intensity": 0.45, "register": "grave"}, {"note": "C3", "hz": 130.8, "ts": 88, "te": 90, "intensity": 0.42, "register": "grave"}], "contratenor": [{"note": "G3", "hz": 196.0, "ts": 0, "te": 3, "intensity": 0.55, "register": "medio-grave"}, {"note": "A3", "hz": 220.0, "ts": 3, "te": 6, "intensity": 0.58, "register": "medio-grave"}, {"note": "B3", "hz": 246.9, "ts": 6, "te": 9, "intensity": 0.6, "register": "medio-grave"}, {"note": "C4", "hz": 261.6, "ts": 9, "te": 12, "intensity": 0.62, "register": "medio-grave"}, {"note": "D4", "hz": 293.7, "ts": 12, "te": 15, "intensity": 0.65, "register": "medio-grave"}, {"note": "E4", "hz": 329.6, "ts": 15, "te": 18, "intensity": 0.68, "register": "medio-grave"}, {"note": "F4", "hz": 349.2, "ts": 18, "te": 21, "intensity": 0.72, "register": "medio-agudo"}, {"note": "G4", "hz": 392.0, "ts": 21, "te": 24, "intensity": 0.75, "register": "medio-agudo"}, {"note": "A4", "hz": 440.0, "ts": 24, "te": 27, "intensity": 0.78, "register": "medio-agudo"}, {"note": "B4", "hz": 493.9, "ts": 27, "te": 30, "intensity": 0.8, "register": "medio-agudo"}, {"note": "C5", "hz": 523.3, "ts": 30, "te": 33, "intensity": 0.83, "register": "medio-agudo"}, {"note": "D5", "hz": 587.3, "ts": 33, "te": 36, "intensity": 0.86, "register": "medio-agudo"}, {"note": "E5", "hz": 659.3, "ts": 36, "te": 39, "intensity": 0.89, "register": "medio-agudo"}, {"note": "F5", "hz": 698.5, "ts": 39, "te": 42, "intensity": 0.92, "register": "agudo"}, {"note": "G5", "hz": 784.0, "ts": 42, "te": 45, "intensity": 0.95, "register": "agudo"}, {"note": "A5", "hz": 880.0, "ts": 45, "te": 48, "intensity": 0.97, "register": "agudo"}, {"note": "B5", "hz": 987.8, "ts": 48, "te": 51, "intensity": 0.99, "register": "agudo"}, {"note": "C6", "hz": 1046.5, "ts": 51, "te": 54, "intensity": 1.0, "register": "agudo"}, {"note": "B5", "hz": 987.8, "ts": 54, "te": 57, "intensity": 0.97, "register": "agudo"}, {"note": "A5", "hz": 880.0, "ts": 57, "te": 60, "intensity": 0.94, "register": "agudo"}, {"note": "G5", "hz": 784.0, "ts": 60, "te": 63, "intensity": 0.9, "register": "agudo"}, {"note": "F5", "hz": 698.5, "ts": 63, "te": 66, "intensity": 0.86, "register": "agudo"}, {"note": "E5", "hz": 659.3, "ts": 66, "te": 69, "intensity": 0.82, "register": "medio-agudo"}, {"note": "D5", "hz": 587.3, "ts": 69, "te": 72, "intensity": 0.78, "register": "medio-agudo"}, {"note": "C5", "hz": 523.3, "ts": 72, "te": 75, "intensity": 0.74, "register": "medio-agudo"}, {"note": "B4", "hz": 493.9, "ts": 75, "te": 78, "intensity": 0.7, "register": "medio-agudo"}, {"note": "A4", "hz": 440.0, "ts": 78, "te": 81, "intensity": 0.65, "register": "medio-agudo"}, {"note": "G4", "hz": 392.0, "ts": 81, "te": 84, "intensity": 0.6, "register": "medio-agudo"}, {"note": "F4", "hz": 349.2, "ts": 84, "te": 87, "intensity": 0.55, "register": "medio-agudo"}, {"note": "E4", "hz": 329.6, "ts": 87, "te": 90, "intensity": 0.5, "register": "medio-grave"}], "mezzo": [{"note": "A3", "hz": 220.0, "ts": 0, "te": 3, "intensity": 0.58, "register": "medio-grave"}, {"note": "B3", "hz": 246.9, "ts": 3, "te": 6, "intensity": 0.62, "register": "medio-grave"}, {"note": "C4", "hz": 261.6, "ts": 6, "te": 9, "intensity": 0.65, "register": "medio-grave"}, {"note": "D4", "hz": 293.7, "ts": 9, "te": 12, "intensity": 0.68, "register": "medio-grave"}, {"note": "E4", "hz": 329.6, "ts": 12, "te": 15, "intensity": 0.7, "register": "medio-grave"}, {"note": "F4", "hz": 349.2, "ts": 15, "te": 18, "intensity": 0.73, "register": "medio-agudo"}, {"note": "G4", "hz": 392.0, "ts": 18, "te": 21, "intensity": 0.76, "register": "medio-agudo"}, {"note": "A4", "hz": 440.0, "ts": 21, "te": 24, "intensity": 0.8, "register": "medio-agudo"}, {"note": "B4", "hz": 493.9, "ts": 24, "te": 27, "intensity": 0.82, "register": "medio-agudo"}, {"note": "C5", "hz": 523.3, "ts": 27, "te": 30, "intensity": 0.85, "register": "medio-agudo"}, {"note": "D5", "hz": 587.3, "ts": 30, "te": 33, "intensity": 0.87, "register": "medio-agudo"}, {"note": "E5", "hz": 659.3, "ts": 33, "te": 36, "intensity": 0.9, "register": "medio-agudo"}, {"note": "F5", "hz": 698.5, "ts": 36, "te": 39, "intensity": 0.92, "register": "agudo"}, {"note": "G5", "hz": 784.0, "ts": 39, "te": 42, "intensity": 0.95, "register": "agudo"}, {"note": "A5", "hz": 880.0, "ts": 42, "te": 45, "intensity": 0.93, "register": "agudo"}, {"note": "G5", "hz": 784.0, "ts": 45, "te": 47, "intensity": 0.9, "register": "agudo"}, {"note": "F5", "hz": 698.5, "ts": 47, "te": 49, "intensity": 0.87, "register": "agudo"}, {"note": "E5", "hz": 659.3, "ts": 49, "te": 51, "intensity": 0.83, "register": "medio-agudo"}, {"note": "D5", "hz": 587.3, "ts": 51, "te": 53, "intensity": 0.8, "register": "medio-agudo"}, {"note": "C5", "hz": 523.3, "ts": 53, "te": 56, "intensity": 0.77, "register": "medio-agudo"}, {"note": "B4", "hz": 493.9, "ts": 56, "te": 59, "intensity": 0.74, "register": "medio-agudo"}, {"note": "A4", "hz": 440.0, "ts": 59, "te": 62, "intensity": 0.72, "register": "medio-agudo"}, {"note": "G4", "hz": 392.0, "ts": 62, "te": 65, "intensity": 0.7, "register": "medio-agudo"}, {"note": "F4", "hz": 349.2, "ts": 65, "te": 68, "intensity": 0.68, "register": "medio-agudo"}, {"note": "E4", "hz": 329.6, "ts": 68, "te": 71, "intensity": 0.65, "register": "medio-grave"}, {"note": "D4", "hz": 293.7, "ts": 71, "te": 74, "intensity": 0.62, "register": "medio-grave"}, {"note": "C4", "hz": 261.6, "ts": 74, "te": 77, "intensity": 0.6, "register": "medio-grave"}, {"note": "B3", "hz": 246.9, "ts": 77, "te": 80, "intensity": 0.57, "register": "medio-grave"}, {"note": "A3", "hz": 220.0, "ts": 80, "te": 83, "intensity": 0.55, "register": "medio-grave"}, {"note": "G3", "hz": 196.0, "ts": 83, "te": 86, "intensity": 0.52, "register": "medio-grave"}, {"note": "F3", "hz": 174.6, "ts": 86, "te": 90, "intensity": 0.48, "register": "medio-grave"}]};
+
+let selectedId = DATASET[0].id;
+
+const REG_LABELS  = ['grave','medio-grave','medio-agudo','agudo','sobreagudo'];
+const REG_KEYS    = ['pct_grave','pct_medio_grave','pct_medio_agudo','pct_agudo','pct_sobreagudo'];
+const REG_COLORS  = ['#6366f1','#8b5cf6','#38bdf8','#34d399','#f472b6'];
+
+const BASE = {
+  responsive:true, maintainAspectRatio:false,
+  plugins:{ legend:{display:false},
+    tooltip:{ backgroundColor:'#1e293b', borderColor:'#334155',
+      borderWidth:1, titleColor:'#94a3b8', bodyColor:'#e2e8f0', padding:10 } },
+  scales:{
+    x:{ ticks:{color:'#475569',font:{size:11}}, grid:{color:'#1e3a5f'} },
+    y:{ ticks:{color:'#475569',font:{size:11}}, grid:{color:'#1e3a5f'} }
+  }
+};
+
+// ── Artist cards ──────────────────────────────────────────────────
+function buildCards() {
+  const grid = document.getElementById('artistGrid');
+  grid.innerHTML = '';
+  DATASET.forEach(a => {
+    const card = document.createElement('div');
+    card.className = 'artist-card' + (a.id === selectedId ? ' active' : '');
+    card.style.setProperty('--ac', a.color);
+    card.innerHTML = `
+      <div style="display:flex;align-items:center">
+        <span class="artist-dot" style="background:${a.color}"></span>
+        <span class="artist-name">${a.name}</span>
+      </div>
+      <div class="artist-sub">${a.tipo} · ${a.genero}</div>
+      <div class="artist-range" style="color:${a.color}">${a.nota_grave} → ${a.nota_aguda}</div>
+    `;
+    card.onclick = () => { selectedId = a.id; refresh(); };
+    grid.appendChild(card);
+  });
+}
+
+// ── KPI strip ─────────────────────────────────────────────────────
+function buildKPI(a) {
+  const strip = document.getElementById('kpiStrip');
+  const dom_reg = ['grave','medio_grave','medio_agudo','agudo','sobreagudo']
+    .reduce((best, r) => a['pct_'+r] > a['pct_'+best] ? r : best, 'grave')
+    .replace('_','-');
+  strip.innerHTML = [
+    ['Rango vocal', a.rango_octavas.toFixed(2)+' oct', a.nota_grave+'–'+a.nota_aguda],
+    ['Hz medio', Math.round(a.hz_medio)+' Hz', 'frecuencia central'],
+    ['Registro dom.', dom_reg, 'mayor % de tiempo'],
+    ['Nota modal', a.nota_modal, 'más cantada'],
+    ['Notas distintas', a.n_notas_distintas, 'diversidad melódica'],
+    ['Densidad melódica', a.densidad_melodica.toFixed(3), 'cambios/seg'],
+    ['Intens. media', (a.intensidad_media*100).toFixed(0)+'%', 'de intensidad máx.'],
+    ['% alta intensidad', a.pct_alta_intensidad.toFixed(0)+'%', 'sobre pct.75'],
+  ].map(([label,value,sub]) => `
+    <div class="kpi">
+      <div class="kpi-label">${label}</div>
+      <div class="kpi-value" style="color:${a.color}">${value}</div>
+      <div class="kpi-sub">${sub}</div>
+    </div>`).join('');
+}
+
+// ── Charts individuales ───────────────────────────────────────────
+let regChart, timelineChart;
+
+function buildRegChart(a) {
+  if (regChart) regChart.destroy();
+  regChart = new Chart(document.getElementById('regChart'), {
+    type: 'bar',
+    data: {
+      labels: REG_LABELS,
+      datasets: [{ data: REG_KEYS.map(k => a[k]),
+        backgroundColor: REG_COLORS.map(c => c+'bb'),
+        borderColor: REG_COLORS, borderWidth:1.5, borderRadius:5 }]
+    },
+    options: { ...BASE,
+      plugins:{ ...BASE.plugins, tooltip:{ ...BASE.plugins.tooltip,
+        callbacks:{ label: i => ` ${i.raw.toFixed(1)}%` } } },
+      scales:{ x:{ ...BASE.scales.x },
+        y:{ ...BASE.scales.y, max:60,
+          ticks:{ ...BASE.scales.y.ticks, callback: v => v+'%' } } }
+    }
+  });
+}
+
+function buildTimeline(a) {
+  if (timelineChart) timelineChart.destroy();
+  const tl = TIMELINES[a.id];
+  if (!tl || !tl.length) return;
+
+  // One bar per note segment: x=time, y=hz, color=register
+  const regColorMap = {'grave':'#6366f1','medio-grave':'#8b5cf6',
+    'medio-agudo':'#38bdf8','agudo':'#34d399','sobreagudo':'#f472b6'};
+  const datasets = tl.map(seg => ({
+    type: 'bar',
+    label: seg.note,
+    data: [{ x: (seg.ts+seg.te)/2, y: seg.hz }],
+    backgroundColor: (regColorMap[seg.register]||'#94a3b8')+'cc',
+    borderColor:      regColorMap[seg.register]||'#94a3b8',
+    borderWidth: 0.5,
+    barThickness: Math.max(2, (seg.te-seg.ts)*3),
+    xAxisID: 'x', yAxisID: 'y',
+  }));
+
+  timelineChart = new Chart(document.getElementById('timelineChart'), {
+    data: { datasets },
+    options: {
+      responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{display:false},
+        tooltip:{ backgroundColor:'#1e293b', borderColor:'#334155', borderWidth:1,
+          titleColor:'#94a3b8', bodyColor:'#e2e8f0', padding:8,
+          callbacks:{ title:()=>'', label: i => ` ${i.dataset.label} — ${Math.round(i.raw.y)}Hz @ ${i.raw.x.toFixed(0)}s` } } },
+      scales:{
+        x:{ type:'linear', ticks:{color:'#475569',font:{size:10},
+          callback:v=>v+'s'}, grid:{color:'#1e3a5f'} },
+        y:{ ticks:{color:'#475569',font:{size:10},callback:v=>Math.round(v)+'Hz'},
+          grid:{color:'#1e3a5f'} }
+      }
+    }
+  });
+}
+
+// ── Charts globales ───────────────────────────────────────────────
+let rangoChart, hzChart, densChart, radarChart, stackedChart;
+
+function buildGlobalCharts() {
+  const names  = DATASET.map(a => a.name.split(' ').slice(0,2).join(' '));
+  const colors = DATASET.map(a => a.color);
+  const colorsA = colors.map(c => c+'bb');
+
+  if (rangoChart) rangoChart.destroy();
+  rangoChart = new Chart(document.getElementById('rangoChart'), {
+    type:'bar',
+    data:{ labels:names, datasets:[{ data:DATASET.map(a=>a.rango_octavas),
+      backgroundColor:colorsA, borderColor:colors, borderWidth:1.5, borderRadius:4 }] },
+    options:{ ...BASE,
+      scales:{ x:{ ...BASE.scales.x, ticks:{...BASE.scales.x.ticks,font:{size:9}} },
+        y:{ ...BASE.scales.y, title:{display:true,text:'Octavas',color:'#475569',font:{size:10}},
+          ticks:{...BASE.scales.y.ticks,callback:v=>v+' oct'} } }
+    }
+  });
+
+  if (hzChart) hzChart.destroy();
+  hzChart = new Chart(document.getElementById('hzChart'), {
+    type:'bar',
+    data:{ labels:names, datasets:[{ data:DATASET.map(a=>Math.round(a.hz_medio)),
+      backgroundColor:colorsA, borderColor:colors, borderWidth:1.5, borderRadius:4 }] },
+    options:{ ...BASE,
+      scales:{ x:{ ...BASE.scales.x, ticks:{...BASE.scales.x.ticks,font:{size:9}} },
+        y:{ ...BASE.scales.y, title:{display:true,text:'Hz',color:'#475569',font:{size:10}},
+          ticks:{...BASE.scales.y.ticks,callback:v=>v+' Hz'} } }
+    }
+  });
+
+  if (densChart) densChart.destroy();
+  densChart = new Chart(document.getElementById('densChart'), {
+    type:'bar',
+    data:{ labels:names, datasets:[{ data:DATASET.map(a=>a.densidad_melodica),
+      backgroundColor:colorsA, borderColor:colors, borderWidth:1.5, borderRadius:4 }] },
+    options:{ ...BASE,
+      scales:{ x:{ ...BASE.scales.x, ticks:{...BASE.scales.x.ticks,font:{size:9}} },
+        y:{ ...BASE.scales.y,
+          ticks:{...BASE.scales.y.ticks,callback:v=>v.toFixed(2)} } }
+    }
+  });
+
+  // Radar — 6 dimensiones normalizadas 0–100
+  const radarLabels = ['Rango','Hz medio','Densidad mel.','% agudo+sobreagudo','Intens. media','Notas distintas'];
+  const norm = (val, min, max) => Math.round((val-min)/(max-min)*100);
+  const ranges = {
+    rango_octavas: [1.5, 4.0],
+    hz_medio: [100, 900],
+    densidad_melodica: [0.2, 0.6],
+    pct_agudo_sob: [0, 50],
+    intensidad_media: [0.4, 1.0],
+    n_notas_distintas: [10, 30],
+  };
+
+  const radarDatasets = DATASET.map(a => ({
+    label: a.name.split(' ').slice(0,2).join(' '),
+    data: [
+      norm(a.rango_octavas,        ...ranges.rango_octavas),
+      norm(a.hz_medio,             ...ranges.hz_medio),
+      norm(a.densidad_melodica,    ...ranges.densidad_melodica),
+      norm((a.pct_agudo||0)+(a.pct_sobreagudo||0), ...ranges.pct_agudo_sob),
+      norm(a.intensidad_media,     ...ranges.intensidad_media),
+      norm(a.n_notas_distintas,    ...ranges.n_notas_distintas),
+    ],
+    backgroundColor: a.color+'22',
+    borderColor:     a.color,
+    borderWidth: 1.5,
+    pointBackgroundColor: a.color,
+    pointRadius: 3,
+  }));
+
+  if (radarChart) radarChart.destroy();
+  radarChart = new Chart(document.getElementById('radarChart'), {
+    type: 'radar',
+    data: { labels: radarLabels, datasets: radarDatasets },
+    options: {
+      responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{
+        display:true, position:'bottom',
+        labels:{ color:'#94a3b8', font:{size:10}, padding:10, boxWidth:10 }
+      },
+      tooltip:{ backgroundColor:'#1e293b', borderColor:'#334155',
+        borderWidth:1, titleColor:'#94a3b8', bodyColor:'#e2e8f0' } },
+      scales:{ r:{
+        angleLines:{color:'#1e3a5f'}, grid:{color:'#1e3a5f'},
+        pointLabels:{color:'#94a3b8', font:{size:10}},
+        ticks:{display:false}, min:0, max:100,
+      } }
+    }
+  });
+
+  // Stacked bar — distribución de registros todos
+  if (stackedChart) stackedChart.destroy();
+  stackedChart = new Chart(document.getElementById('stackedChart'), {
+    type: 'bar',
+    data: {
+      labels: names,
+      datasets: REG_LABELS.map((reg,i) => ({
+        label: reg,
+        data: DATASET.map(a => a[REG_KEYS[i]]),
+        backgroundColor: REG_COLORS[i]+'cc',
+        borderColor: REG_COLORS[i],
+        borderWidth:0.5,
+      }))
+    },
+    options: {
+      responsive:true, maintainAspectRatio:false,
+      plugins:{
+        legend:{ display:true, position:'bottom',
+          labels:{ color:'#94a3b8', font:{size:10}, padding:10, boxWidth:10 } },
+        tooltip:{ backgroundColor:'#1e293b', borderColor:'#334155', borderWidth:1,
+          titleColor:'#94a3b8', bodyColor:'#e2e8f0',
+          callbacks:{ label: i => ` ${i.dataset.label}: ${i.raw.toFixed(1)}%` } }
+      },
+      scales:{
+        x:{ stacked:true, ticks:{color:'#475569',font:{size:9}}, grid:{display:false} },
+        y:{ stacked:true, max:100,
+          ticks:{color:'#475569',font:{size:10},callback:v=>v+'%'},
+          grid:{color:'#1e3a5f'} }
+      }
+    }
+  });
+}
+
+// ── Tabla comparativa ─────────────────────────────────────────────
+function buildTable() {
+  const table = document.getElementById('compareTable');
+  const cols = [
+    ['Artista','name'],['Tipo','tipo'],['Rango','rango_octavas'],
+    ['Hz medio','hz_medio'],['Nota modal','nota_modal'],
+    ['Notas distintas','n_notas_distintas'],['Densidad melódica','densidad_melodica'],
+    ['% alta intens.','pct_alta_intensidad'],['Ratio agudo/grave','ratio_agudo_grave'],
+  ];
+  table.innerHTML = `<thead><tr>${cols.map(([h])=>`<th>${h}</th>`).join('')}</tr></thead>`;
+  const tbody = document.createElement('tbody');
+  const maxRango = Math.max(...DATASET.map(a=>a.rango_octavas));
+  const maxHz    = Math.max(...DATASET.map(a=>a.hz_medio));
+  DATASET.forEach(a => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = cols.map(([,k],ci) => {
+      let val = a[k];
+      if (k === 'name') return `<td><span class="artist-dot" style="background:${a.color}"></span>${val}</td>`;
+      if (k === 'rango_octavas') {
+        const w = Math.round(val/maxRango*80);
+        return `<td>${val.toFixed(2)}<span class="bar-inline" style="width:${w}px;background:${a.color}88"></span></td>`;
+      }
+      if (k === 'hz_medio') {
+        const w = Math.round(val/maxHz*60);
+        return `<td>${Math.round(val)} Hz<span class="bar-inline" style="width:${w}px;background:${a.color}88"></span></td>`;
+      }
+      if (typeof val === 'number') return `<td>${val.toFixed ? val.toFixed(3) : val}</td>`;
+      return `<td>${val}</td>`;
+    }).join('');
+    tbody.appendChild(tr);
+  });
+  table.appendChild(tbody);
+}
+
+// ── Refresh ────────────────────────────────────────────────────────
+function refresh() {
+  const a = DATASET.find(x => x.id === selectedId) || DATASET[0];
+  buildCards();
+  buildKPI(a);
+  buildRegChart(a);
+  buildTimeline(a);
+}
+
+// Init
+buildGlobalCharts();
+buildTable();
+refresh();
+</script>
+</body>
+</html>

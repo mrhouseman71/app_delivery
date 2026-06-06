@@ -1,0 +1,2602 @@
+{
+  "total": 212,
+  "por_tipo": {
+    "CAIDA_INTENS": 51,
+    "INESTABILIDAD": 64,
+    "CLIMAX_VOCAL": 95,
+    "SILENCIO_LARGO": 1,
+    "AGUDO_EXTREMO": 1
+  },
+  "por_severidad": {
+    "baja": 78,
+    "media": 130,
+    "alta": 4
+  },
+  "primer_evento": 2.3,
+  "ultimo_evento": 90.0,
+  "eventos": [
+    {
+      "time": 2.3,
+      "tipo": "CAIDA_INTENS",
+      "severidad": "baja",
+      "descripcion": "Caída de intensidad 54% (pico 18.3 → actual 8.5)",
+      "detalle": {
+        "intensidad_pico": 18.3471,
+        "intensidad_actual": 8.4568,
+        "caida_porcentaje": 53.9
+      }
+    },
+    {
+      "time": 2.55,
+      "tipo": "INESTABILIDAD",
+      "severidad": "baja",
+      "descripcion": "Inestabilidad de pitch (CV=0.040) en zona B3",
+      "detalle": {
+        "coef_variacion": 0.0399,
+        "hz_medio": 225.89,
+        "hz_std": 9.01,
+        "nota_zona": "B3"
+      }
+    },
+    {
+      "time": 2.8,
+      "tipo": "INESTABILIDAD",
+      "severidad": "baja",
+      "descripcion": "Inestabilidad de pitch (CV=0.038) en zona B3",
+      "detalle": {
+        "coef_variacion": 0.0378,
+        "hz_medio": 242.24,
+        "hz_std": 9.15,
+        "nota_zona": "B3"
+      }
+    },
+    {
+      "time": 4.35,
+      "tipo": "CAIDA_INTENS",
+      "severidad": "baja",
+      "descripcion": "Caída de intensidad 55% (pico 20.0 → actual 9.1)",
+      "detalle": {
+        "intensidad_pico": 20.0297,
+        "intensidad_actual": 9.054,
+        "caida_porcentaje": 54.8
+      }
+    },
+    {
+      "time": 4.6,
+      "tipo": "INESTABILIDAD",
+      "severidad": "baja",
+      "descripcion": "Inestabilidad de pitch (CV=0.026) en zona C4",
+      "detalle": {
+        "coef_variacion": 0.0263,
+        "hz_medio": 253.18,
+        "hz_std": 6.65,
+        "nota_zona": "C4"
+      }
+    },
+    {
+      "time": 6.35,
+      "tipo": "CAIDA_INTENS",
+      "severidad": "baja",
+      "descripcion": "Caída de intensidad 54% (pico 21.8 → actual 10.1)",
+      "detalle": {
+        "intensidad_pico": 21.8211,
+        "intensidad_actual": 10.1128,
+        "caida_porcentaje": 53.7
+      }
+    },
+    {
+      "time": 6.5,
+      "tipo": "INESTABILIDAD",
+      "severidad": "baja",
+      "descripcion": "Inestabilidad de pitch (CV=0.033) en zona D4",
+      "detalle": {
+        "coef_variacion": 0.0333,
+        "hz_medio": 264.0,
+        "hz_std": 8.78,
+        "nota_zona": "D4"
+      }
+    },
+    {
+      "time": 6.75,
+      "tipo": "INESTABILIDAD",
+      "severidad": "media",
+      "descripcion": "Inestabilidad de pitch (CV=0.046) en zona D4",
+      "detalle": {
+        "coef_variacion": 0.0462,
+        "hz_medio": 284.48,
+        "hz_std": 13.13,
+        "nota_zona": "D4"
+      }
+    },
+    {
+      "time": 8.35,
+      "tipo": "CAIDA_INTENS",
+      "severidad": "baja",
+      "descripcion": "Caída de intensidad 60% (pico 23.8 → actual 9.6)",
+      "detalle": {
+        "intensidad_pico": 23.8292,
+        "intensidad_actual": 9.5995,
+        "caida_porcentaje": 59.7
+      }
+    },
+    {
+      "time": 8.5,
+      "tipo": "INESTABILIDAD",
+      "severidad": "baja",
+      "descripcion": "Inestabilidad de pitch (CV=0.027) en zona D♯4",
+      "detalle": {
+        "coef_variacion": 0.0269,
+        "hz_medio": 298.32,
+        "hz_std": 8.02,
+        "nota_zona": "D♯4"
+      }
+    },
+    {
+      "time": 8.75,
+      "tipo": "INESTABILIDAD",
+      "severidad": "media",
+      "descripcion": "Inestabilidad de pitch (CV=0.044) en zona E4",
+      "detalle": {
+        "coef_variacion": 0.0442,
+        "hz_medio": 318.65,
+        "hz_std": 14.1,
+        "nota_zona": "E4"
+      }
+    },
+    {
+      "time": 10.35,
+      "tipo": "CAIDA_INTENS",
+      "severidad": "baja",
+      "descripcion": "Caída de intensidad 59% (pico 21.9 → actual 9.1)",
+      "detalle": {
+        "intensidad_pico": 21.8747,
+        "intensidad_actual": 9.0748,
+        "caida_porcentaje": 58.5
+      }
+    },
+    {
+      "time": 10.55,
+      "tipo": "INESTABILIDAD",
+      "severidad": "baja",
+      "descripcion": "Inestabilidad de pitch (CV=0.026) en zona F4",
+      "detalle": {
+        "coef_variacion": 0.0265,
+        "hz_medio": 334.0,
+        "hz_std": 8.85,
+        "nota_zona": "F4"
+      }
+    },
+    {
+      "time": 12.35,
+      "tipo": "CAIDA_INTENS",
+      "severidad": "baja",
+      "descripcion": "Caída de intensidad 58% (pico 23.8 → actual 10.0)",
+      "detalle": {
+        "intensidad_pico": 23.8313,
+        "intensidad_actual": 10.0365,
+        "caida_porcentaje": 57.9
+      }
+    },
+    {
+      "time": 12.55,
+      "tipo": "INESTABILIDAD",
+      "severidad": "baja",
+      "descripcion": "Inestabilidad de pitch (CV=0.038) en zona G4",
+      "detalle": {
+        "coef_variacion": 0.0376,
+        "hz_medio": 356.3,
+        "hz_std": 13.4,
+        "nota_zona": "G4"
+      }
+    },
+    {
+      "time": 12.8,
+      "tipo": "INESTABILIDAD",
+      "severidad": "baja",
+      "descripcion": "Inestabilidad de pitch (CV=0.036) en zona G4",
+      "detalle": {
+        "coef_variacion": 0.0357,
+        "hz_medio": 386.4,
+        "hz_std": 13.78,
+        "nota_zona": "G4"
+      }
+    },
+    {
+      "time": 14.35,
+      "tipo": "CAIDA_INTENS",
+      "severidad": "baja",
+      "descripcion": "Caída de intensidad 57% (pico 25.4 → actual 11.0)",
+      "detalle": {
+        "intensidad_pico": 25.4168,
+        "intensidad_actual": 10.9549,
+        "caida_porcentaje": 56.9
+      }
+    },
+    {
+      "time": 14.5,
+      "tipo": "INESTABILIDAD",
+      "severidad": "baja",
+      "descripcion": "Inestabilidad de pitch (CV=0.030) en zona A4",
+      "detalle": {
+        "coef_variacion": 0.0302,
+        "hz_medio": 397.36,
+        "hz_std": 12.0,
+        "nota_zona": "A4"
+      }
+    },
+    {
+      "time": 14.75,
+      "tipo": "INESTABILIDAD",
+      "severidad": "media",
+      "descripcion": "Inestabilidad de pitch (CV=0.047) en zona A4",
+      "detalle": {
+        "coef_variacion": 0.0471,
+        "hz_medio": 426.3,
+        "hz_std": 20.08,
+        "nota_zona": "A4"
+      }
+    },
+    {
+      "time": 16.35,
+      "tipo": "CAIDA_INTENS",
+      "severidad": "baja",
+      "descripcion": "Caída de intensidad 56% (pico 26.3 → actual 11.6)",
+      "detalle": {
+        "intensidad_pico": 26.3377,
+        "intensidad_actual": 11.6084,
+        "caida_porcentaje": 55.9
+      }
+    },
+    {
+      "time": 16.5,
+      "tipo": "INESTABILIDAD",
+      "severidad": "baja",
+      "descripcion": "Inestabilidad de pitch (CV=0.033) en zona G4",
+      "detalle": {
+        "coef_variacion": 0.0329,
+        "hz_medio": 436.29,
+        "hz_std": 14.34,
+        "nota_zona": "G4"
+      }
+    },
+    {
+      "time": 16.75,
+      "tipo": "INESTABILIDAD",
+      "severidad": "media",
+      "descripcion": "Inestabilidad de pitch (CV=0.054) en zona G4",
+      "detalle": {
+        "coef_variacion": 0.054,
+        "hz_medio": 404.84,
+        "hz_std": 21.84,
+        "nota_zona": "G4"
+      }
+    },
+    {
+      "time": 17.9,
+      "tipo": "CAIDA_INTENS",
+      "severidad": "media",
+      "descripcion": "Caída de intensidad 62% (pico 25.5 → actual 9.7)",
+      "detalle": {
+        "intensidad_pico": 25.5154,
+        "intensidad_actual": 9.7192,
+        "caida_porcentaje": 61.9
+      }
+    },
+    {
+      "time": 18.0,
+      "tipo": "INESTABILIDAD",
+      "severidad": "baja",
+      "descripcion": "Inestabilidad de pitch (CV=0.031) en zona F4",
+      "detalle": {
+        "coef_variacion": 0.0311,
+        "hz_medio": 388.14,
+        "hz_std": 12.07,
+        "nota_zona": "F4"
+      }
+    },
+    {
+      "time": 18.25,
+      "tipo": "INESTABILIDAD",
+      "severidad": "media",
+      "descripcion": "Inestabilidad de pitch (CV=0.046) en zona F4",
+      "detalle": {
+        "coef_variacion": 0.0463,
+        "hz_medio": 361.56,
+        "hz_std": 16.75,
+        "nota_zona": "F4"
+      }
+    },
+    {
+      "time": 19.4,
+      "tipo": "CAIDA_INTENS",
+      "severidad": "baja",
+      "descripcion": "Caída de intensidad 57% (pico 23.6 → actual 10.2)",
+      "detalle": {
+        "intensidad_pico": 23.5829,
+        "intensidad_actual": 10.1633,
+        "caida_porcentaje": 56.9
+      }
+    },
+    {
+      "time": 19.6,
+      "tipo": "INESTABILIDAD",
+      "severidad": "baja",
+      "descripcion": "Inestabilidad de pitch (CV=0.026) en zona E4",
+      "detalle": {
+        "coef_variacion": 0.0262,
+        "hz_medio": 342.33,
+        "hz_std": 8.96,
+        "nota_zona": "E4"
+      }
+    },
+    {
+      "time": 20.9,
+      "tipo": "CAIDA_INTENS",
+      "severidad": "baja",
+      "descripcion": "Caída de intensidad 52% (pico 22.7 → actual 11.0)",
+      "detalle": {
+        "intensidad_pico": 22.6921,
+        "intensidad_actual": 10.9549,
+        "caida_porcentaje": 51.7
+      }
+    },
+    {
+      "time": 21.05,
+      "tipo": "INESTABILIDAD",
+      "severidad": "media",
+      "descripcion": "Inestabilidad de pitch (CV=0.183) en zona B4",
+      "detalle": {
+        "coef_variacion": 0.1834,
+        "hz_medio": 368.84,
+        "hz_std": 67.65,
+        "nota_zona": "B4"
+      }
+    },
+    {
+      "time": 22.85,
+      "tipo": "CAIDA_INTENS",
+      "severidad": "baja",
+      "descripcion": "Caída de intensidad 56% (pico 27.5 → actual 12.0)",
+      "detalle": {
+        "intensidad_pico": 27.5499,
+        "intensidad_actual": 11.9952,
+        "caida_porcentaje": 56.5
+      }
+    },
+    {
+      "time": 23.15,
+      "tipo": "INESTABILIDAD",
+      "severidad": "baja",
+      "descripcion": "Inestabilidad de pitch (CV=0.026) en zona C5",
+      "detalle": {
+        "coef_variacion": 0.0256,
+        "hz_medio": 505.79,
+        "hz_std": 12.95,
+        "nota_zona": "C5"
+      }
+    },
+    {
+      "time": 24.85,
+      "tipo": "CAIDA_INTENS",
+      "severidad": "baja",
+      "descripcion": "Caída de intensidad 56% (pico 28.9 → actual 12.9)",
+      "detalle": {
+        "intensidad_pico": 28.9416,
+        "intensidad_actual": 12.8645,
+        "caida_porcentaje": 55.6
+      }
+    },
+    {
+      "time": 25.05,
+      "tipo": "INESTABILIDAD",
+      "severidad": "baja",
+      "descripcion": "Inestabilidad de pitch (CV=0.036) en zona D5",
+      "detalle": {
+        "coef_variacion": 0.0362,
+        "hz_medio": 535.02,
+        "hz_std": 19.36,
+        "nota_zona": "D5"
+      }
+    },
+    {
+      "time": 25.3,
+      "tipo": "INESTABILIDAD",
+      "severidad": "baja",
+      "descripcion": "Inestabilidad de pitch (CV=0.033) en zona D5",
+      "detalle": {
+        "coef_variacion": 0.0328,
+        "hz_medio": 581.71,
+        "hz_std": 19.09,
+        "nota_zona": "D5"
+      }
+    },
+    {
+      "time": 26.85,
+      "tipo": "CAIDA_INTENS",
+      "severidad": "baja",
+      "descripcion": "Caída de intensidad 55% (pico 30.2 → actual 13.7)",
+      "detalle": {
+        "intensidad_pico": 30.2253,
+        "intensidad_actual": 13.7047,
+        "caida_porcentaje": 54.7
+      }
+    },
+    {
+      "time": 27.0,
+      "tipo": "INESTABILIDAD",
+      "severidad": "baja",
+      "descripcion": "Inestabilidad de pitch (CV=0.036) en zona E5",
+      "detalle": {
+        "coef_variacion": 0.0356,
+        "hz_medio": 595.36,
+        "hz_std": 21.2,
+        "nota_zona": "E5"
+      }
+    },
+    {
+      "time": 27.25,
+      "tipo": "INESTABILIDAD",
+      "severidad": "media",
+      "descripcion": "Inestabilidad de pitch (CV=0.047) en zona E5",
+      "detalle": {
+        "coef_variacion": 0.0471,
+        "hz_medio": 641.52,
+        "hz_std": 30.22,
+        "nota_zona": "E5"
+      }
+    },
+    {
+      "time": 29.3,
+      "tipo": "CAIDA_INTENS",
+      "severidad": "baja",
+      "descripcion": "Caída de intensidad 55% (pico 31.0 → actual 13.9)",
+      "detalle": {
+        "intensidad_pico": 30.994,
+        "intensidad_actual": 13.9185,
+        "caida_porcentaje": 55.1
+      }
+    },
+    {
+      "time": 29.65,
+      "tipo": "INESTABILIDAD",
+      "severidad": "baja",
+      "descripcion": "Inestabilidad de pitch (CV=0.026) en zona F5",
+      "detalle": {
+        "coef_variacion": 0.0259,
+        "hz_medio": 677.35,
+        "hz_std": 17.53,
+        "nota_zona": "F5"
+      }
+    },
+    {
+      "time": 29.8,
+      "tipo": "CLIMAX_VOCAL",
+      "severidad": "baja",
+      "descripcion": "Clímax: F5 sostenida 9 frames (0.5s)",
+      "detalle": {
+        "nota": "F5",
+        "hz": 703.9,
+        "registro": "agudo",
+        "duracion_s": 0.45,
+        "frames": 9
+      }
+    },
+    {
+      "time": 30.05,
+      "tipo": "CLIMAX_VOCAL",
+      "severidad": "media",
+      "descripcion": "Clímax: F5 sostenida 12 frames (0.6s)",
+      "detalle": {
+        "nota": "F5",
+        "hz": 703.13,
+        "registro": "agudo",
+        "duracion_s": 0.6,
+        "frames": 12
+      }
+    },
+    {
+      "time": 30.3,
+      "tipo": "CLIMAX_VOCAL",
+      "severidad": "media",
+      "descripcion": "Clímax: F5 sostenida 12 frames (0.6s)",
+      "detalle": {
+        "nota": "F5",
+        "hz": 700.99,
+        "registro": "agudo",
+        "duracion_s": 0.6,
+        "frames": 12
+      }
+    },
+    {
+      "time": 30.55,
+      "tipo": "CLIMAX_VOCAL",
+      "severidad": "media",
+      "descripcion": "Clímax: F5 sostenida 12 frames (0.6s)",
+      "detalle": {
+        "nota": "F5",
+        "hz": 699.08,
+        "registro": "agudo",
+        "duracion_s": 0.6,
+        "frames": 12
+      }
+    },
+    {
+      "time": 30.8,
+      "tipo": "CLIMAX_VOCAL",
+      "severidad": "media",
+      "descripcion": "Clímax: F5 sostenida 12 frames (0.6s)",
+      "detalle": {
+        "nota": "F5",
+        "hz": 695.96,
+        "registro": "agudo",
+        "duracion_s": 0.6,
+        "frames": 12
+      }
+    },
+    {
+      "time": 31.05,
+      "tipo": "CLIMAX_VOCAL",
+      "severidad": "media",
+      "descripcion": "Clímax: F5 sostenida 12 frames (0.6s)",
+      "detalle": {
+        "nota": "F5",
+        "hz": 705.66,
+        "registro": "agudo",
+        "duracion_s": 0.6,
+        "frames": 12
+      }
+    },
+    {
+      "time": 31.3,
+      "tipo": "CLIMAX_VOCAL",
+      "severidad": "media",
+      "descripcion": "Clímax: F5 sostenida 12 frames (0.6s)",
+      "detalle": {
+        "nota": "F5",
+        "hz": 700.21,
+        "registro": "agudo",
+        "duracion_s": 0.6,
+        "frames": 12
+      }
+    },
+    {
+      "time": 31.55,
+      "tipo": "CLIMAX_VOCAL",
+      "severidad": "media",
+      "descripcion": "Clímax: F5 sostenida 12 frames (0.6s)",
+      "detalle": {
+        "nota": "F5",
+        "hz": 699.14,
+        "registro": "agudo",
+        "duracion_s": 0.6,
+        "frames": 12
+      }
+    },
+    {
+      "time": 31.8,
+      "tipo": "CLIMAX_VOCAL",
+      "severidad": "media",
+      "descripcion": "Clímax: F5 sostenida 12 frames (0.6s)",
+      "detalle": {
+        "nota": "F5",
+        "hz": 702.78,
+        "registro": "agudo",
+        "duracion_s": 0.6,
+        "frames": 12
+      }
+    },
+    {
+      "time": 31.8,
+      "tipo": "CAIDA_INTENS",
+      "severidad": "baja",
+      "descripcion": "Caída de intensidad 57% (pico 31.9 → actual 13.7)",
+      "detalle": {
+        "intensidad_pico": 31.8531,
+        "intensidad_actual": 13.732,
+        "caida_porcentaje": 56.9
+      }
+    },
+    {
+      "time": 32.05,
+      "tipo": "CAIDA_INTENS",
+      "severidad": "media",
+      "descripcion": "Caída de intensidad 63% (pico 30.5 → actual 11.3)",
+      "detalle": {
+        "intensidad_pico": 30.5114,
+        "intensidad_actual": 11.3307,
+        "caida_porcentaje": 62.9
+      }
+    },
+    {
+      "time": 32.05,
+      "tipo": "INESTABILIDAD",
+      "severidad": "media",
+      "descripcion": "Inestabilidad de pitch (CV=0.045) en zona G5",
+      "detalle": {
+        "coef_variacion": 0.0454,
+        "hz_medio": 713.33,
+        "hz_std": 32.37,
+        "nota_zona": "G5"
+      }
+    },
+    {
+      "time": 32.3,
+      "tipo": "INESTABILIDAD",
+      "severidad": "media",
+      "descripcion": "Inestabilidad de pitch (CV=0.042) en zona G5",
+      "detalle": {
+        "coef_variacion": 0.0419,
+        "hz_medio": 776.31,
+        "hz_std": 32.56,
+        "nota_zona": "G5"
+      }
+    },
+    {
+      "time": 32.4,
+      "tipo": "CLIMAX_VOCAL",
+      "severidad": "baja",
+      "descripcion": "Clímax: G5 sostenida 11 frames (0.6s)",
+      "detalle": {
+        "nota": "G5",
+        "hz": 793.32,
+        "registro": "agudo",
+        "duracion_s": 0.55,
+        "frames": 11
+      }
+    },
+    {
+      "time": 32.65,
+      "tipo": "CLIMAX_VOCAL",
+      "severidad": "media",
+      "descripcion": "Clímax: G5 sostenida 12 frames (0.6s)",
+      "detalle": {
+        "nota": "G5",
+        "hz": 788.86,
+        "registro": "agudo",
+        "duracion_s": 0.6,
+        "frames": 12
+      }
+    },
+    {
+      "time": 32.9,
+      "tipo": "CLIMAX_VOCAL",
+      "severidad": "media",
+      "descripcion": "Clímax: G5 sostenida 12 frames (0.6s)",
+      "detalle": {
+        "nota": "G5",
+        "hz": 790.81,
+        "registro": "agudo",
+        "duracion_s": 0.6,
+        "frames": 12
+      }
+    },
+    {
+      "time": 33.15,
+      "tipo": "CLIMAX_VOCAL",
+      "severidad": "media",
+      "descripcion": "Clímax: G5 sostenida 12 frames (0.6s)",
+      "detalle": {
+        "nota": "G5",
+        "hz": 786.17,
+        "registro": "agudo",
+        "duracion_s": 0.6,
+        "frames": 12
+      }
+    },
+    {
+      "time": 33.4,
+      "tipo": "CLIMAX_VOCAL",
+      "severidad": "media",
+      "descripcion": "Clímax: G5 sostenida 12 frames (0.6s)",
+      "detalle": {
+        "nota": "G5",
+        "hz": 791.66,
+        "registro": "agudo",
+        "duracion_s": 0.6,
+        "frames": 12
+      }
+    },
+    {
+      "time": 33.65,
+      "tipo": "CLIMAX_VOCAL",
+      "severidad": "media",
+      "descripcion": "Clímax: G5 sostenida 12 frames (0.6s)",
+      "detalle": {
+        "nota": "G5",
+        "hz": 790.35,
+        "registro": "agudo",
+        "duracion_s": 0.6,
+        "frames": 12
+      }
+    },
+    {
+      "time": 33.9,
+      "tipo": "CLIMAX_VOCAL",
+      "severidad": "media",
+      "descripcion": "Clímax: G5 sostenida 12 frames (0.6s)",
+      "detalle": {
+        "nota": "G5",
+        "hz": 787.18,
+        "registro": "agudo",
+        "duracion_s": 0.6,
+        "frames": 12
+      }
+    },
+    {
+      "time": 34.15,
+      "tipo": "CLIMAX_VOCAL",
+      "severidad": "media",
+      "descripcion": "Clímax: G5 sostenida 12 frames (0.6s)",
+      "detalle": {
+        "nota": "G5",
+        "hz": 792.7,
+        "registro": "agudo",
+        "duracion_s": 0.6,
+        "frames": 12
+      }
+    },
+    {
+      "time": 34.4,
+      "tipo": "CLIMAX_VOCAL",
+      "severidad": "media",
+      "descripcion": "Clímax: G5 sostenida 12 frames (0.6s)",
+      "detalle": {
+        "nota": "G5",
+        "hz": 779.18,
+        "registro": "agudo",
+        "duracion_s": 0.6,
+        "frames": 12
+      }
+    },
+    {
+      "time": 34.65,
+      "tipo": "CLIMAX_VOCAL",
+      "severidad": "media",
+      "descripcion": "Clímax: G5 sostenida 12 frames (0.6s)",
+      "detalle": {
+        "nota": "G5",
+        "hz": 787.74,
+        "registro": "agudo",
+        "duracion_s": 0.6,
+        "frames": 12
+      }
+    },
+    {
+      "time": 34.75,
+      "tipo": "CAIDA_INTENS",
+      "severidad": "baja",
+      "descripcion": "Caída de intensidad 54% (pico 33.5 → actual 15.2)",
+      "detalle": {
+        "intensidad_pico": 33.4647,
+        "intensidad_actual": 15.2434,
+        "caida_porcentaje": 54.4
+      }
+    },
+    {
+      "time": 34.9,
+      "tipo": "CLIMAX_VOCAL",
+      "severidad": "media",
+      "descripcion": "Clímax: G5 sostenida 12 frames (0.6s)",
+      "detalle": {
+        "nota": "G5",
+        "hz": 787.54,
+        "registro": "agudo",
+        "duracion_s": 0.6,
+        "frames": 12
+      }
+    },
+    {
+      "time": 35.0,
+      "tipo": "CAIDA_INTENS",
+      "severidad": "alta",
+      "descripcion": "Caída de intensidad 88% (pico 30.2 → actual 3.7)",
+      "detalle": {
+        "intensidad_pico": 30.2462,
+        "intensidad_actual": 3.6612,
+        "caida_porcentaje": 87.9
+      }
+    },
+    {
+      "time": 35.05,
+      "tipo": "INESTABILIDAD",
+      "severidad": "baja",
+      "descripcion": "Inestabilidad de pitch (CV=0.039) en zona A5",
+      "detalle": {
+        "coef_variacion": 0.0386,
+        "hz_medio": 800.4,
+        "hz_std": 30.88,
+        "nota_zona": "A5"
+      }
+    },
+    {
+      "time": 35.3,
+      "tipo": "INESTABILIDAD",
+      "severidad": "baja",
+      "descripcion": "Inestabilidad de pitch (CV=0.035) en zona A5",
+      "detalle": {
+        "coef_variacion": 0.0354,
+        "hz_medio": 870.43,
+        "hz_std": 30.79,
+        "nota_zona": "A5"
+      }
+    },
+    {
+      "time": 35.4,
+      "tipo": "CLIMAX_VOCAL",
+      "severidad": "baja",
+      "descripcion": "Clímax: A5 sostenida 11 frames (0.6s)",
+      "detalle": {
+        "nota": "A5",
+        "hz": 884.59,
+        "registro": "agudo",
+        "duracion_s": 0.55,
+        "frames": 11
+      }
+    },
+    {
+      "time": 35.65,
+      "tipo": "CLIMAX_VOCAL",
+      "severidad": "media",
+      "descripcion": "Clímax: A5 sostenida 12 frames (0.6s)",
+      "detalle": {
+        "nota": "A5",
+        "hz": 886.66,
+        "registro": "agudo",
+        "duracion_s": 0.6,
+        "frames": 12
+      }
+    },
+    {
+      "time": 35.9,
+      "tipo": "CLIMAX_VOCAL",
+      "severidad": "media",
+      "descripcion": "Clímax: A5 sostenida 12 frames (0.6s)",
+      "detalle": {
+        "nota": "A5",
+        "hz": 884.54,
+        "registro": "agudo",
+        "duracion_s": 0.6,
+        "frames": 12
+      }
+    },
+    {
+      "time": 36.15,
+      "tipo": "CLIMAX_VOCAL",
+      "severidad": "media",
+      "descripcion": "Clímax: A5 sostenida 12 frames (0.6s)",
+      "detalle": {
+        "nota": "A5",
+        "hz": 879.1,
+        "registro": "agudo",
+        "duracion_s": 0.6,
+        "frames": 12
+      }
+    },
+    {
+      "time": 36.4,
+      "tipo": "CLIMAX_VOCAL",
+      "severidad": "media",
+      "descripcion": "Clímax: A5 sostenida 12 frames (0.6s)",
+      "detalle": {
+        "nota": "A5",
+        "hz": 883.44,
+        "registro": "agudo",
+        "duracion_s": 0.6,
+        "frames": 12
+      }
+    },
+    {
+      "time": 36.65,
+      "tipo": "CLIMAX_VOCAL",
+      "severidad": "media",
+      "descripcion": "Clímax: A5 sostenida 12 frames (0.6s)",
+      "detalle": {
+        "nota": "A5",
+        "hz": 886.22,
+        "registro": "agudo",
+        "duracion_s": 0.6,
+        "frames": 12
+      }
+    },
+    {
+      "time": 36.9,
+      "tipo": "CLIMAX_VOCAL",
+      "severidad": "media",
+      "descripcion": "Clímax: A5 sostenida 12 frames (0.6s)",
+      "detalle": {
+        "nota": "A5",
+        "hz": 884.72,
+        "registro": "agudo",
+        "duracion_s": 0.6,
+        "frames": 12
+      }
+    },
+    {
+      "time": 37.15,
+      "tipo": "CLIMAX_VOCAL",
+      "severidad": "media",
+      "descripcion": "Clímax: A5 sostenida 12 frames (0.6s)",
+      "detalle": {
+        "nota": "A5",
+        "hz": 882.99,
+        "registro": "agudo",
+        "duracion_s": 0.6,
+        "frames": 12
+      }
+    },
+    {
+      "time": 37.4,
+      "tipo": "CLIMAX_VOCAL",
+      "severidad": "media",
+      "descripcion": "Clímax: A5 sostenida 12 frames (0.6s)",
+      "detalle": {
+        "nota": "A5",
+        "hz": 885.9,
+        "registro": "agudo",
+        "duracion_s": 0.6,
+        "frames": 12
+      }
+    },
+    {
+      "time": 37.65,
+      "tipo": "CLIMAX_VOCAL",
+      "severidad": "media",
+      "descripcion": "Clímax: A5 sostenida 12 frames (0.6s)",
+      "detalle": {
+        "nota": "A5",
+        "hz": 881.77,
+        "registro": "agudo",
+        "duracion_s": 0.6,
+        "frames": 12
+      }
+    },
+    {
+      "time": 37.75,
+      "tipo": "CAIDA_INTENS",
+      "severidad": "baja",
+      "descripcion": "Caída de intensidad 54% (pico 34.4 → actual 16.0)",
+      "detalle": {
+        "intensidad_pico": 34.3987,
+        "intensidad_actual": 15.9583,
+        "caida_porcentaje": 53.6
+      }
+    },
+    {
+      "time": 37.9,
+      "tipo": "CLIMAX_VOCAL",
+      "severidad": "media",
+      "descripcion": "Clímax: A5 sostenida 12 frames (0.6s)",
+      "detalle": {
+        "nota": "A5",
+        "hz": 879.89,
+        "registro": "agudo",
+        "duracion_s": 0.6,
+        "frames": 12
+      }
+    },
+    {
+      "time": 38.0,
+      "tipo": "CAIDA_INTENS",
+      "severidad": "media",
+      "descripcion": "Caída de intensidad 73% (pico 31.5 → actual 8.6)",
+      "detalle": {
+        "intensidad_pico": 31.524,
+        "intensidad_actual": 8.5627,
+        "caida_porcentaje": 72.8
+      }
+    },
+    {
+      "time": 38.0,
+      "tipo": "INESTABILIDAD",
+      "severidad": "baja",
+      "descripcion": "Inestabilidad de pitch (CV=0.032) en zona G5",
+      "detalle": {
+        "coef_variacion": 0.0316,
+        "hz_medio": 871.94,
+        "hz_std": 27.52,
+        "nota_zona": "G5"
+      }
+    },
+    {
+      "time": 38.15,
+      "tipo": "CLIMAX_VOCAL",
+      "severidad": "media",
+      "descripcion": "Clímax: G5 sostenida 12 frames (0.6s)",
+      "detalle": {
+        "nota": "G5",
+        "hz": 793.57,
+        "registro": "agudo",
+        "duracion_s": 0.6,
+        "frames": 12
+      }
+    },
+    {
+      "time": 38.25,
+      "tipo": "INESTABILIDAD",
+      "severidad": "media",
+      "descripcion": "Inestabilidad de pitch (CV=0.043) en zona G5",
+      "detalle": {
+        "coef_variacion": 0.0434,
+        "hz_medio": 812.0,
+        "hz_std": 35.26,
+        "nota_zona": "G5"
+      }
+    },
+    {
+      "time": 38.4,
+      "tipo": "CLIMAX_VOCAL",
+      "severidad": "media",
+      "descripcion": "Clímax: G5 sostenida 12 frames (0.6s)",
+      "detalle": {
+        "nota": "G5",
+        "hz": 782.7,
+        "registro": "agudo",
+        "duracion_s": 0.6,
+        "frames": 12
+      }
+    },
+    {
+      "time": 38.65,
+      "tipo": "CLIMAX_VOCAL",
+      "severidad": "media",
+      "descripcion": "Clímax: G5 sostenida 12 frames (0.6s)",
+      "detalle": {
+        "nota": "G5",
+        "hz": 791.75,
+        "registro": "agudo",
+        "duracion_s": 0.6,
+        "frames": 12
+      }
+    },
+    {
+      "time": 38.9,
+      "tipo": "CLIMAX_VOCAL",
+      "severidad": "media",
+      "descripcion": "Clímax: G5 sostenida 12 frames (0.6s)",
+      "detalle": {
+        "nota": "G5",
+        "hz": 788.92,
+        "registro": "agudo",
+        "duracion_s": 0.6,
+        "frames": 12
+      }
+    },
+    {
+      "time": 39.15,
+      "tipo": "CLIMAX_VOCAL",
+      "severidad": "media",
+      "descripcion": "Clímax: G5 sostenida 12 frames (0.6s)",
+      "detalle": {
+        "nota": "G5",
+        "hz": 788.12,
+        "registro": "agudo",
+        "duracion_s": 0.6,
+        "frames": 12
+      }
+    },
+    {
+      "time": 39.4,
+      "tipo": "CLIMAX_VOCAL",
+      "severidad": "media",
+      "descripcion": "Clímax: G5 sostenida 12 frames (0.6s)",
+      "detalle": {
+        "nota": "G5",
+        "hz": 784.72,
+        "registro": "agudo",
+        "duracion_s": 0.6,
+        "frames": 12
+      }
+    },
+    {
+      "time": 39.65,
+      "tipo": "CLIMAX_VOCAL",
+      "severidad": "media",
+      "descripcion": "Clímax: G5 sostenida 12 frames (0.6s)",
+      "detalle": {
+        "nota": "G5",
+        "hz": 788.09,
+        "registro": "agudo",
+        "duracion_s": 0.6,
+        "frames": 12
+      }
+    },
+    {
+      "time": 39.85,
+      "tipo": "CAIDA_INTENS",
+      "severidad": "baja",
+      "descripcion": "Caída de intensidad 56% (pico 32.7 → actual 14.5)",
+      "detalle": {
+        "intensidad_pico": 32.732,
+        "intensidad_actual": 14.4957,
+        "caida_porcentaje": 55.7
+      }
+    },
+    {
+      "time": 39.9,
+      "tipo": "CLIMAX_VOCAL",
+      "severidad": "media",
+      "descripcion": "Clímax: G5 sostenida 12 frames (0.6s)",
+      "detalle": {
+        "nota": "G5",
+        "hz": 785.95,
+        "registro": "agudo",
+        "duracion_s": 0.6,
+        "frames": 12
+      }
+    },
+    {
+      "time": 40.0,
+      "tipo": "INESTABILIDAD",
+      "severidad": "baja",
+      "descripcion": "Inestabilidad de pitch (CV=0.033) en zona F5",
+      "detalle": {
+        "coef_variacion": 0.0332,
+        "hz_medio": 776.95,
+        "hz_std": 25.82,
+        "nota_zona": "F5"
+      }
+    },
+    {
+      "time": 40.15,
+      "tipo": "CLIMAX_VOCAL",
+      "severidad": "media",
+      "descripcion": "Clímax: F5 sostenida 12 frames (0.6s)",
+      "detalle": {
+        "nota": "F5",
+        "hz": 699.13,
+        "registro": "agudo",
+        "duracion_s": 0.6,
+        "frames": 12
+      }
+    },
+    {
+      "time": 40.25,
+      "tipo": "INESTABILIDAD",
+      "severidad": "media",
+      "descripcion": "Inestabilidad de pitch (CV=0.050) en zona F5",
+      "detalle": {
+        "coef_variacion": 0.0496,
+        "hz_medio": 722.28,
+        "hz_std": 35.84,
+        "nota_zona": "F5"
+      }
+    },
+    {
+      "time": 40.4,
+      "tipo": "CLIMAX_VOCAL",
+      "severidad": "media",
+      "descripcion": "Clímax: F5 sostenida 12 frames (0.6s)",
+      "detalle": {
+        "nota": "F5",
+        "hz": 704.18,
+        "registro": "agudo",
+        "duracion_s": 0.6,
+        "frames": 12
+      }
+    },
+    {
+      "time": 40.65,
+      "tipo": "CLIMAX_VOCAL",
+      "severidad": "media",
+      "descripcion": "Clímax: F5 sostenida 12 frames (0.6s)",
+      "detalle": {
+        "nota": "F5",
+        "hz": 700.9,
+        "registro": "agudo",
+        "duracion_s": 0.6,
+        "frames": 12
+      }
+    },
+    {
+      "time": 40.9,
+      "tipo": "CLIMAX_VOCAL",
+      "severidad": "media",
+      "descripcion": "Clímax: F5 sostenida 12 frames (0.6s)",
+      "detalle": {
+        "nota": "F5",
+        "hz": 700.05,
+        "registro": "agudo",
+        "duracion_s": 0.6,
+        "frames": 12
+      }
+    },
+    {
+      "time": 41.15,
+      "tipo": "CLIMAX_VOCAL",
+      "severidad": "media",
+      "descripcion": "Clímax: F5 sostenida 12 frames (0.6s)",
+      "detalle": {
+        "nota": "F5",
+        "hz": 701.68,
+        "registro": "agudo",
+        "duracion_s": 0.6,
+        "frames": 12
+      }
+    },
+    {
+      "time": 41.4,
+      "tipo": "CLIMAX_VOCAL",
+      "severidad": "media",
+      "descripcion": "Clímax: F5 sostenida 12 frames (0.6s)",
+      "detalle": {
+        "nota": "F5",
+        "hz": 702.64,
+        "registro": "agudo",
+        "duracion_s": 0.6,
+        "frames": 12
+      }
+    },
+    {
+      "time": 41.65,
+      "tipo": "CLIMAX_VOCAL",
+      "severidad": "media",
+      "descripcion": "Clímax: F5 sostenida 12 frames (0.6s)",
+      "detalle": {
+        "nota": "F5",
+        "hz": 705.48,
+        "registro": "agudo",
+        "duracion_s": 0.6,
+        "frames": 12
+      }
+    },
+    {
+      "time": 41.85,
+      "tipo": "CAIDA_INTENS",
+      "severidad": "baja",
+      "descripcion": "Caída de intensidad 55% (pico 31.5 → actual 14.2)",
+      "detalle": {
+        "intensidad_pico": 31.508,
+        "intensidad_actual": 14.2407,
+        "caida_porcentaje": 54.8
+      }
+    },
+    {
+      "time": 41.9,
+      "tipo": "CLIMAX_VOCAL",
+      "severidad": "media",
+      "descripcion": "Clímax: F5 sostenida 12 frames (0.6s)",
+      "detalle": {
+        "nota": "F5",
+        "hz": 700.6,
+        "registro": "agudo",
+        "duracion_s": 0.6,
+        "frames": 12
+      }
+    },
+    {
+      "time": 42.15,
+      "tipo": "INESTABILIDAD",
+      "severidad": "baja",
+      "descripcion": "Inestabilidad de pitch (CV=0.028) en zona E5",
+      "detalle": {
+        "coef_variacion": 0.0276,
+        "hz_medio": 680.72,
+        "hz_std": 18.78,
+        "nota_zona": "E5"
+      }
+    },
+    {
+      "time": 43.85,
+      "tipo": "CAIDA_INTENS",
+      "severidad": "baja",
+      "descripcion": "Caída de intensidad 54% (pico 31.6 → actual 14.5)",
+      "detalle": {
+        "intensidad_pico": 31.5564,
+        "intensidad_actual": 14.5303,
+        "caida_porcentaje": 54.0
+      }
+    },
+    {
+      "time": 44.0,
+      "tipo": "SILENCIO_LARGO",
+      "severidad": "media",
+      "descripcion": "Silencio de 0.8s detectado",
+      "detalle": {
+        "frames_silencio": 15
+      }
+    },
+    {
+      "time": 46.3,
+      "tipo": "CAIDA_INTENS",
+      "severidad": "baja",
+      "descripcion": "Caída de intensidad 54% (pico 27.9 → actual 12.7)",
+      "detalle": {
+        "intensidad_pico": 27.8925,
+        "intensidad_actual": 12.7067,
+        "caida_porcentaje": 54.4
+      }
+    },
+    {
+      "time": 46.5,
+      "tipo": "INESTABILIDAD",
+      "severidad": "baja",
+      "descripcion": "Inestabilidad de pitch (CV=0.032) en zona C3",
+      "detalle": {
+        "coef_variacion": 0.0323,
+        "hz_medio": 145.22,
+        "hz_std": 4.69,
+        "nota_zona": "C3"
+      }
+    },
+    {
+      "time": 46.75,
+      "tipo": "INESTABILIDAD",
+      "severidad": "media",
+      "descripcion": "Inestabilidad de pitch (CV=0.049) en zona C3",
+      "detalle": {
+        "coef_variacion": 0.0494,
+        "hz_medio": 135.08,
+        "hz_std": 6.68,
+        "nota_zona": "C3"
+      }
+    },
+    {
+      "time": 48.35,
+      "tipo": "CAIDA_INTENS",
+      "severidad": "baja",
+      "descripcion": "Caída de intensidad 55% (pico 26.8 → actual 12.0)",
+      "detalle": {
+        "intensidad_pico": 26.7681,
+        "intensidad_actual": 11.9702,
+        "caida_porcentaje": 55.3
+      }
+    },
+    {
+      "time": 48.7,
+      "tipo": "INESTABILIDAD",
+      "severidad": "baja",
+      "descripcion": "Inestabilidad de pitch (CV=0.025) en zona B2",
+      "detalle": {
+        "coef_variacion": 0.0252,
+        "hz_medio": 127.32,
+        "hz_std": 3.21,
+        "nota_zona": "B2"
+      }
+    },
+    {
+      "time": 50.35,
+      "tipo": "CAIDA_INTENS",
+      "severidad": "baja",
+      "descripcion": "Caída de intensidad 54% (pico 25.9 → actual 11.8)",
+      "detalle": {
+        "intensidad_pico": 25.9052,
+        "intensidad_actual": 11.8231,
+        "caida_porcentaje": 54.4
+      }
+    },
+    {
+      "time": 50.55,
+      "tipo": "INESTABILIDAD",
+      "severidad": "baja",
+      "descripcion": "Inestabilidad de pitch (CV=0.035) en zona A2",
+      "detalle": {
+        "coef_variacion": 0.0351,
+        "hz_medio": 121.12,
+        "hz_std": 4.25,
+        "nota_zona": "A2"
+      }
+    },
+    {
+      "time": 50.8,
+      "tipo": "INESTABILIDAD",
+      "severidad": "baja",
+      "descripcion": "Inestabilidad de pitch (CV=0.038) en zona A2",
+      "detalle": {
+        "coef_variacion": 0.0381,
+        "hz_medio": 112.4,
+        "hz_std": 4.28,
+        "nota_zona": "A2"
+      }
+    },
+    {
+      "time": 52.8,
+      "tipo": "CAIDA_INTENS",
+      "severidad": "baja",
+      "descripcion": "Caída de intensidad 55% (pico 23.9 → actual 10.7)",
+      "detalle": {
+        "intensidad_pico": 23.9117,
+        "intensidad_actual": 10.7105,
+        "caida_porcentaje": 55.2
+      }
+    },
+    {
+      "time": 54.85,
+      "tipo": "CAIDA_INTENS",
+      "severidad": "baja",
+      "descripcion": "Caída de intensidad 56% (pico 23.6 → actual 10.5)",
+      "detalle": {
+        "intensidad_pico": 23.6368,
+        "intensidad_actual": 10.4784,
+        "caida_porcentaje": 55.7
+      }
+    },
+    {
+      "time": 55.05,
+      "tipo": "INESTABILIDAD",
+      "severidad": "media",
+      "descripcion": "Inestabilidad de pitch (CV=0.061) en zona G4",
+      "detalle": {
+        "coef_variacion": 0.0606,
+        "hz_medio": 337.64,
+        "hz_std": 20.46,
+        "nota_zona": "G4"
+      }
+    },
+    {
+      "time": 55.3,
+      "tipo": "INESTABILIDAD",
+      "severidad": "media",
+      "descripcion": "Inestabilidad de pitch (CV=0.056) en zona G4",
+      "detalle": {
+        "coef_variacion": 0.0559,
+        "hz_medio": 382.72,
+        "hz_std": 21.39,
+        "nota_zona": "G4"
+      }
+    },
+    {
+      "time": 56.85,
+      "tipo": "CAIDA_INTENS",
+      "severidad": "baja",
+      "descripcion": "Caída de intensidad 55% (pico 26.1 → actual 11.8)",
+      "detalle": {
+        "intensidad_pico": 26.0754,
+        "intensidad_actual": 11.7815,
+        "caida_porcentaje": 54.8
+      }
+    },
+    {
+      "time": 57.05,
+      "tipo": "INESTABILIDAD",
+      "severidad": "media",
+      "descripcion": "Inestabilidad de pitch (CV=0.079) en zona B4",
+      "detalle": {
+        "coef_variacion": 0.0789,
+        "hz_medio": 405.76,
+        "hz_std": 32.03,
+        "nota_zona": "B4"
+      }
+    },
+    {
+      "time": 57.3,
+      "tipo": "INESTABILIDAD",
+      "severidad": "media",
+      "descripcion": "Inestabilidad de pitch (CV=0.070) en zona B4",
+      "detalle": {
+        "coef_variacion": 0.0701,
+        "hz_medio": 477.52,
+        "hz_std": 33.46,
+        "nota_zona": "B4"
+      }
+    },
+    {
+      "time": 59.3,
+      "tipo": "CAIDA_INTENS",
+      "severidad": "baja",
+      "descripcion": "Caída de intensidad 55% (pico 28.4 → actual 12.7)",
+      "detalle": {
+        "intensidad_pico": 28.3789,
+        "intensidad_actual": 12.7043,
+        "caida_porcentaje": 55.2
+      }
+    },
+    {
+      "time": 59.7,
+      "tipo": "AGUDO_EXTREMO",
+      "severidad": "alta",
+      "descripcion": "Primera nota sobreaguda: C6 (1054 Hz)",
+      "detalle": {
+        "nota": "C6",
+        "hz": 1054.4
+      }
+    },
+    {
+      "time": 59.9,
+      "tipo": "CLIMAX_VOCAL",
+      "severidad": "baja",
+      "descripcion": "Clímax: C6 sostenida 8 frames (0.4s)",
+      "detalle": {
+        "nota": "C6",
+        "hz": 1046.67,
+        "registro": "agudo",
+        "duracion_s": 0.4,
+        "frames": 8
+      }
+    },
+    {
+      "time": 60.15,
+      "tipo": "CLIMAX_VOCAL",
+      "severidad": "media",
+      "descripcion": "Clímax: C6 sostenida 12 frames (0.6s)",
+      "detalle": {
+        "nota": "C6",
+        "hz": 1047.25,
+        "registro": "sobreagudo",
+        "duracion_s": 0.6,
+        "frames": 12
+      }
+    },
+    {
+      "time": 60.4,
+      "tipo": "CLIMAX_VOCAL",
+      "severidad": "media",
+      "descripcion": "Clímax: C6 sostenida 12 frames (0.6s)",
+      "detalle": {
+        "nota": "C6",
+        "hz": 1055.9,
+        "registro": "sobreagudo",
+        "duracion_s": 0.6,
+        "frames": 12
+      }
+    },
+    {
+      "time": 60.65,
+      "tipo": "CLIMAX_VOCAL",
+      "severidad": "media",
+      "descripcion": "Clímax: C6 sostenida 12 frames (0.6s)",
+      "detalle": {
+        "nota": "C6",
+        "hz": 1051.6,
+        "registro": "sobreagudo",
+        "duracion_s": 0.6,
+        "frames": 12
+      }
+    },
+    {
+      "time": 60.9,
+      "tipo": "CLIMAX_VOCAL",
+      "severidad": "media",
+      "descripcion": "Clímax: C6 sostenida 12 frames (0.6s)",
+      "detalle": {
+        "nota": "C6",
+        "hz": 1047.36,
+        "registro": "sobreagudo",
+        "duracion_s": 0.6,
+        "frames": 12
+      }
+    },
+    {
+      "time": 61.15,
+      "tipo": "CLIMAX_VOCAL",
+      "severidad": "media",
+      "descripcion": "Clímax: C6 sostenida 12 frames (0.6s)",
+      "detalle": {
+        "nota": "C6",
+        "hz": 1052.56,
+        "registro": "sobreagudo",
+        "duracion_s": 0.6,
+        "frames": 12
+      }
+    },
+    {
+      "time": 61.4,
+      "tipo": "CLIMAX_VOCAL",
+      "severidad": "media",
+      "descripcion": "Clímax: C6 sostenida 12 frames (0.6s)",
+      "detalle": {
+        "nota": "C6",
+        "hz": 1038.53,
+        "registro": "agudo",
+        "duracion_s": 0.6,
+        "frames": 12
+      }
+    },
+    {
+      "time": 61.65,
+      "tipo": "CLIMAX_VOCAL",
+      "severidad": "media",
+      "descripcion": "Clímax: C6 sostenida 12 frames (0.6s)",
+      "detalle": {
+        "nota": "C6",
+        "hz": 1050.85,
+        "registro": "sobreagudo",
+        "duracion_s": 0.6,
+        "frames": 12
+      }
+    },
+    {
+      "time": 61.8,
+      "tipo": "CAIDA_INTENS",
+      "severidad": "baja",
+      "descripcion": "Caída de intensidad 52% (pico 36.3 → actual 17.6)",
+      "detalle": {
+        "intensidad_pico": 36.3184,
+        "intensidad_actual": 17.5542,
+        "caida_porcentaje": 51.7
+      }
+    },
+    {
+      "time": 61.9,
+      "tipo": "CLIMAX_VOCAL",
+      "severidad": "media",
+      "descripcion": "Clímax: C6 sostenida 12 frames (0.6s)",
+      "detalle": {
+        "nota": "C6",
+        "hz": 1051.21,
+        "registro": "sobreagudo",
+        "duracion_s": 0.6,
+        "frames": 12
+      }
+    },
+    {
+      "time": 62.05,
+      "tipo": "CAIDA_INTENS",
+      "severidad": "baja",
+      "descripcion": "Caída de intensidad 59% (pico 34.8 → actual 14.1)",
+      "detalle": {
+        "intensidad_pico": 34.7911,
+        "intensidad_actual": 14.1465,
+        "caida_porcentaje": 59.3
+      }
+    },
+    {
+      "time": 62.1,
+      "tipo": "INESTABILIDAD",
+      "severidad": "baja",
+      "descripcion": "Inestabilidad de pitch (CV=0.026) en zona B5",
+      "detalle": {
+        "coef_variacion": 0.026,
+        "hz_medio": 1027.16,
+        "hz_std": 26.74,
+        "nota_zona": "B5"
+      }
+    },
+    {
+      "time": 62.15,
+      "tipo": "CLIMAX_VOCAL",
+      "severidad": "media",
+      "descripcion": "Clímax: B5 sostenida 12 frames (0.6s)",
+      "detalle": {
+        "nota": "B5",
+        "hz": 992.64,
+        "registro": "agudo",
+        "duracion_s": 0.6,
+        "frames": 12
+      }
+    },
+    {
+      "time": 62.4,
+      "tipo": "CLIMAX_VOCAL",
+      "severidad": "media",
+      "descripcion": "Clímax: B5 sostenida 12 frames (0.6s)",
+      "detalle": {
+        "nota": "B5",
+        "hz": 991.79,
+        "registro": "agudo",
+        "duracion_s": 0.6,
+        "frames": 12
+      }
+    },
+    {
+      "time": 62.65,
+      "tipo": "CLIMAX_VOCAL",
+      "severidad": "media",
+      "descripcion": "Clímax: B5 sostenida 12 frames (0.6s)",
+      "detalle": {
+        "nota": "B5",
+        "hz": 988.59,
+        "registro": "agudo",
+        "duracion_s": 0.6,
+        "frames": 12
+      }
+    },
+    {
+      "time": 62.9,
+      "tipo": "CLIMAX_VOCAL",
+      "severidad": "media",
+      "descripcion": "Clímax: B5 sostenida 12 frames (0.6s)",
+      "detalle": {
+        "nota": "B5",
+        "hz": 994.34,
+        "registro": "agudo",
+        "duracion_s": 0.6,
+        "frames": 12
+      }
+    },
+    {
+      "time": 63.15,
+      "tipo": "CLIMAX_VOCAL",
+      "severidad": "media",
+      "descripcion": "Clímax: B5 sostenida 12 frames (0.6s)",
+      "detalle": {
+        "nota": "B5",
+        "hz": 994.31,
+        "registro": "agudo",
+        "duracion_s": 0.6,
+        "frames": 12
+      }
+    },
+    {
+      "time": 63.4,
+      "tipo": "CLIMAX_VOCAL",
+      "severidad": "media",
+      "descripcion": "Clímax: B5 sostenida 12 frames (0.6s)",
+      "detalle": {
+        "nota": "B5",
+        "hz": 987.36,
+        "registro": "agudo",
+        "duracion_s": 0.6,
+        "frames": 12
+      }
+    },
+    {
+      "time": 63.65,
+      "tipo": "CLIMAX_VOCAL",
+      "severidad": "media",
+      "descripcion": "Clímax: B5 sostenida 12 frames (0.6s)",
+      "detalle": {
+        "nota": "B5",
+        "hz": 998.63,
+        "registro": "agudo",
+        "duracion_s": 0.6,
+        "frames": 12
+      }
+    },
+    {
+      "time": 63.9,
+      "tipo": "CLIMAX_VOCAL",
+      "severidad": "media",
+      "descripcion": "Clímax: B5 sostenida 12 frames (0.6s)",
+      "detalle": {
+        "nota": "B5",
+        "hz": 985.69,
+        "registro": "agudo",
+        "duracion_s": 0.6,
+        "frames": 12
+      }
+    },
+    {
+      "time": 64.15,
+      "tipo": "CLIMAX_VOCAL",
+      "severidad": "media",
+      "descripcion": "Clímax: B5 sostenida 12 frames (0.6s)",
+      "detalle": {
+        "nota": "B5",
+        "hz": 996.87,
+        "registro": "agudo",
+        "duracion_s": 0.6,
+        "frames": 12
+      }
+    },
+    {
+      "time": 64.35,
+      "tipo": "CAIDA_INTENS",
+      "severidad": "media",
+      "descripcion": "Caída de intensidad 64% (pico 34.5 → actual 12.5)",
+      "detalle": {
+        "intensidad_pico": 34.5048,
+        "intensidad_actual": 12.4988,
+        "caida_porcentaje": 63.8
+      }
+    },
+    {
+      "time": 64.4,
+      "tipo": "CLIMAX_VOCAL",
+      "severidad": "media",
+      "descripcion": "Clímax: B5 sostenida 12 frames (0.6s)",
+      "detalle": {
+        "nota": "B5",
+        "hz": 992.03,
+        "registro": "agudo",
+        "duracion_s": 0.6,
+        "frames": 12
+      }
+    },
+    {
+      "time": 64.55,
+      "tipo": "INESTABILIDAD",
+      "severidad": "baja",
+      "descripcion": "Inestabilidad de pitch (CV=0.038) en zona A5",
+      "detalle": {
+        "coef_variacion": 0.0384,
+        "hz_medio": 974.08,
+        "hz_std": 37.42,
+        "nota_zona": "A5"
+      }
+    },
+    {
+      "time": 64.8,
+      "tipo": "INESTABILIDAD",
+      "severidad": "media",
+      "descripcion": "Inestabilidad de pitch (CV=0.044) en zona A5",
+      "detalle": {
+        "coef_variacion": 0.0437,
+        "hz_medio": 897.05,
+        "hz_std": 39.18,
+        "nota_zona": "A5"
+      }
+    },
+    {
+      "time": 64.9,
+      "tipo": "CLIMAX_VOCAL",
+      "severidad": "baja",
+      "descripcion": "Clímax: A5 sostenida 11 frames (0.6s)",
+      "detalle": {
+        "nota": "A5",
+        "hz": 879.92,
+        "registro": "agudo",
+        "duracion_s": 0.55,
+        "frames": 11
+      }
+    },
+    {
+      "time": 65.15,
+      "tipo": "CLIMAX_VOCAL",
+      "severidad": "media",
+      "descripcion": "Clímax: A5 sostenida 12 frames (0.6s)",
+      "detalle": {
+        "nota": "A5",
+        "hz": 881.96,
+        "registro": "agudo",
+        "duracion_s": 0.6,
+        "frames": 12
+      }
+    },
+    {
+      "time": 65.4,
+      "tipo": "CLIMAX_VOCAL",
+      "severidad": "media",
+      "descripcion": "Clímax: A5 sostenida 12 frames (0.6s)",
+      "detalle": {
+        "nota": "A5",
+        "hz": 881.77,
+        "registro": "agudo",
+        "duracion_s": 0.6,
+        "frames": 12
+      }
+    },
+    {
+      "time": 65.65,
+      "tipo": "CLIMAX_VOCAL",
+      "severidad": "media",
+      "descripcion": "Clímax: A5 sostenida 12 frames (0.6s)",
+      "detalle": {
+        "nota": "A5",
+        "hz": 882.22,
+        "registro": "agudo",
+        "duracion_s": 0.6,
+        "frames": 12
+      }
+    },
+    {
+      "time": 65.9,
+      "tipo": "CLIMAX_VOCAL",
+      "severidad": "media",
+      "descripcion": "Clímax: A5 sostenida 12 frames (0.6s)",
+      "detalle": {
+        "nota": "A5",
+        "hz": 880.27,
+        "registro": "agudo",
+        "duracion_s": 0.6,
+        "frames": 12
+      }
+    },
+    {
+      "time": 66.15,
+      "tipo": "CLIMAX_VOCAL",
+      "severidad": "media",
+      "descripcion": "Clímax: A5 sostenida 12 frames (0.6s)",
+      "detalle": {
+        "nota": "A5",
+        "hz": 879.4,
+        "registro": "agudo",
+        "duracion_s": 0.6,
+        "frames": 12
+      }
+    },
+    {
+      "time": 66.4,
+      "tipo": "CLIMAX_VOCAL",
+      "severidad": "media",
+      "descripcion": "Clímax: A5 sostenida 12 frames (0.6s)",
+      "detalle": {
+        "nota": "A5",
+        "hz": 882.15,
+        "registro": "agudo",
+        "duracion_s": 0.6,
+        "frames": 12
+      }
+    },
+    {
+      "time": 66.65,
+      "tipo": "CLIMAX_VOCAL",
+      "severidad": "media",
+      "descripcion": "Clímax: A5 sostenida 12 frames (0.6s)",
+      "detalle": {
+        "nota": "A5",
+        "hz": 882.22,
+        "registro": "agudo",
+        "duracion_s": 0.6,
+        "frames": 12
+      }
+    },
+    {
+      "time": 66.8,
+      "tipo": "CAIDA_INTENS",
+      "severidad": "baja",
+      "descripcion": "Caída de intensidad 55% (pico 33.5 → actual 15.0)",
+      "detalle": {
+        "intensidad_pico": 33.498,
+        "intensidad_actual": 15.0306,
+        "caida_porcentaje": 55.1
+      }
+    },
+    {
+      "time": 66.9,
+      "tipo": "CLIMAX_VOCAL",
+      "severidad": "media",
+      "descripcion": "Clímax: A5 sostenida 12 frames (0.6s)",
+      "detalle": {
+        "nota": "A5",
+        "hz": 890.66,
+        "registro": "agudo",
+        "duracion_s": 0.6,
+        "frames": 12
+      }
+    },
+    {
+      "time": 67.05,
+      "tipo": "CAIDA_INTENS",
+      "severidad": "baja",
+      "descripcion": "Caída de intensidad 53% (pico 33.4 → actual 15.8)",
+      "detalle": {
+        "intensidad_pico": 33.4369,
+        "intensidad_actual": 15.7535,
+        "caida_porcentaje": 52.9
+      }
+    },
+    {
+      "time": 67.05,
+      "tipo": "INESTABILIDAD",
+      "severidad": "media",
+      "descripcion": "Inestabilidad de pitch (CV=0.052) en zona C6",
+      "detalle": {
+        "coef_variacion": 0.0521,
+        "hz_medio": 904.37,
+        "hz_std": 47.1,
+        "nota_zona": "C6"
+      }
+    },
+    {
+      "time": 67.3,
+      "tipo": "INESTABILIDAD",
+      "severidad": "media",
+      "descripcion": "Inestabilidad de pitch (CV=0.051) en zona C6",
+      "detalle": {
+        "coef_variacion": 0.0511,
+        "hz_medio": 1022.86,
+        "hz_std": 52.31,
+        "nota_zona": "C6"
+      }
+    },
+    {
+      "time": 67.4,
+      "tipo": "CLIMAX_VOCAL",
+      "severidad": "baja",
+      "descripcion": "Clímax: C6 sostenida 11 frames (0.6s)",
+      "detalle": {
+        "nota": "C6",
+        "hz": 1055.8,
+        "registro": "sobreagudo",
+        "duracion_s": 0.55,
+        "frames": 11
+      }
+    },
+    {
+      "time": 67.65,
+      "tipo": "CLIMAX_VOCAL",
+      "severidad": "media",
+      "descripcion": "Clímax: C6 sostenida 12 frames (0.6s)",
+      "detalle": {
+        "nota": "C6",
+        "hz": 1053.37,
+        "registro": "sobreagudo",
+        "duracion_s": 0.6,
+        "frames": 12
+      }
+    },
+    {
+      "time": 67.9,
+      "tipo": "CLIMAX_VOCAL",
+      "severidad": "media",
+      "descripcion": "Clímax: C6 sostenida 12 frames (0.6s)",
+      "detalle": {
+        "nota": "C6",
+        "hz": 1057.73,
+        "registro": "sobreagudo",
+        "duracion_s": 0.6,
+        "frames": 12
+      }
+    },
+    {
+      "time": 68.15,
+      "tipo": "CLIMAX_VOCAL",
+      "severidad": "media",
+      "descripcion": "Clímax: C6 sostenida 12 frames (0.6s)",
+      "detalle": {
+        "nota": "C6",
+        "hz": 1054.35,
+        "registro": "sobreagudo",
+        "duracion_s": 0.6,
+        "frames": 12
+      }
+    },
+    {
+      "time": 68.4,
+      "tipo": "CLIMAX_VOCAL",
+      "severidad": "media",
+      "descripcion": "Clímax: C6 sostenida 12 frames (0.6s)",
+      "detalle": {
+        "nota": "C6",
+        "hz": 1055.54,
+        "registro": "sobreagudo",
+        "duracion_s": 0.6,
+        "frames": 12
+      }
+    },
+    {
+      "time": 68.65,
+      "tipo": "CLIMAX_VOCAL",
+      "severidad": "media",
+      "descripcion": "Clímax: C6 sostenida 12 frames (0.6s)",
+      "detalle": {
+        "nota": "C6",
+        "hz": 1042.76,
+        "registro": "agudo",
+        "duracion_s": 0.6,
+        "frames": 12
+      }
+    },
+    {
+      "time": 68.9,
+      "tipo": "CLIMAX_VOCAL",
+      "severidad": "media",
+      "descripcion": "Clímax: C6 sostenida 12 frames (0.6s)",
+      "detalle": {
+        "nota": "C6",
+        "hz": 1054.14,
+        "registro": "sobreagudo",
+        "duracion_s": 0.6,
+        "frames": 12
+      }
+    },
+    {
+      "time": 69.15,
+      "tipo": "CLIMAX_VOCAL",
+      "severidad": "media",
+      "descripcion": "Clímax: C6 sostenida 12 frames (0.6s)",
+      "detalle": {
+        "nota": "C6",
+        "hz": 1049.95,
+        "registro": "sobreagudo",
+        "duracion_s": 0.6,
+        "frames": 12
+      }
+    },
+    {
+      "time": 69.4,
+      "tipo": "CLIMAX_VOCAL",
+      "severidad": "media",
+      "descripcion": "Clímax: C6 sostenida 12 frames (0.6s)",
+      "detalle": {
+        "nota": "C6",
+        "hz": 1043.78,
+        "registro": "agudo",
+        "duracion_s": 0.6,
+        "frames": 12
+      }
+    },
+    {
+      "time": 69.65,
+      "tipo": "CLIMAX_VOCAL",
+      "severidad": "media",
+      "descripcion": "Clímax: C6 sostenida 12 frames (0.6s)",
+      "detalle": {
+        "nota": "C6",
+        "hz": 1047.64,
+        "registro": "sobreagudo",
+        "duracion_s": 0.6,
+        "frames": 12
+      }
+    },
+    {
+      "time": 69.75,
+      "tipo": "CAIDA_INTENS",
+      "severidad": "baja",
+      "descripcion": "Caída de intensidad 53% (pico 36.5 → actual 17.1)",
+      "detalle": {
+        "intensidad_pico": 36.4985,
+        "intensidad_actual": 17.1211,
+        "caida_porcentaje": 53.1
+      }
+    },
+    {
+      "time": 69.9,
+      "tipo": "CLIMAX_VOCAL",
+      "severidad": "media",
+      "descripcion": "Clímax: C6 sostenida 12 frames (0.6s)",
+      "detalle": {
+        "nota": "C6",
+        "hz": 1029.48,
+        "registro": "agudo",
+        "duracion_s": 0.6,
+        "frames": 12
+      }
+    },
+    {
+      "time": 70.0,
+      "tipo": "CAIDA_INTENS",
+      "severidad": "alta",
+      "descripcion": "Caída de intensidad 81% (pico 33.6 → actual 6.3)",
+      "detalle": {
+        "intensidad_pico": 33.6344,
+        "intensidad_actual": 6.2817,
+        "caida_porcentaje": 81.3
+      }
+    },
+    {
+      "time": 70.05,
+      "tipo": "INESTABILIDAD",
+      "severidad": "media",
+      "descripcion": "Inestabilidad de pitch (CV=0.093) en zona G5",
+      "detalle": {
+        "coef_variacion": 0.0929,
+        "hz_medio": 1001.98,
+        "hz_std": 93.08,
+        "nota_zona": "G5"
+      }
+    },
+    {
+      "time": 70.4,
+      "tipo": "CLIMAX_VOCAL",
+      "severidad": "baja",
+      "descripcion": "Clímax: G5 sostenida 10 frames (0.5s)",
+      "detalle": {
+        "nota": "G5",
+        "hz": 787.63,
+        "registro": "agudo",
+        "duracion_s": 0.5,
+        "frames": 10
+      }
+    },
+    {
+      "time": 70.65,
+      "tipo": "CLIMAX_VOCAL",
+      "severidad": "media",
+      "descripcion": "Clímax: G5 sostenida 12 frames (0.6s)",
+      "detalle": {
+        "nota": "G5",
+        "hz": 788.58,
+        "registro": "agudo",
+        "duracion_s": 0.6,
+        "frames": 12
+      }
+    },
+    {
+      "time": 70.9,
+      "tipo": "CLIMAX_VOCAL",
+      "severidad": "media",
+      "descripcion": "Clímax: G5 sostenida 12 frames (0.6s)",
+      "detalle": {
+        "nota": "G5",
+        "hz": 785.01,
+        "registro": "agudo",
+        "duracion_s": 0.6,
+        "frames": 12
+      }
+    },
+    {
+      "time": 71.15,
+      "tipo": "CLIMAX_VOCAL",
+      "severidad": "media",
+      "descripcion": "Clímax: G5 sostenida 12 frames (0.6s)",
+      "detalle": {
+        "nota": "G5",
+        "hz": 779.15,
+        "registro": "agudo",
+        "duracion_s": 0.6,
+        "frames": 12
+      }
+    },
+    {
+      "time": 71.4,
+      "tipo": "CLIMAX_VOCAL",
+      "severidad": "media",
+      "descripcion": "Clímax: G5 sostenida 12 frames (0.6s)",
+      "detalle": {
+        "nota": "G5",
+        "hz": 786.37,
+        "registro": "agudo",
+        "duracion_s": 0.6,
+        "frames": 12
+      }
+    },
+    {
+      "time": 71.65,
+      "tipo": "CLIMAX_VOCAL",
+      "severidad": "media",
+      "descripcion": "Clímax: G5 sostenida 12 frames (0.6s)",
+      "detalle": {
+        "nota": "G5",
+        "hz": 787.75,
+        "registro": "agudo",
+        "duracion_s": 0.6,
+        "frames": 12
+      }
+    },
+    {
+      "time": 71.9,
+      "tipo": "CLIMAX_VOCAL",
+      "severidad": "media",
+      "descripcion": "Clímax: G5 sostenida 12 frames (0.6s)",
+      "detalle": {
+        "nota": "G5",
+        "hz": 783.56,
+        "registro": "agudo",
+        "duracion_s": 0.6,
+        "frames": 12
+      }
+    },
+    {
+      "time": 72.15,
+      "tipo": "CLIMAX_VOCAL",
+      "severidad": "media",
+      "descripcion": "Clímax: G5 sostenida 12 frames (0.6s)",
+      "detalle": {
+        "nota": "G5",
+        "hz": 786.28,
+        "registro": "agudo",
+        "duracion_s": 0.6,
+        "frames": 12
+      }
+    },
+    {
+      "time": 72.3,
+      "tipo": "CAIDA_INTENS",
+      "severidad": "baja",
+      "descripcion": "Caída de intensidad 56% (pico 32.0 → actual 14.1)",
+      "detalle": {
+        "intensidad_pico": 31.9717,
+        "intensidad_actual": 14.0789,
+        "caida_porcentaje": 56.0
+      }
+    },
+    {
+      "time": 72.4,
+      "tipo": "CLIMAX_VOCAL",
+      "severidad": "media",
+      "descripcion": "Clímax: G5 sostenida 12 frames (0.6s)",
+      "detalle": {
+        "nota": "G5",
+        "hz": 785.31,
+        "registro": "agudo",
+        "duracion_s": 0.6,
+        "frames": 12
+      }
+    },
+    {
+      "time": 72.55,
+      "tipo": "CAIDA_INTENS",
+      "severidad": "baja",
+      "descripcion": "Caída de intensidad 54% (pico 30.9 → actual 14.0)",
+      "detalle": {
+        "intensidad_pico": 30.8653,
+        "intensidad_actual": 14.0492,
+        "caida_porcentaje": 54.5
+      }
+    },
+    {
+      "time": 72.55,
+      "tipo": "INESTABILIDAD",
+      "severidad": "media",
+      "descripcion": "Inestabilidad de pitch (CV=0.057) en zona E5",
+      "detalle": {
+        "coef_variacion": 0.057,
+        "hz_medio": 766.85,
+        "hz_std": 43.71,
+        "nota_zona": "E5"
+      }
+    },
+    {
+      "time": 72.8,
+      "tipo": "INESTABILIDAD",
+      "severidad": "media",
+      "descripcion": "Inestabilidad de pitch (CV=0.062) en zona E5",
+      "detalle": {
+        "coef_variacion": 0.0622,
+        "hz_medio": 678.37,
+        "hz_std": 42.16,
+        "nota_zona": "E5"
+      }
+    },
+    {
+      "time": 74.35,
+      "tipo": "CAIDA_INTENS",
+      "severidad": "baja",
+      "descripcion": "Caída de intensidad 57% (pico 29.7 → actual 12.8)",
+      "detalle": {
+        "intensidad_pico": 29.7053,
+        "intensidad_actual": 12.751,
+        "caida_porcentaje": 57.1
+      }
+    },
+    {
+      "time": 74.55,
+      "tipo": "INESTABILIDAD",
+      "severidad": "media",
+      "descripcion": "Inestabilidad de pitch (CV=0.070) en zona C5",
+      "detalle": {
+        "coef_variacion": 0.0701,
+        "hz_medio": 641.63,
+        "hz_std": 44.95,
+        "nota_zona": "C5"
+      }
+    },
+    {
+      "time": 74.8,
+      "tipo": "INESTABILIDAD",
+      "severidad": "media",
+      "descripcion": "Inestabilidad de pitch (CV=0.081) en zona C5",
+      "detalle": {
+        "coef_variacion": 0.0811,
+        "hz_medio": 543.3,
+        "hz_std": 44.07,
+        "nota_zona": "C5"
+      }
+    },
+    {
+      "time": 76.35,
+      "tipo": "CAIDA_INTENS",
+      "severidad": "baja",
+      "descripcion": "Caída de intensidad 56% (pico 28.4 → actual 12.5)",
+      "detalle": {
+        "intensidad_pico": 28.3902,
+        "intensidad_actual": 12.4688,
+        "caida_porcentaje": 56.1
+      }
+    },
+    {
+      "time": 76.55,
+      "tipo": "INESTABILIDAD",
+      "severidad": "media",
+      "descripcion": "Inestabilidad de pitch (CV=0.055) en zona A4",
+      "detalle": {
+        "coef_variacion": 0.055,
+        "hz_medio": 513.41,
+        "hz_std": 28.23,
+        "nota_zona": "A4"
+      }
+    },
+    {
+      "time": 76.8,
+      "tipo": "INESTABILIDAD",
+      "severidad": "media",
+      "descripcion": "Inestabilidad de pitch (CV=0.066) en zona A4",
+      "detalle": {
+        "coef_variacion": 0.0657,
+        "hz_medio": 455.42,
+        "hz_std": 29.94,
+        "nota_zona": "A4"
+      }
+    },
+    {
+      "time": 78.35,
+      "tipo": "CAIDA_INTENS",
+      "severidad": "baja",
+      "descripcion": "Caída de intensidad 55% (pico 26.3 → actual 11.8)",
+      "detalle": {
+        "intensidad_pico": 26.3387,
+        "intensidad_actual": 11.8308,
+        "caida_porcentaje": 55.1
+      }
+    },
+    {
+      "time": 78.5,
+      "tipo": "INESTABILIDAD",
+      "severidad": "baja",
+      "descripcion": "Inestabilidad de pitch (CV=0.034) en zona G4",
+      "detalle": {
+        "coef_variacion": 0.034,
+        "hz_medio": 433.58,
+        "hz_std": 14.73,
+        "nota_zona": "G4"
+      }
+    },
+    {
+      "time": 78.75,
+      "tipo": "INESTABILIDAD",
+      "severidad": "media",
+      "descripcion": "Inestabilidad de pitch (CV=0.048) en zona G4",
+      "detalle": {
+        "coef_variacion": 0.0476,
+        "hz_medio": 403.56,
+        "hz_std": 19.19,
+        "nota_zona": "G4"
+      }
+    },
+    {
+      "time": 79.9,
+      "tipo": "CAIDA_INTENS",
+      "severidad": "media",
+      "descripcion": "Caída de intensidad 61% (pico 24.6 → actual 9.6)",
+      "detalle": {
+        "intensidad_pico": 24.6159,
+        "intensidad_actual": 9.6361,
+        "caida_porcentaje": 60.9
+      }
+    },
+    {
+      "time": 80.05,
+      "tipo": "INESTABILIDAD",
+      "severidad": "media",
+      "descripcion": "Inestabilidad de pitch (CV=0.055) en zona E4",
+      "detalle": {
+        "coef_variacion": 0.0553,
+        "hz_medio": 383.33,
+        "hz_std": 21.21,
+        "nota_zona": "E4"
+      }
+    },
+    {
+      "time": 80.3,
+      "tipo": "INESTABILIDAD",
+      "severidad": "media",
+      "descripcion": "Inestabilidad de pitch (CV=0.062) en zona E4",
+      "detalle": {
+        "coef_variacion": 0.0616,
+        "hz_medio": 336.76,
+        "hz_std": 20.75,
+        "nota_zona": "E4"
+      }
+    },
+    {
+      "time": 81.85,
+      "tipo": "CAIDA_INTENS",
+      "severidad": "baja",
+      "descripcion": "Caída de intensidad 57% (pico 21.9 → actual 9.4)",
+      "detalle": {
+        "intensidad_pico": 21.8742,
+        "intensidad_actual": 9.4085,
+        "caida_porcentaje": 57.0
+      }
+    },
+    {
+      "time": 82.05,
+      "tipo": "INESTABILIDAD",
+      "severidad": "media",
+      "descripcion": "Inestabilidad de pitch (CV=0.069) en zona C4",
+      "detalle": {
+        "coef_variacion": 0.0689,
+        "hz_medio": 319.31,
+        "hz_std": 21.99,
+        "nota_zona": "C4"
+      }
+    },
+    {
+      "time": 82.3,
+      "tipo": "INESTABILIDAD",
+      "severidad": "media",
+      "descripcion": "Inestabilidad de pitch (CV=0.075) en zona C4",
+      "detalle": {
+        "coef_variacion": 0.0753,
+        "hz_medio": 270.93,
+        "hz_std": 20.41,
+        "nota_zona": "C4"
+      }
+    },
+    {
+      "time": 84.3,
+      "tipo": "CAIDA_INTENS",
+      "severidad": "baja",
+      "descripcion": "Caída de intensidad 52% (pico 20.1 → actual 9.7)",
+      "detalle": {
+        "intensidad_pico": 20.0836,
+        "intensidad_actual": 9.7025,
+        "caida_porcentaje": 51.7
+      }
+    },
+    {
+      "time": 84.55,
+      "tipo": "CAIDA_INTENS",
+      "severidad": "media",
+      "descripcion": "Caída de intensidad 63% (pico 20.0 → actual 7.4)",
+      "detalle": {
+        "intensidad_pico": 20.0027,
+        "intensidad_actual": 7.4427,
+        "caida_porcentaje": 62.8
+      }
+    },
+    {
+      "time": 84.55,
+      "tipo": "INESTABILIDAD",
+      "severidad": "media",
+      "descripcion": "Inestabilidad de pitch (CV=0.054) en zona A3",
+      "detalle": {
+        "coef_variacion": 0.0537,
+        "hz_medio": 255.22,
+        "hz_std": 13.71,
+        "nota_zona": "A3"
+      }
+    },
+    {
+      "time": 84.8,
+      "tipo": "INESTABILIDAD",
+      "severidad": "media",
+      "descripcion": "Inestabilidad de pitch (CV=0.060) en zona A3",
+      "detalle": {
+        "coef_variacion": 0.0604,
+        "hz_medio": 225.87,
+        "hz_std": 13.64,
+        "nota_zona": "A3"
+      }
+    },
+    {
+      "time": 86.8,
+      "tipo": "CAIDA_INTENS",
+      "severidad": "baja",
+      "descripcion": "Caída de intensidad 53% (pico 18.2 → actual 8.5)",
+      "detalle": {
+        "intensidad_pico": 18.1853,
+        "intensidad_actual": 8.4642,
+        "caida_porcentaje": 53.5
+      }
+    },
+    {
+      "time": 87.0,
+      "tipo": "INESTABILIDAD",
+      "severidad": "baja",
+      "descripcion": "Inestabilidad de pitch (CV=0.026) en zona G♯3",
+      "detalle": {
+        "coef_variacion": 0.0258,
+        "hz_medio": 218.32,
+        "hz_std": 5.64,
+        "nota_zona": "G♯3"
+      }
+    },
+    {
+      "time": 87.05,
+      "tipo": "CAIDA_INTENS",
+      "severidad": "media",
+      "descripcion": "Caída de intensidad 63% (pico 17.1 → actual 6.4)",
+      "detalle": {
+        "intensidad_pico": 17.0522,
+        "intensidad_actual": 6.372,
+        "caida_porcentaje": 62.6
+      }
+    },
+    {
+      "time": 87.25,
+      "tipo": "INESTABILIDAD",
+      "severidad": "media",
+      "descripcion": "Inestabilidad de pitch (CV=0.050) en zona G3",
+      "detalle": {
+        "coef_variacion": 0.0503,
+        "hz_medio": 203.65,
+        "hz_std": 10.25,
+        "nota_zona": "G3"
+      }
+    },
+    {
+      "time": 89.75,
+      "tipo": "CAIDA_INTENS",
+      "severidad": "baja",
+      "descripcion": "Caída de intensidad 52% (pico 16.5 → actual 7.9)",
+      "detalle": {
+        "intensidad_pico": 16.4907,
+        "intensidad_actual": 7.9423,
+        "caida_porcentaje": 51.8
+      }
+    },
+    {
+      "time": 90.0,
+      "tipo": "CAIDA_INTENS",
+      "severidad": "alta",
+      "descripcion": "Caída de intensidad 93% (pico 14.5 → actual 1.1)",
+      "detalle": {
+        "intensidad_pico": 14.5038,
+        "intensidad_actual": 1.0578,
+        "caida_porcentaje": 92.7
+      }
+    }
+  ]
+}
