@@ -161,9 +161,9 @@ def frames_desde_perfil(artist_id: str = "soprano"):
     de artist_profiles.py (Idea C). No requiere CSV.
     """
     try:
-        sys.path.insert(0, str(Path(__file__).parent.parent / "vocal_comparador"))
-        from artist_profiles import ARTISTS, generate_audio
-        from vocal_classifier import classify_register
+        sys.path.insert(0, str(Path(__file__).parent.parent))
+        from comparador_multiartista.artist_profiles import ARTISTS, generate_audio
+        from clasificador_ml.vocal_classifier import classify_register
         import numpy as np
     except ImportError:
         print("  [WARN] artist_profiles.py no encontrado. Usando demo mínimo.")
@@ -184,7 +184,7 @@ def frames_desde_perfil(artist_id: str = "soprano"):
     for note, ts, te, intensity in seq:
         n_frames = max(1, int((te - ts) * fps))
         for i in range(n_frames):
-            from artist_profiles import note_freq
+            from comparador_multiartista.artist_profiles import note_freq
             hz_base = note_freq(note)
             jitter  = np.random.normal(0, hz_base * 0.005)
             hz      = max(50.0, hz_base + jitter)

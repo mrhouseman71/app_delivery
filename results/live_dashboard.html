@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Vocal Live — Análisis con Audio</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg0:#07090f; --bg1:#0d1117; --bg2:#141b26; --bg3:#1a2333;
+  --border:#1e2d45; --text:#c9d1d9; --muted:#6e7681; --hi:#58a6ff;
+  --green:#3fb950; --orange:#f0883e; --red:#f85149; --purple:#bc8cff;
+  --yellow:#e3b341;
+  --font:'DM Sans',sans-serif; --mono:'DM Mono',monospace;
+}
+html,body{height:100%;background:var(--bg0);color:var(--text);font-family:var(--font)}
+
+/* ── layout ── */
+.shell{display:grid;grid-template-rows:auto 1fr;height:100vh;overflow:hidden}
+.header{padding:14px 24px;background:var(--bg1);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:16px}
+.header h1{font-size:15px;font-weight:600;letter-spacing:.3px;color:#fff}
+.header .sub{font-size:12px;color:var(--muted);font-family:var(--mono)}
+.live-pill{margin-left:auto;display:flex;align-items:center;gap:6px;background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:4px 12px;font-size:11px;font-family:var(--mono);color:var(--green)}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--green);animation:pulse 1.4s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+
+.body{display:grid;grid-template-columns:320px 1fr;overflow:hidden}
+.sidebar{background:var(--bg1);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden}
+.main{display:flex;flex-direction:column;overflow:hidden}
+
+/* ── audio player ── */
+.player{padding:18px 20px;border-bottom:1px solid var(--border)}
+.player-title{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:12px;font-family:var(--mono)}
+.audio-drop{border:1.5px dashed var(--border);border-radius:10px;padding:18px;text-align:center;cursor:pointer;transition:border-color .2s;margin-bottom:14px}
+.audio-drop:hover,.audio-drop.drag-over{border-color:var(--hi);background:rgba(88,166,255,.04)}
+.audio-drop p{font-size:12px;color:var(--muted);margin-top:6px}
+.audio-drop .icon{font-size:22px}
+#audioFileInput{display:none}
+audio{width:100%;height:36px;margin-top:4px}
+audio::-webkit-media-controls-panel{background:var(--bg2)}
+
+.timeline-bar{position:relative;height:6px;background:var(--bg3);border-radius:3px;margin:10px 0;cursor:pointer}
+.timeline-progress{position:absolute;left:0;top:0;height:100%;background:var(--hi);border-radius:3px;transition:width .1s linear}
+.timeline-cursor{position:absolute;top:-5px;width:16px;height:16px;border-radius:50%;background:#fff;box-shadow:0 0 0 3px var(--hi);transform:translateX(-50%);transition:left .1s linear;cursor:grab}
+.time-labels{display:flex;justify-content:space-between;font-size:10px;color:var(--muted);font-family:var(--mono)}
+
+/* ── current note ── */
+.note-display{padding:16px 20px;border-bottom:1px solid var(--border);text-align:center}
+.note-big{font-size:52px;font-weight:600;font-family:var(--mono);line-height:1;transition:color .15s}
+.note-hz{font-size:13px;color:var(--muted);margin-top:4px;font-family:var(--mono)}
+.note-reg{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:500;margin-top:8px;font-family:var(--mono)}
+
+/* ── KPIs ── */
+.kpi-list{padding:14px 20px;border-bottom:1px solid var(--border)}
+.kpi-row{display:flex;justify-content:space-between;align-items:baseline;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.04)}
+.kpi-row:last-child{border:none}
+.kpi-label{font-size:11px;color:var(--muted);font-family:var(--mono)}
+.kpi-val{font-size:13px;font-weight:500;font-family:var(--mono)}
+
+/* ── alerts log ── */
+.alerts{padding:12px 20px;flex:1;overflow-y:auto}
+.alerts-title{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px;font-family:var(--mono)}
+.alert-item{display:flex;gap:8px;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.04);align-items:flex-start;animation:fadeIn .3s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+.alert-t{font-size:11px;font-family:var(--mono);color:var(--hi);min-width:44px}
+.alert-badge{font-size:10px;font-weight:600;padding:2px 7px;border-radius:4px;white-space:nowrap}
+.alert-desc{font-size:11px;color:var(--muted);flex:1;line-height:1.4}
+
+/* ── charts area ── */
+.charts-area{flex:1;display:grid;grid-template-rows:1fr auto;overflow:hidden;padding:16px 20px;gap:14px}
+.chart-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:14px 16px;display:flex;flex-direction:column}
+.chart-label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px;font-family:var(--mono)}
+.chart-wrap{position:relative;flex:1;min-height:0}
+.bottom-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;height:150px}
+
+/* ── register badge colors ── */
+.reg-grave{background:#1a1040;color:#bc8cff;border:1px solid #6e40c9}
+.reg-medio-grave{background:#0d2137;color:#58a6ff;border:1px solid #1f6feb}
+.reg-medio-agudo{background:#0d2a20;color:#3fb950;border:1px solid #238636}
+.reg-agudo{background:#2a1a00;color:#e3b341;border:1px solid #9e6a03}
+.reg-sobreagudo{background:#2a0d0d;color:#f85149;border:1px solid #b62324}
+.reg-silencio{background:var(--bg3);color:var(--muted);border:1px solid var(--border)}
+
+/* ── sev colors for alerts ── */
+.sev-alta{background:#2a0d0d;color:#f85149;border:1px solid #b62324}
+.sev-media{background:#2a1a00;color:#e3b341;border:1px solid #9e6a03}
+.sev-baja{background:#0d2a20;color:#3fb950;border:1px solid #238636}
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <div class="header">
+    <div>
+      <h1>🎤 Vocal Intelligence — Live</h1>
+      <div class="sub">Cargá un audio · el análisis se sincroniza con la reproducción</div>
+    </div>
+    <div class="live-pill"><span class="dot"></span> <span id="statusTxt">esperando audio</span></div>
+  </div>
+
+  <div class="body">
+
+    <!-- ── Sidebar ── -->
+    <div class="sidebar">
+
+      <div class="player">
+        <div class="player-title">Audio</div>
+
+        <!-- Drag & drop / file picker -->
+        <div class="audio-drop" id="dropZone">
+          <div class="icon">🎵</div>
+          <div style="font-size:13px;color:#fff;margin-top:4px">Arrastrá un archivo WAV o MP3</div>
+          <p>o hacé clic para seleccionar</p>
+          <input type="file" id="audioFileInput" accept=".wav,.mp3,.flac,.ogg,.m4a">
+        </div>
+
+        <div id="playerWrap" style="display:none">
+          <audio id="audioEl" controls></audio>
+          <div class="timeline-bar" id="timelineBar">
+            <div class="timeline-progress" id="tlProgress" style="width:0%"></div>
+            <div class="timeline-cursor"   id="tlCursor"   style="left:0%"></div>
+          </div>
+          <div class="time-labels">
+            <span id="timeCurrent">0:00</span>
+            <span id="timeTotal">0:00</span>
+          </div>
+        </div>
+
+        <!-- Cargar JSON de frames -->
+        <div style="margin-top:12px">
+          <div class="player-title" style="margin-bottom:8px">Frames JSON</div>
+          <button onclick="document.getElementById('framesInput').click()"
+                  style="width:100%;padding:7px;background:var(--bg3);border:1px solid var(--border);
+                         border-radius:6px;color:var(--text);cursor:pointer;font-size:12px">
+            📂 Cargar realtime_frames.csv / frame_analysis.json
+          </button>
+          <input type="file" id="framesInput" accept=".json,.csv" style="display:none">
+          <div id="framesStatus" style="font-size:11px;color:var(--muted);margin-top:6px"></div>
+        </div>
+      </div>
+
+      <!-- Nota actual -->
+      <div class="note-display">
+        <div class="note-big" id="noteDisplay" style="color:var(--muted)">—</div>
+        <div class="note-hz" id="hzDisplay">esperando...</div>
+        <span class="note-reg reg-silencio" id="regBadge">silencio</span>
+      </div>
+
+      <!-- KPIs en vivo -->
+      <div class="kpi-list">
+        <div class="kpi-row"><span class="kpi-label">Tiempo</span><span class="kpi-val" id="kpiTime">0:00</span></div>
+        <div class="kpi-row"><span class="kpi-label">Frames analizados</span><span class="kpi-val" id="kpiFrames">—</span></div>
+        <div class="kpi-row"><span class="kpi-label">Hz pico</span><span class="kpi-val" id="kpiMax" style="color:var(--orange)">—</span></div>
+        <div class="kpi-row"><span class="kpi-label">Hz mínimo</span><span class="kpi-val" id="kpiMin" style="color:var(--purple)">—</span></div>
+        <div class="kpi-row"><span class="kpi-label">Nota modal</span><span class="kpi-val" id="kpiModal">—</span></div>
+        <div class="kpi-row"><span class="kpi-label">Alertas activas</span><span class="kpi-val" id="kpiAlerts" style="color:var(--red)">0</span></div>
+      </div>
+
+      <!-- Alertas -->
+      <div class="alerts">
+        <div class="alerts-title">Anomalías detectadas</div>
+        <div id="alertsLog"><div style="font-size:11px;color:var(--muted)">Sin alertas aún</div></div>
+      </div>
+
+    </div>
+
+    <!-- ── Área de charts ── -->
+    <div class="main">
+      <div class="charts-area">
+
+        <div class="chart-card">
+          <div class="chart-label">Pitch en tiempo real (Hz) — ventana rodante 30s</div>
+          <div class="chart-wrap"><canvas id="pitchChart"></canvas></div>
+        </div>
+
+        <div class="bottom-row">
+          <div class="chart-card">
+            <div class="chart-label">Intensidad</div>
+            <div class="chart-wrap"><canvas id="intensChart"></canvas></div>
+          </div>
+          <div class="chart-card">
+            <div class="chart-label">Distribución registros</div>
+            <div class="chart-wrap"><canvas id="regChart"></canvas></div>
+          </div>
+          <div class="chart-card">
+            <div class="chart-label">Confianza detección</div>
+            <div class="chart-wrap"><canvas id="confChart"></canvas></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// ── Estado ────────────────────────────────────────────────────────
+let frames    = [];           // array de frames del JSON/CSV
+let audioEl   = document.getElementById('audioEl');
+let rafId     = null;
+let lastFrame = -1;
+let regCounts = {grave:0,'medio-grave':0,'medio-agudo':0,agudo:0,sobreagudo:0};
+let anomalies = [];
+let emittedAnomalies = new Set();
+
+// ── Chart.js setup ─────────────────────────────────────────────────
+const CHART_CFG = {
+  responsive:true, maintainAspectRatio:false,
+  animation:{duration:0},
+  plugins:{legend:{display:false},
+    tooltip:{backgroundColor:'#0d1117',borderColor:'#1e2d45',borderWidth:1,
+      titleColor:'#6e7681',bodyColor:'#c9d1d9',padding:10}},
+  scales:{
+    x:{ticks:{color:'#3d444d',font:{size:9},maxTicksLimit:8},grid:{color:'#1a2333'}},
+    y:{ticks:{color:'#3d444d',font:{size:9}},grid:{color:'#1a2333'}}
+  }
+};
+
+const pitchChart = new Chart(document.getElementById('pitchChart'), {
+  type:'line',
+  data:{labels:[],datasets:[{
+    data:[],borderColor:'#58a6ff',backgroundColor:'rgba(88,166,255,.07)',
+    borderWidth:1.4,pointRadius:0,fill:true,tension:.3
+  }]},
+  options:{...CHART_CFG,scales:{...CHART_CFG.scales,
+    y:{...CHART_CFG.scales.y,
+      title:{display:true,text:'Hz',color:'#3d444d',font:{size:10}}}}}
+});
+
+const intensChart = new Chart(document.getElementById('intensChart'), {
+  type:'line',
+  data:{labels:[],datasets:[{
+    data:[],borderColor:'#e3b341',backgroundColor:'rgba(227,179,65,.08)',
+    borderWidth:1.2,pointRadius:0,fill:true,tension:.2
+  }]},
+  options:{...CHART_CFG}
+});
+
+const regChart = new Chart(document.getElementById('regChart'), {
+  type:'doughnut',
+  data:{
+    labels:['grave','medio-grave','medio-agudo','agudo','sobreagudo'],
+    datasets:[{data:[0,0,0,0,0],
+      backgroundColor:['#6e40c9aa','#1f6febaa','#238636aa','#9e6a03aa','#b62324aa'],
+      borderWidth:0,hoverOffset:6}]
+  },
+  options:{responsive:true,maintainAspectRatio:false,animation:{duration:300},
+    plugins:{legend:{display:true,position:'right',
+      labels:{color:'#6e7681',font:{size:10},boxWidth:10,padding:8}},
+      tooltip:{backgroundColor:'#0d1117',borderColor:'#1e2d45',borderWidth:1,
+        bodyColor:'#c9d1d9'}}}
+});
+
+const confChart = new Chart(document.getElementById('confChart'), {
+  type:'bar',
+  data:{labels:[],datasets:[{
+    data:[],backgroundColor:'#3fb95055',borderColor:'#3fb950',borderWidth:1,borderRadius:2
+  }]},
+  options:{...CHART_CFG,scales:{...CHART_CFG.scales,y:{...CHART_CFG.scales.y,min:0,max:1}}}
+});
+
+// ── Carga de archivos ──────────────────────────────────────────────
+document.getElementById('dropZone').addEventListener('click', () =>
+  document.getElementById('audioFileInput').click());
+
+document.getElementById('dropZone').addEventListener('dragover', e => {
+  e.preventDefault();
+  document.getElementById('dropZone').classList.add('drag-over');
+});
+document.getElementById('dropZone').addEventListener('dragleave', () =>
+  document.getElementById('dropZone').classList.remove('drag-over'));
+document.getElementById('dropZone').addEventListener('drop', e => {
+  e.preventDefault();
+  document.getElementById('dropZone').classList.remove('drag-over');
+  const f = e.dataTransfer.files[0];
+  if(f) loadAudioFile(f);
+});
+
+document.getElementById('audioFileInput').addEventListener('change', e => {
+  if(e.target.files[0]) loadAudioFile(e.target.files[0]);
+});
+
+function loadAudioFile(file) {
+  const url = URL.createObjectURL(file);
+  audioEl.src = url;
+  document.getElementById('playerWrap').style.display = 'block';
+  document.getElementById('dropZone').style.display   = 'none';
+  document.getElementById('statusTxt').textContent = file.name;
+  audioEl.addEventListener('loadedmetadata', () => {
+    document.getElementById('timeTotal').textContent = fmtTime(audioEl.duration);
+  }, {once:true});
+  audioEl.addEventListener('timeupdate', onTimeUpdate);
+  audioEl.addEventListener('play',  startLoop);
+  audioEl.addEventListener('pause', stopLoop);
+  audioEl.addEventListener('ended', stopLoop);
+}
+
+document.getElementById('framesInput').addEventListener('change', e => {
+  const file = e.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    try {
+      if(file.name.endsWith('.json')) {
+        frames = JSON.parse(ev.target.result);
+        // Normalizar clave de tiempo
+        frames = frames.map(f => ({...f, time: f.time ?? f.time_s}));
+      } else {
+        // CSV — parsear manualmente
+        frames = parseCSV(ev.target.result);
+      }
+      document.getElementById('framesStatus').textContent =
+        `✅ ${frames.length} frames cargados (${fmtTime(frames[frames.length-1]?.time ?? 0)})`;
+      // Detectar anomalías pre-cargadas
+      detectAndStoreAnomalies();
+      // Calcular KPIs estáticos
+      updateStaticKPIs();
+    } catch(err) {
+      document.getElementById('framesStatus').textContent = `❌ Error: ${err.message}`;
+    }
+  };
+  reader.readAsText(file);
+});
+
+function parseCSV(text) {
+  const lines = text.trim().split('\n');
+  const headers = lines[0].split(',');
+  return lines.slice(1).map(line => {
+    const vals = line.split(',');
+    const row = {};
+    headers.forEach((h,i) => row[h.trim()] = vals[i]?.trim());
+    return {
+      time:      parseFloat(row.time_s ?? row.time ?? 0),
+      note:      row.note || null,
+      hz:        parseFloat(row.hz) || null,
+      intensity: parseFloat(row.intensity) || 0,
+      register:  row.register || 'silencio',
+      is_voiced: row.is_voiced?.toLowerCase() === 'true',
+      confidence:parseFloat(row.confidence) || 0,
+    };
+  });
+}
+
+// ── Sincronización audio ↔ frames ──────────────────────────────────
+function getCurrentFrame(t) {
+  // Búsqueda binaria del frame más cercano al tiempo t
+  let lo = 0, hi = frames.length - 1;
+  while(lo < hi) {
+    const mid = (lo+hi) >> 1;
+    if(frames[mid].time < t) lo = mid+1;
+    else hi = mid;
+  }
+  return frames[lo] ?? frames[frames.length-1];
+}
+
+function onTimeUpdate() {
+  const t   = audioEl.currentTime;
+  const dur = audioEl.duration || 1;
+  const pct = (t/dur*100).toFixed(2);
+
+  document.getElementById('tlProgress').style.width = pct+'%';
+  document.getElementById('tlCursor').style.left    = pct+'%';
+  document.getElementById('timeCurrent').textContent = fmtTime(t);
+  document.getElementById('kpiTime').textContent     = fmtTime(t);
+
+  if(!frames.length) return;
+
+  const frame = getCurrentFrame(t);
+  updateNoteDisplay(frame);
+  checkAnomaliesAt(t);
+}
+
+function updateNoteDisplay(frame) {
+  const noteEl = document.getElementById('noteDisplay');
+  const hzEl   = document.getElementById('hzDisplay');
+  const regEl  = document.getElementById('regBadge');
+
+  if(frame.is_voiced && frame.note) {
+    noteEl.textContent = frame.note;
+    hzEl.textContent   = `${frame.hz?.toFixed(1) ?? '—'} Hz  |  conf ${((frame.confidence??0.85)*100).toFixed(0)}%`;
+    noteEl.style.color = REG_COLORS[frame.register] ?? '#fff';
+  } else {
+    noteEl.textContent = '—';
+    hzEl.textContent   = 'silencio';
+    noteEl.style.color = 'var(--muted)';
+  }
+  regEl.textContent  = frame.register ?? 'silencio';
+  regEl.className    = 'note-reg reg-'+( frame.register?.replace(' ','-') ?? 'silencio' );
+}
+
+const REG_COLORS = {
+  'grave':'#bc8cff','medio-grave':'#58a6ff','medio-agudo':'#3fb950',
+  'agudo':'#e3b341','sobreagudo':'#f85149','silencio':'#6e7681'
+};
+
+// ── Loop de actualización de gráficos ──────────────────────────────
+const WINDOW_S = 30;  // ventana de 30s visible en el pitch chart
+let confBuffer = [];
+
+function startLoop() {
+  document.getElementById('statusTxt').textContent = '▶ reproduciendo';
+  document.querySelector('.dot').style.background  = 'var(--green)';
+  rafId = requestAnimationFrame(chartLoop);
+}
+
+function stopLoop() {
+  document.getElementById('statusTxt').textContent = '⏸ pausado';
+  if(rafId) cancelAnimationFrame(rafId);
+}
+
+let lastChartUpdate = 0;
+function chartLoop(ts) {
+  if(ts - lastChartUpdate > 150) {   // actualizar a ~6fps para no saturar
+    lastChartUpdate = ts;
+    updateCharts();
+  }
+  rafId = requestAnimationFrame(chartLoop);
+}
+
+function updateCharts() {
+  if(!frames.length) return;
+  const t   = audioEl.currentTime;
+  const lo  = Math.max(0, t - WINDOW_S);
+  const win = frames.filter(f => f.time >= lo && f.time <= t && f.is_voiced);
+
+  // Pitch chart
+  const pLabels = win.map(f => f.time.toFixed(1)+'s');
+  const pData   = win.map(f => f.hz ?? null);
+  pitchChart.data.labels             = pLabels;
+  pitchChart.data.datasets[0].data   = pData;
+  pitchChart.update('none');
+
+  // Intensidad chart
+  intensChart.data.labels           = pLabels;
+  intensChart.data.datasets[0].data = win.map(f => f.intensity);
+  intensChart.update('none');
+
+  // Confidence chart (últimos 40 frames con voz)
+  const confWin = frames.filter(f => f.time >= lo && f.time <= t && f.is_voiced).slice(-40);
+  confChart.data.labels             = confWin.map(f => f.time.toFixed(1)+'s');
+  confChart.data.datasets[0].data   = confWin.map(f => f.confidence ?? 0.85);
+  confChart.update('none');
+
+  // Registro (acumulado hasta t)
+  const allVoiced = frames.filter(f => f.time <= t && f.is_voiced);
+  const rc = {};
+  allVoiced.forEach(f => rc[f.register] = (rc[f.register]??0)+1);
+  regChart.data.datasets[0].data = ['grave','medio-grave','medio-agudo','agudo','sobreagudo']
+    .map(r => rc[r] ?? 0);
+  regChart.update('none');
+}
+
+// ── KPIs estáticos (calculados al cargar los frames) ──────────────
+function updateStaticKPIs() {
+  const voiced = frames.filter(f => f.is_voiced && f.hz);
+  if(!voiced.length) return;
+  const hzs   = voiced.map(f=>f.hz);
+  const notes  = voiced.map(f=>f.note).filter(Boolean);
+  const counts = {};
+  notes.forEach(n => counts[n] = (counts[n]??0)+1);
+  const modal = Object.entries(counts).sort((a,b)=>b[1]-a[1])[0]?.[0];
+
+  document.getElementById('kpiMax').textContent   = Math.max(...hzs).toFixed(0)+' Hz';
+  document.getElementById('kpiMin').textContent   = Math.min(...hzs).toFixed(0)+' Hz';
+  document.getElementById('kpiModal').textContent = modal ?? '—';
+  document.getElementById('kpiFrames').textContent= frames.length;
+}
+
+// ── Detección y emisión de anomalías ──────────────────────────────
+const ANOMALY_ICONS = {
+  CLIMAX_VOCAL:'🔥', CAIDA_INTENS:'📉', AGUDO_EXTREMO:'🎯',
+  SILENCIO_LARGO:'⏸', BREAK_VOZ:'⚡', INESTABILIDAD:'〰'
+};
+
+function detectAndStoreAnomalies() {
+  // Reglas simples en JS — espejo del anomaly_detector.py
+  anomalies = [];
+  let climaxStreak = 0;
+  let seenSobreagudo = false;
+  let lastIntensities = [];
+
+  frames.forEach((f, i) => {
+    // AGUDO_EXTREMO
+    if(!seenSobreagudo && f.register === 'sobreagudo' && f.is_voiced) {
+      seenSobreagudo = true;
+      anomalies.push({time:f.time, tipo:'AGUDO_EXTREMO', sev:'alta',
+        desc:`Primera nota sobreaguda: ${f.note} (${f.hz?.toFixed(0)} Hz)`});
+    }
+    // CLIMAX_VOCAL
+    if(f.is_voiced && ['agudo','sobreagudo'].includes(f.register)) {
+      climaxStreak++;
+      if(climaxStreak === 8) {
+        anomalies.push({time:f.time, tipo:'CLIMAX_VOCAL', sev:'media',
+          desc:`Clímax: ${f.note} sostenida ${(climaxStreak*0.05).toFixed(1)}s`});
+      }
+    } else { climaxStreak = 0; }
+    // CAIDA_INTENS
+    lastIntensities.push(f.intensity);
+    if(lastIntensities.length > 10) lastIntensities.shift();
+    if(lastIntensities.length === 10) {
+      const peak = Math.max(...lastIntensities.slice(0,5));
+      const curr = f.intensity;
+      if(peak > 0 && (1 - curr/peak) >= 0.5) {
+        const last = anomalies[anomalies.length-1];
+        if(!last || last.tipo !== 'CAIDA_INTENS' || f.time - last.time > 2) {
+          anomalies.push({time:f.time, tipo:'CAIDA_INTENS', sev:'baja',
+            desc:`Caída de intensidad ${((1-curr/peak)*100).toFixed(0)}%`});
+        }
+      }
+    }
+    // BREAK_VOZ
+    if(i > 0 && f.is_voiced && frames[i-1].is_voiced && f.hz && frames[i-1].hz) {
+      const st = Math.abs(12 * Math.log2(f.hz / frames[i-1].hz));
+      if(st >= 5) {
+        anomalies.push({time:f.time, tipo:'BREAK_VOZ', sev: st>=12?'alta':'baja',
+          desc:`Salto ${st.toFixed(1)} st: ${frames[i-1].note} → ${f.note}`});
+      }
+    }
+  });
+}
+
+function checkAnomaliesAt(t) {
+  const toEmit = anomalies.filter(a =>
+    a.time <= t && !emittedAnomalies.has(a.time+'_'+a.tipo)
+  );
+  toEmit.forEach(a => {
+    emittedAnomalies.add(a.time+'_'+a.tipo);
+    addAlertRow(a);
+  });
+  document.getElementById('kpiAlerts').textContent = emittedAnomalies.size;
+}
+
+function addAlertRow(a) {
+  const log  = document.getElementById('alertsLog');
+  if(log.firstChild?.textContent?.includes('Sin alertas'))
+    log.innerHTML = '';
+
+  const row  = document.createElement('div');
+  row.className = 'alert-item';
+  const icon    = ANOMALY_ICONS[a.tipo] ?? '●';
+  row.innerHTML = `
+    <span class="alert-t">${fmtTime(a.time)}</span>
+    <span class="alert-badge sev-${a.sev}">${icon} ${a.tipo}</span>
+    <span class="alert-desc">${a.desc}</span>
+  `;
+  log.prepend(row);
+  while(log.children.length > 15) log.removeChild(log.lastChild);
+}
+
+// ── Timeline bar click ─────────────────────────────────────────────
+document.getElementById('timelineBar').addEventListener('click', e => {
+  if(!audioEl.duration) return;
+  const rect = e.currentTarget.getBoundingClientRect();
+  const pct  = (e.clientX - rect.left) / rect.width;
+  audioEl.currentTime = pct * audioEl.duration;
+  emittedAnomalies.clear();
+  document.getElementById('alertsLog').innerHTML =
+    '<div style="font-size:11px;color:var(--muted)">Sin alertas aún</div>';
+});
+
+// ── Helpers ────────────────────────────────────────────────────────
+function fmtTime(s) {
+  const m = Math.floor(s/60);
+  const sec = Math.floor(s%60);
+  return `${m}:${sec.toString().padStart(2,'0')}`;
+}
+</script>
+</body>
+</html>
