@@ -11,6 +11,7 @@ scipy>=1.10.0
 # ── Neural pitch detection ─────────────────────────────
 torchcrepe>=0.0.20
 torch>=2.0.0
+torchcodec>=0.1.0
 
 # ── Vocal separation ───────────────────────────────────
 demucs>=4.0.0

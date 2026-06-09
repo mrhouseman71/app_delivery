@@ -1,120 +1,143 @@
 {
-  "most_common_note": "G5",
+  "most_common_note": "C\u266f2",
   "lowest_note": {
-    "note": "A2",
-    "hz": 109.37,
-    "time": 50.666
+    "note": "A1",
+    "hz": 55.0,
+    "time": 33.367
   },
   "highest_note": {
     "note": "C6",
-    "hz": 1058.66,
-    "time": 59.675
+    "hz": 1046.5,
+    "time": 10.24
   },
-  "avg_hz": 502.6,
-  "vocal_range_semitones": 39.3,
-  "vocal_range_octaves": 3.27,
-  "note_changes": 52,
-  "total_voiced_frames": 3865,
-  "total_frames": 3876,
+  "avg_hz": 160.61,
+  "vocal_range_semitones": 51.0,
+  "vocal_range_octaves": 4.25,
+  "note_changes": 884,
+  "total_voiced_frames": 3496,
+  "total_frames": 10871,
   "register_distribution": {
-    "medio-grave": 939,
-    "medio-agudo": 1355,
-    "agudo": 1123,
-    "grave": 382,
-    "sobreagudo": 66
+    "medio-grave": 1140,
+    "grave": 2066,
+    "agudo": 26,
+    "medio-agudo": 264
   },
-  "dominant_register": "medio-agudo",
+  "dominant_register": "grave",
   "top_notes": [
     [
-      "G5",
-      322
+      "C\u266f2",
+      519
     ],
     [
-      "E4",
-      319
+      "B1",
+      415
     ],
     [
-      "G4",
-      300
+      "A1",
+      384
     ],
     [
-      "E5",
+      "C\u266f4",
       278
     ],
     [
-      "A5",
-      236
-    ],
-    [
-      "C6",
-      235
-    ],
-    [
-      "A3",
-      215
-    ],
-    [
-      "F5",
-      194
-    ],
-    [
       "C4",
-      193
+      151
     ],
     [
-      "B4",
-      191
+      "F3",
+      133
     ],
     [
-      "C5",
-      172
+      "A\u266f1",
+      120
     ],
     [
-      "A4",
-      171
+      "F\u266f3",
+      112
     ],
     [
-      "F4",
-      152
+      "A\u266f3",
+      106
     ],
     [
-      "G3",
-      129
+      "C2",
+      104
     ],
     [
-      "B5",
-      108
+      "F\u266f4",
+      99
+    ],
+    [
+      "E2",
+      77
+    ],
+    [
+      "G\u266f4",
+      76
+    ],
+    [
+      "D\u266f4",
+      71
+    ],
+    [
+      "G\u266f3",
+      69
     ]
   ],
   "max_intensity": {
-    "value": 36.6404,
-    "time": 68.522,
-    "note": "C6"
+    "value": 31.7478,
+    "time": 48.855,
+    "note": "C\u266f2"
   },
   "highlight_moments": [
     {
-      "time": 35.503,
-      "note": "A5",
-      "hz": 885.1,
-      "intensity": 34.7848
+      "time": 10.217,
+      "note": "C6",
+      "hz": 1022.6,
+      "intensity": 23.0734
     },
     {
-      "time": 59.652,
-      "note": "C6",
-      "hz": 1052.56,
-      "intensity": 34.806
+      "time": 12.33,
+      "note": "A\u266f3",
+      "hz": 233.08,
+      "intensity": 22.8334
     },
     {
-      "time": 67.175,
-      "note": "C6",
-      "hz": 1052.56,
-      "intensity": 35.5072
+      "time": 44.745,
+      "note": "D2",
+      "hz": 72.99,
+      "intensity": 21.8011
     },
     {
-      "time": 69.195,
-      "note": "C6",
-      "hz": 1046.5,
-      "intensity": 36.588
+      "time": 48.692,
+      "note": "D2",
+      "hz": 72.15,
+      "intensity": 22.014
+    },
+    {
+      "time": 52.361,
+      "note": "B1",
+      "hz": 63.18,
+      "intensity": 21.5728
+    },
+    {
+      "time": 58.979,
+      "note": "C\u266f2",
+      "hz": 70.1,
+      "intensity": 23.8628
+    },
+    {
+      "time": 61.51,
+      "note": "C\u266f2",
+      "hz": 69.7,
+      "intensity": 21.94
+    },
+    {
+      "time": 75.418,
+      "note": "A\u266f1",
+      "hz": 57.93,
+      "intensity": 21.8008
     }
   ]
 }
